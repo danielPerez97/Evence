@@ -34,7 +34,8 @@ dependencies {
     // Dagger 2
     def daggerVersion = "2.24"
     implementation "com.google.dagger:dagger-android:$daggerVersion"
-    implementation "com.google.dagger:dagger-android-support:$daggerVersion" // if you use the support libraries
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+    // if you use the support libraries
     annotationProcessor "com.google.dagger:dagger-android-processor:$daggerVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
 
@@ -50,4 +51,9 @@ dependencies {
 
     // ICal4j
     implementation("org.mnode.ical4j:ical4j:3.0.9")
+
+    //ZXING
+    implementation 'com.google.zxing:core:3.2.1'
+    implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
+
 }

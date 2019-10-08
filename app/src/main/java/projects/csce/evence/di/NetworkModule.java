@@ -33,6 +33,7 @@ public class NetworkModule
     public Retrofit provideRetrofit(Moshi moshi, OkHttpClient okHttpClient)
     {
         return new Retrofit.Builder()
+                .baseUrl("https://www.google.com")
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .client(okHttpClient)
                 .build();
