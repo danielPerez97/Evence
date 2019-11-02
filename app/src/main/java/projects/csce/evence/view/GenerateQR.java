@@ -1,4 +1,4 @@
-package projects.csce.evence;
+package projects.csce.evence.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +13,8 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+
+import projects.csce.evence.R;
 
 public class GenerateQR extends AppCompatActivity {
 
