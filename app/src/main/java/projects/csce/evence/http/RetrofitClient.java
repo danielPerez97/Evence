@@ -5,6 +5,6 @@ import retrofit2.http.POST;
 
 public interface RetrofitClient
 {
-    @POST
+    @POST()
     DataObject postDataToServer(@Body String data);
 }
