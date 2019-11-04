@@ -1,7 +1,7 @@
 package projects.csce.evence.di.loggedin;
 
 import dagger.Subcomponent;
-import projects.csce.evence.view.SecondActivity;
+import projects.csce.evence.view.ui.SecondActivity;
 
 @SignedInScope
 @Subcomponent(modules = {LoggedInModule.class})

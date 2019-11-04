@@ -1,4 +1,4 @@
-package projects.csce.evence.base;
+package projects.csce.evence;
 
 import android.app.Application;
 

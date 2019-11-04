@@ -1,4 +1,4 @@
-package projects.csce.evence.utils;
+package projects.csce.evence.service.model;
 
 public class Event
 {

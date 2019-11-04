@@ -5,14 +5,14 @@
     <data>
         <variable
             name="view"
-            type="projects.csce.evence.view.main.MainActivity" />
+            type="projects.csce.evence.view.ui.MainActivity" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        tools:context=".view.main.MainActivity">
+        tools:context=".view.ui.MainActivity">
 
         <ImageButton
             android:id="@+id/qr_btn"

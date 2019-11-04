@@ -1,4 +1,4 @@
-package projects.csce.evence.view;
+package projects.csce.evence.view.ui;
 
 import android.os.Bundle;
 
@@ -10,7 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import javax.inject.Inject;
 
 import projects.csce.evence.R;
-import projects.csce.evence.base.BaseApplication;
+import projects.csce.evence.BaseApplication;
 import projects.csce.evence.databinding.ActivityLoggedInBinding;
 import projects.csce.evence.di.loggedin.LoggedInModule;
 import projects.csce.evence.utils.Utils;

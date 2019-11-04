@@ -1,4 +1,4 @@
-package projects.csce.evence.view.main;
+package projects.csce.evence.view.adapter;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import projects.csce.evence.utils.Event;
+import projects.csce.evence.service.model.Event;
 
 public class CardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {

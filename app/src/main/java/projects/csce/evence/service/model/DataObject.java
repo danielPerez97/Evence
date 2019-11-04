@@ -1,4 +1,4 @@
-package projects.csce.evence.http;
+package projects.csce.evence.service.model;
 
 public class DataObject
 {
