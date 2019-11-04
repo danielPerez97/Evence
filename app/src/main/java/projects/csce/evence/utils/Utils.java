@@ -1,8 +1,11 @@
 package projects.csce.evence.utils;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import projects.csce.evence.base.BaseApplication;
+import projects.csce.evence.BaseApplication;
 import projects.csce.evence.di.AppComponent;
 
 public class Utils
@@ -16,8 +19,13 @@ public class Utils
         return ((BaseApplication) activity.getApplication()).getInjector();
     }
 
-//    static LoggedInSubComponent getLoggedInSubcomponent(AppCompatActivity activity)
-//    {
-//
-//    }
+    public static void toastShort(Context context, String message)
+    {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void toastLong(Context context, String message)
+    {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
 }

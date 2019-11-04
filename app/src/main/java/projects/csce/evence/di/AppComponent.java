@@ -5,7 +5,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import projects.csce.evence.di.loggedin.LoggedInModule;
 import projects.csce.evence.di.loggedin.LoggedInSubComponent;
-import projects.csce.evence.view.main.MainActivity;
+import projects.csce.evence.view.ui.MainActivity;
 
 @Singleton
 @Component(modules = {NetworkModule.class, LoginModule.class})

@@ -1,4 +1,4 @@
-package projects.csce.evence.view.main;
+package projects.csce.evence.view.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,11 +20,11 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import projects.csce.evence.R;
-import projects.csce.evence.base.BaseApplication;
+import projects.csce.evence.BaseApplication;
 import projects.csce.evence.databinding.ActivityMainBinding;
 import projects.csce.evence.utils.Utils;
-import projects.csce.evence.view.GenerateQR;
-import projects.csce.evence.view.SecondActivity;
+import projects.csce.evence.view.adapter.CardsAdapter;
+import projects.csce.evence.viewmodel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity
 {
