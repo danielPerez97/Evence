@@ -12,13 +12,12 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import projects.csce.evence.R;
 import projects.csce.evence.BaseApplication;
 import projects.csce.evence.databinding.ActivityMainBinding;
@@ -32,6 +31,7 @@ public class MainActivity extends AppCompatActivity
     private int RC_SIGN_IN = 1;
     private MainViewModel viewModel;
     private CardsAdapter adapter;
+    private SignInButton signInButton;
     @Inject GoogleSignInClient signInClient;
 
     @Override
@@ -41,9 +41,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setView(this);
-        ButterKnife.bind(this);
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         viewModel.getCardData().observe(this, data -> adapter.setData(data));
+        signInButton = findViewById(R.id.login_btn);
+        signInButton.setOnClickListener( view -> signIn() );
     }
 
     public void startQrActivity()
@@ -58,7 +59,6 @@ public class MainActivity extends AppCompatActivity
         startActivity(secondActivityIntent);
     }
 
-    @OnClick(R.id.login_btn)
     public void signIn()
     {
         Intent signInIntent = signInClient.getSignInIntent();
