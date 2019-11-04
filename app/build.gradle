@@ -82,11 +82,20 @@ dependencies {
     implementation 'com.google.api-client:google-api-client-android:1.22.0'
     implementation 'com.google.android.gms:play-services-drive:17.0.0'
 
-
-
     // ButterKnife
     implementation 'com.jakewharton:butterknife:10.2.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
+
+    // CardView
+    def recyclerview_version = "1.0.0"
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
+
+
+    // ViewModel, LiveData
+    def lifecycle_version = "2.1.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
 }
 
 apply plugin: 'com.google.gms.google-services'
