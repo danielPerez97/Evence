@@ -1,60 +1,43 @@
 package projects.csce.evence.view.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 
 import projects.csce.evence.R;
-import projects.csce.evence.service.model.qr.QrAttempt;
+import projects.csce.evence.databinding.ActivityGenerateQrBindingImpl;
 import projects.csce.evence.service.model.qr.Qr;
+import projects.csce.evence.service.model.qr.QrAttempt;
 import projects.csce.evence.utils.Utils;
 import projects.csce.evence.viewmodel.GenerateQrViewModel;
 
 public class GenerateQR extends AppCompatActivity
 {
-    private EditText title;
-    private EditText startDate;
-    private EditText endDate;
-    private EditText location;
-    private EditText description;
-    private Button generator;
-    private ImageView imageView;
     private GenerateQrViewModel viewModel;
+    private ActivityGenerateQrBindingImpl binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generate_qr);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_generate_qr);
+        binding.setView(this);
         viewModel = ViewModelProviders.of(this).get(GenerateQrViewModel.class);
-        title = findViewById(R.id.title_edit_text);
-        startDate = findViewById(R.id.start_date_edit_text);
-        endDate = findViewById(R.id.end_date_edit_text);
-        location = findViewById(R.id.location_edit_text);
-        description = findViewById(R.id.description_edit_text);
-        generator = findViewById(R.id.generate_btn);
-        imageView = findViewById(R.id.QRImage);
+        binding.setViewModel(viewModel);
 
-        generator.setOnClickListener(v -> viewModel.generateQrBitmap(generateQR()));
-
-
-        viewModel.qrImages().observe(this, (QrAttempt attempt) -> {
+        viewModel.qrImages().observe(this, attempt -> {
             if(attempt instanceof QrAttempt.Success)
             {
                 Bitmap bitmap = ((QrAttempt.Success) attempt).bitmap;
-                imageView.setImageBitmap(bitmap);
+                binding.QRImage.setImageBitmap(bitmap);
             }
             else if(attempt instanceof QrAttempt.Failure)
             {
                 Throwable e = ((QrAttempt.Failure) attempt).e;
                 e.printStackTrace();
                 Utils.toastShort(getApplicationContext(), e.getMessage());
-
             }
         });
     }
@@ -62,11 +45,11 @@ public class GenerateQR extends AppCompatActivity
     public Qr generateQR()
     {
         return new Qr.Builder()
-                .title(title.getText().toString())
-                .startDate(startDate.getText().toString())
-                .endDate(endDate.getText().toString())
-                .location(location.getText().toString())
-                .description(description.getText().toString())
+                .title(binding.titleEditText.getText().toString())
+                .startDate(binding.startDateEditText.getText().toString())
+                .endDate(binding.endDateEditText.getText().toString())
+                .location(binding.locationEditText.getText().toString())
+                .description(binding.descriptionEditText.getText().toString())
                 .build();
 
     }

@@ -6,6 +6,9 @@
         <variable
             name="view"
             type="projects.csce.evence.view.ui.MainActivity" />
+        <variable
+            name="viewModel"
+            type="projects.csce.evence.viewmodel.MainViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
