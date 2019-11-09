@@ -12,47 +12,107 @@
             name="viewModel"
             type="projects.csce.evence.viewmodel.GenerateQrViewModel" />
     </data>
-    <LinearLayout
+
+    <androidx.cardview.widget.CardView
+        style="@style/LayoutContainerCardView">
+
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="16dp"
-        android:gravity="center"
+
         android:orientation="vertical"
         tools:context=".view.ui.GenerateQR">
 
-        <EditText
-            android:id="@+id/title_edit_text"
+        <TextView
+            style="@style/FormTitleTextView"
+            android:text="@string/event_title"/>
+        <androidx.cardview.widget.CardView
+            style="@style/FormCardView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Event title" />
-        <EditText
-            android:id="@+id/start_date_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Start date" />
-        <EditText
-            android:id="@+id/end_date_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="End date" />
-        <EditText
-            android:id="@+id/description_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Description" />
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/title_edit_text"
+                style="@style/FormEditText"
+                />
+        </androidx.cardview.widget.CardView>
 
-        <EditText
-            android:id="@+id/location_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Location" />
 
-        <Button
+        <TextView
+            style="@style/FormTitleTextView"
+            android:text="@string/start_date"/>
+
+        <androidx.cardview.widget.CardView
+            style="@style/FormCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/start_date_edit_text"
+                style="@style/FormEditText"
+                 />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            style="@style/FormTitleTextView"
+            android:text="@string/end_date"/>
+
+        <androidx.cardview.widget.CardView
+            style="@style/FormCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/end_date_edit_text"
+                style="@style/FormEditText"
+                />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            style="@style/FormTitleTextView"
+            android:text="@string/description"/>
+
+        <androidx.cardview.widget.CardView
+            style="@style/FormCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/description_edit_text"
+                style="@style/FormEditText"
+                 />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            style="@style/FormTitleTextView"
+            android:text="@string/location"/>
+        <androidx.cardview.widget.CardView
+            style="@style/FormCardView"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/location_edit_text"
+                style="@style/FormEditText"
+                 />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:id="@+id/generate_btn"
             android:onClick="@{() -> viewModel.generateQrBitmap(view.generateQR())}"
+            android:layout_gravity="center"
+            app:cardUseCompatPadding="true"
             android:layout_width="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            app:cardCornerRadius="24dp"
             android:layout_height="wrap_content"
-            android:text="generate" />
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Generate"
+                android:layout_margin="10dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"/>
+        </androidx.cardview.widget.CardView>
 
         <ImageView
             android:id="@+id/QRImage"
@@ -61,4 +121,5 @@
         android:layout_height="wrap_content" />
 
     </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

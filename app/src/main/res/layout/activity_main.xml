@@ -10,41 +10,46 @@
             name="viewModel"
             type="projects.csce.evence.viewmodel.MainViewModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
         tools:context=".view.ui.MainActivity">
 
-        <ImageButton
-            android:id="@+id/qr_btn"
+        <androidx.cardview.widget.CardView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            app:cardCornerRadius="21dp"
+            app:cardElevation="12dp"
+            android:layout_gravity="top|end"
+            >
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> view.startQrActivity()}"
-            android:src="@drawable/ic_camera_alt_grey_24dp"
-            app:layout_constraintBottom_toTopOf="@+id/login_btn"
-            app:layout_constraintEnd_toEndOf="@+id/login_btn"
-            app:layout_constraintStart_toStartOf="@+id/login_btn" />
+            android:src="@drawable/ic_account_circle_blue_48dp"/>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/events_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/login_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_gravity="top|end">
 
         </com.google.android.gms.common.SignInButton>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/qr_btn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/qr_btn"
+            android:onClick="@{() -> view.startQrActivity()}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:layout_gravity="bottom|center"
+            android:src="@drawable/ic_add_black_24dp"
+            android:layout_margin="16dp"
+            app:useCompatPadding="true"
+            />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

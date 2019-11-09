@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Evence</string>
     <string name="server_client_id">AIzaSyDpo6RqH8T91Ez5ZttAyGGXS1jBUz1eVII</string>
+    <string name="event_title">Event title</string>
+    <string name="start_date">Start date</string>
+    <string name="end_date">End date</string>
+    <string name="description">Description</string>
+    <string name="location">Location</string>
 </resources>
