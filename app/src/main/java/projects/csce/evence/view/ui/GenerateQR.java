@@ -14,7 +14,7 @@ import projects.csce.evence.service.model.qr.QrAttempt;
 import projects.csce.evence.utils.Utils;
 import projects.csce.evence.viewmodel.GenerateQrViewModel;
 
-public class GenerateQR extends AppCompatActivity
+public class   GenerateQR extends AppCompatActivity
 {
     private GenerateQrViewModel viewModel;
     private ActivityGenerateQrBindingImpl binding;

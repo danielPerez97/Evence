@@ -6,4 +6,5 @@ public class Event
     String label;
     String date;
     String imagePath;
+
 }
