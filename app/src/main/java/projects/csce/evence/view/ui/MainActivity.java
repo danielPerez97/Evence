@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import projects.csce.evence.BaseApplication;
 import projects.csce.evence.R;
 import projects.csce.evence.databinding.ActivityMainBinding;
+import projects.csce.evence.di.viewmodel.ViewModelFactory;
 import projects.csce.evence.utils.Utils;
 import projects.csce.evence.view.adapter.CardsAdapter;
 import projects.csce.evence.viewmodel.MainViewModel;
@@ -32,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private SignInButton signInButton;
     private ActivityMainBinding binding;
 
-    @Inject
-    GoogleSignInClient signInClient;
+    @Inject GoogleSignInClient signInClient;
+    @Inject ViewModelFactory factory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +42,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setView(this);
-        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
         handleRecyclerView();
         //viewModel.getEventsList().observe(this, data -> adapter.setData(data));
         signInButton = findViewById(R.id.login_btn);
         signInButton.setOnClickListener(view -> signIn());
+        Utils.toastLong(getBaseContext(), "Hello");
     }
 
     private void handleRecyclerView() {

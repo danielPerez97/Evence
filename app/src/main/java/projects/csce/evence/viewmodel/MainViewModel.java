@@ -4,10 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import projects.csce.evence.service.model.Event;
+import javax.inject.Inject;
+
+import projects.csce.evence.service.model.event.Event;
 
 public class MainViewModel extends ViewModel
 {
@@ -23,14 +24,16 @@ public class MainViewModel extends ViewModel
         return eventsList;
     }
 
+    List<Event> dummyEvents;
+
+    @Inject MainViewModel(List<Event> dummyEvents)
+    {
+        this.dummyEvents = dummyEvents;
+    }
+
     //for testing purposes. to populate the RecyclerView with a list of dummy data
-    public List<Event> generateDummyData(){
-       List<Event> dummyEvents = new ArrayList<>();
-       dummyEvents.add(new Event());
-       dummyEvents.add(new Event());
-       dummyEvents.add(new Event());
-       dummyEvents.add(new Event());
-       dummyEvents.add(new Event());
+    public List<Event> generateDummyData()
+    {
        return dummyEvents;
     }
 
