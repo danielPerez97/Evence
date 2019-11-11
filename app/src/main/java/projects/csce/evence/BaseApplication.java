@@ -7,7 +7,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import projects.csce.evence.di.AppComponent;
 import projects.csce.evence.di.DaggerAppComponent;
 import projects.csce.evence.di.LoginModule;
-import projects.csce.evence.di.NetworkModule;
 
 
 public class BaseApplication extends Application
@@ -22,7 +21,6 @@ public class BaseApplication extends Application
         super.onCreate();
         injector = DaggerAppComponent.builder()
                 .loginModule(new LoginModule(getApplicationContext()))
-                .networkModule(new NetworkModule())
                 .build();
     }
 

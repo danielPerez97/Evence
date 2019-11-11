@@ -97,7 +97,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/generate_btn"
-            android:onClick="@{() -> viewModel.generateQrBitmap(view.generateQR())}"
+            android:onClick="@{() -> view.generateQR()}"
             android:layout_gravity="center"
             app:cardUseCompatPadding="true"
             android:layout_width="wrap_content"

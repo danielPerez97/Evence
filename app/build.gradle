@@ -1,9 +1,11 @@
 apply plugin: "com.android.application"
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     signingConfigs {
         debug {
-            storeFile file('C:/Users/del carmen/.android/debug.keystore')
+            storeFile file('/home/daniel/.android/debug.keystore')
             storePassword 'android'
             keyAlias = 'androiddebugkey'
             keyPassword 'android'
@@ -44,14 +46,15 @@ dependencies {
     testImplementation "junit:junit:4.12"
     androidTestImplementation "androidx.test:runner:1.2.0"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     // Dagger 2
     def daggerVersion = "2.25"
     implementation "com.google.dagger:dagger-android:$daggerVersion"
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
     // if you use the support libraries
-    annotationProcessor "com.google.dagger:dagger-android-processor:$daggerVersion"
-    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
     // RxJava
     implementation "io.reactivex.rxjava2:rxjava:2.2.13"
