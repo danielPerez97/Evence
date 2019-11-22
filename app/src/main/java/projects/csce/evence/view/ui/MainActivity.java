@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -17,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import javax.inject.Inject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.ImageViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
@@ -46,13 +46,14 @@ public class MainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setView(this);
 
-        //todo add custom toolbar
+        //apply custom toolbar
+        setSupportActionBar(binding.toolbarMain);
 
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
         handleRecyclerView();
         //viewModel.getEventsList().observe(this, data -> adapter.setData(data));
-        signInButton = findViewById(R.id.login_btn);
-        signInButton.setOnClickListener(view -> signIn());
+
+        binding.loginBtn.setOnClickListener(view -> signIn());
         Utils.toastLong(getBaseContext(), "Hello");
     }
 
