@@ -38,7 +38,7 @@
         <item name="android:layout_marginRight">14dp</item>
     </style>
 
-    <style name="FormCardView">
+    <style name="FormCardView"  parent="ButtonCardView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">8dp</item>
@@ -56,6 +56,13 @@
         <item name="android:layout_margin">16dp</item>
         <item name="android:padding">8dp</item>z
         <item name="cardCornerRadius">14dp      </item>
+    </style>
+
+    <style name="ButtonCardView">
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:stateListAnimator">@animator/anim_button_push</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
     </style>
 
 
