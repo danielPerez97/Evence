@@ -22,7 +22,8 @@
             app:cardElevation="12dp"
             android:layout_gravity="top|end"
             >
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
+            android:id="@+id/login_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_account_circle_blue_48dp"/>
@@ -33,13 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/login_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end">
 
-        </com.google.android.gms.common.SignInButton>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/qr_btn"
             android:onClick="@{() -> view.startQrActivity()}"

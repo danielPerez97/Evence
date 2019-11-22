@@ -2,6 +2,7 @@ package projects.csce.evence.view.ui;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -52,17 +53,48 @@ public class   GenerateQR extends AppCompatActivity
             }
     }
 
+
     public void generateQR()
     {
+
         Event qr =  new Event.Builder()
                 .title(binding.titleEditText.getText().toString())
-                .startDate(binding.startDateEditText.getText().toString())
-                .endDate(binding.endDateEditText.getText().toString())
+                .startDate(binding.startDateTextView.getText().toString())
+                .startTime(binding.startTimeTextView.getText().toString())
+                .endDate(binding.endDateTextView.getText().toString())
+                .endTime(binding.endTimeTextView.getText().toString())
                 .location(binding.locationEditText.getText().toString())
                 .description(binding.descriptionEditText.getText().toString())
                 .build();
 
+
+
         binding.getViewModel().generateQrBitmap(qr);
 
     }
+
+    public void startDateDialog() {
+        CalendarDialog calendarDialog = new CalendarDialog(this, binding.startDateTextView);
+        calendarDialog.dateDialog();
+    }
+    public void startTimeDialog() {
+        CalendarDialog calendarDialog = new CalendarDialog(this, binding.startTimeTextView);
+        calendarDialog.timeDialog();
+    }
+
+    public void endDateDialog() {
+        CalendarDialog calendarDialog = new CalendarDialog(this, binding.endDateTextView);
+        calendarDialog.dateDialog();
+    }
+
+    public void endTimeDialog() {
+        CalendarDialog calendarDialog = new CalendarDialog(this, binding.endTimeTextView);
+        calendarDialog.timeDialog();
+    }
+
+    public void saveQrButton() {
+        Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
+
+    }
+
 }
