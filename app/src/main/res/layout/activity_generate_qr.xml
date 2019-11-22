@@ -49,16 +49,19 @@
 
                 <androidx.cardview.widget.CardView
                     style="@style/FormCardView"
+
                     android:onClick="@{() -> view.startDateDialog()}"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center">
+
                     <TextView
                         android:id="@+id/start_date_textView"
                         style="@style/FormDateTextView"
-                        android:text="mm/dd/yyyy"
-                        />
+                        android:layout_height="wrap_content"
+                        android:text="mm/dd/yyyy" />
+
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -149,13 +152,14 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/generate_btn"
+                style="@style/ButtonCardView"
                 android:onClick="@{() -> view.generateQR()}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:cardUseCompatPadding="true"
-                android:layout_width="wrap_content"
                 android:backgroundTint="@color/colorPrimary"
                 app:cardCornerRadius="24dp"
-                android:layout_height="wrap_content"
                 >
                 <TextView
                     android:layout_width="wrap_content"
@@ -168,6 +172,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/save_qr_button"
+                style="@style/ButtonCardView"
                 android:onClick="@{() -> view.saveQrButton()}"
                 android:layout_gravity="center"
                 app:cardUseCompatPadding="true"
