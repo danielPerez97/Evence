@@ -15,26 +15,52 @@
         android:layout_height="match_parent"
         tools:context=".view.ui.MainActivity">
 
-        <androidx.cardview.widget.CardView
-            style="@style/ButtonCardView"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            app:cardCornerRadius="21dp"
-            app:cardElevation="12dp"
-            android:layout_gravity="top|end"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_main"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:layout_collapseMode="pin"
+            android:elevation="17dp"
             >
-            <ImageView
 
-                android:id="@+id/login_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_account_circle_blue_48dp"/>
-        </androidx.cardview.widget.CardView>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/app_name"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimary"
+                    />
+                <androidx.cardview.widget.CardView
+                    style="@style/ButtonCardView"
+                    android:layout_margin="8dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp"
+                    android:layout_gravity="top|end"           >
+                    <ImageView
+
+                        android:id="@+id/login_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_account_circle_blue_48dp"/>
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/events_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="68dp"/>
 
 
 
