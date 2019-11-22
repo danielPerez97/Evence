@@ -6,7 +6,9 @@ class Event private constructor(builder: Builder)
 {
 	val title: String = builder.title
 	val startDate: String = builder.startDate
+	val startTime: String = builder.startTime
 	val endDate: String = builder.endDate
+	val endTime: String = builder.endTime
 	val location: String = builder.location
 	val description: String = builder.description
 
@@ -14,7 +16,9 @@ class Event private constructor(builder: Builder)
 	{
 		internal var title: String = ""
 		internal var startDate: String = ""
+		internal var startTime: String = ""
 		internal var endDate: String = ""
+		internal var endTime: String = ""
 		internal var location: String = ""
 		internal var description: String = ""
 
@@ -22,7 +26,9 @@ class Event private constructor(builder: Builder)
 		{
 			this.title = event.title
 			this.startDate = event.startDate
+			this.startTime = event.startTime
 			this.endDate = event.endDate
+			this.endTime = event.endTime
 			this.location = event.location
 			this.description = event.description
 		}
@@ -38,7 +44,11 @@ class Event private constructor(builder: Builder)
 			return this
 		}
 
+		fun startTime(startTime: String): Builder = apply{ this.startTime = startTime}
+
 		fun endDate(endDate: String): Builder = apply { this.endDate = endDate }
+
+		fun endTime(endTime: String): Builder = apply{ this.endTime = endTime}
 
 		fun location(location: String): Builder = apply { this.location = location }
 
@@ -51,6 +61,7 @@ class Event private constructor(builder: Builder)
 
 	fun text(): String
 	{
+		//todo: incorporate start time and end time into DTSTART and DTEND
 		return """
 			BEGIN:VEVENT
 			SUMMARY:$title

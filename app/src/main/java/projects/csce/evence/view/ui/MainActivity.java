@@ -3,7 +3,9 @@ package projects.csce.evence.view.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -15,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import javax.inject.Inject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.ImageViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int RC_SIGN_IN = 1;
     private MainViewModel viewModel;
-    private SignInButton signInButton;
+    private ImageView signInButton;
     private ActivityMainBinding binding;
 
     @Inject GoogleSignInClient signInClient;
@@ -42,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setView(this);
+
+        //todo add custom toolbar
+
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
         handleRecyclerView();
         //viewModel.getEventsList().observe(this, data -> adapter.setData(data));
