@@ -1,4 +1,4 @@
-package projects.csce.evence.di
+package projects.csce.evence.di.appscope
 
 import com.squareup.moshi.Moshi
 import dagger.Module

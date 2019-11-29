@@ -1,14 +1,14 @@
 package projects.csce.evence.service.model.event
 
-import java.util.Objects
+import org.threeten.bp.Instant
 
 class Event private constructor(builder: Builder)
 {
 	val title: String = builder.title
 	val startDate: String = builder.startDate
-	val startTime: String = builder.startTime
+	val startTime: Instant = builder.startTime
 	val endDate: String = builder.endDate
-	val endTime: String = builder.endTime
+	val endTime: Instant = builder.endTime
 	val location: String = builder.location
 	val description: String = builder.description
 
@@ -16,9 +16,9 @@ class Event private constructor(builder: Builder)
 	{
 		internal var title: String = ""
 		internal var startDate: String = ""
-		internal var startTime: String = ""
+		internal var startTime: Instant = Instant.now()
 		internal var endDate: String = ""
-		internal var endTime: String = ""
+		internal var endTime: Instant = Instant.now().plusSeconds(60*5)
 		internal var location: String = ""
 		internal var description: String = ""
 
@@ -32,23 +32,16 @@ class Event private constructor(builder: Builder)
 			this.location = event.location
 			this.description = event.description
 		}
-		fun title(title: String): Builder = apply {
-			Objects.requireNonNull(title, "title == null")
-			this.title = title
-			return this
-		}
 
-		fun startDate(startDate: String): Builder = apply {
-			Objects.requireNonNull(startDate, "startDate == null")
-			this.startDate = startDate
-			return this
-		}
+		fun title(title: String): Builder = apply { this.title = title }
 
-		fun startTime(startTime: String): Builder = apply{ this.startTime = startTime}
+		fun startDate(startDate: String): Builder = apply { this.startDate = startDate }
+
+		fun startTime(startTime: Instant): Builder = apply{ this.startTime = startTime }
 
 		fun endDate(endDate: String): Builder = apply { this.endDate = endDate }
 
-		fun endTime(endTime: String): Builder = apply{ this.endTime = endTime}
+		fun endTime(endTime: Instant): Builder = apply{ this.endTime = endTime}
 
 		fun location(location: String): Builder = apply { this.location = location }
 

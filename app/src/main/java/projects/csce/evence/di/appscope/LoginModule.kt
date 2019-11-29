@@ -1,4 +1,4 @@
-package projects.csce.evence.di
+package projects.csce.evence.di.appscope
 
 import android.content.Context
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -12,6 +12,13 @@ import javax.inject.Singleton
 @Module
 class LoginModule(private val appContext: Context)
 {
+	@Provides
+	@Singleton
+	fun provideContext(): Context
+	{
+		return appContext
+	}
+
 	@Provides
 	@Singleton
 	fun provideSignInOptions(): GoogleSignInOptions

@@ -3,10 +3,11 @@ package projects.csce.evence;
 import android.app.Application;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 
-import projects.csce.evence.di.AppComponent;
-import projects.csce.evence.di.DaggerAppComponent;
-import projects.csce.evence.di.LoginModule;
+import projects.csce.evence.di.appscope.AppComponent;
+import projects.csce.evence.di.appscope.DaggerAppComponent;
+import projects.csce.evence.di.appscope.LoginModule;
 
 
 public class BaseApplication extends Application
@@ -19,6 +20,7 @@ public class BaseApplication extends Application
     public void onCreate()
     {
         super.onCreate();
+        AndroidThreeTen.init(this);
         injector = DaggerAppComponent.builder()
                 .loginModule(new LoginModule(getApplicationContext()))
                 .build();

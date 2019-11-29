@@ -6,8 +6,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+
+import org.threeten.bp.Instant;
 
 import javax.inject.Inject;
 
@@ -18,10 +21,11 @@ import projects.csce.evence.service.model.qr.QrAttempt;
 import projects.csce.evence.utils.Utils;
 import projects.csce.evence.viewmodel.GenerateQrViewModel;
 
-public class   GenerateQR extends AppCompatActivity
+public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
 {
     private GenerateQrViewModel viewModel;
     private ActivityGenerateQrBinding binding;
+    private Event currentEvent = new Event.Builder().build();
     @Inject ViewModelProvider.Factory viewModelFactory;
 
 
@@ -35,10 +39,10 @@ public class   GenerateQR extends AppCompatActivity
         binding.setView(this);
         binding.setViewModel(viewModel);
 
-        viewModel.qrImages().observe(this, this::handleAttempts);
+        viewModel.qrImages().observe(this, this);
     }
 
-    private void handleAttempts(QrAttempt attempt)
+    public void onChanged(QrAttempt attempt)
     {
             if(attempt instanceof QrAttempt.Success)
             {
@@ -56,24 +60,21 @@ public class   GenerateQR extends AppCompatActivity
 
     public void generateQR()
     {
-
-        Event qr =  new Event.Builder()
+        currentEvent =  new Event.Builder()
                 .title(binding.titleEditText.getText().toString())
                 .startDate(binding.startDateTextView.getText().toString())
-                .startTime(binding.startTimeTextView.getText().toString())
+                .startTime(Instant.now())
                 .endDate(binding.endDateTextView.getText().toString())
-                .endTime(binding.endTimeTextView.getText().toString())
+                .endTime(Instant.now())
                 .location(binding.locationEditText.getText().toString())
                 .description(binding.descriptionEditText.getText().toString())
                 .build();
 
-
-
-        binding.getViewModel().generateQrBitmap(qr);
-
+        binding.getViewModel().generateQrBitmap(currentEvent);
     }
 
-    public void startDateDialog() {
+    public void startDateDialog()
+    {
         CalendarDialog calendarDialog = new CalendarDialog(this, binding.startDateTextView);
         calendarDialog.dateDialog();
     }
@@ -94,7 +95,7 @@ public class   GenerateQR extends AppCompatActivity
 
     public void saveQrButton() {
         Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
-
+        viewModel.saveEvent(currentEvent);
     }
 
 }

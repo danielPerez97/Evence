@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import projects.csce.evence.R;
 import projects.csce.evence.BaseApplication;
 import projects.csce.evence.databinding.ActivityLoggedInBinding;
-import projects.csce.evence.di.loggedin.LoggedInModule;
+import projects.csce.evence.di.loginscope.LoggedInModule;
 import projects.csce.evence.utils.Utils;
 
 public class SecondActivity extends AppCompatActivity
