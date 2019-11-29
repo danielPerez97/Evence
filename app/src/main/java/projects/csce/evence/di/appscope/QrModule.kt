@@ -1,4 +1,4 @@
-package projects.csce.evence.di.qr
+package projects.csce.evence.di.appscope
 
 import com.google.zxing.MultiFormatWriter
 import com.journeyapps.barcodescanner.BarcodeEncoder

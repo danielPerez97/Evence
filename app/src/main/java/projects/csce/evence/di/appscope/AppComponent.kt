@@ -1,9 +1,8 @@
-package projects.csce.evence.di
+package projects.csce.evence.di.appscope
 
 import dagger.Component
-import projects.csce.evence.di.loggedin.LoggedInModule
-import projects.csce.evence.di.loggedin.LoggedInSubComponent
-import projects.csce.evence.di.qr.QrModule
+import projects.csce.evence.di.loginscope.LoggedInModule
+import projects.csce.evence.di.loginscope.LoggedInSubComponent
 import projects.csce.evence.view.ui.GenerateQR
 import projects.csce.evence.view.ui.MainActivity
 import javax.inject.Singleton

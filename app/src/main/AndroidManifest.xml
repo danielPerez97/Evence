@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="projects.csce.evence">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"
@@ -12,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.ui.GenerateQR"></activity>
+        <activity android:name=".view.ui.EventActivity"></activity>
+        <activity android:name=".view.ui.GenerateQR" />
         <activity android:name=".view.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.ui.SecondActivity"/>
+        <activity android:name=".view.ui.SecondActivity" />
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

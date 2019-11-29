@@ -1,4 +1,4 @@
-package projects.csce.evence.di.loggedin
+package projects.csce.evence.di.loginscope
 
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
