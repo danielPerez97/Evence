@@ -3,7 +3,6 @@ package projects.csce.evence.view.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -103,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             ((BaseApplication) getApplication()).setAccount(completedTask.getResult(ApiException.class));
-
             // Signed in successfully, show authenticated UI.
             startSecondActivity();
 
