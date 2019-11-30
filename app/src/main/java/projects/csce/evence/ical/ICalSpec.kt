@@ -3,24 +3,15 @@ package projects.csce.evence.ical
 import okio.buffer
 import okio.sink
 import java.io.File
+import java.util.*
 
 class ICalSpec private constructor(builder: Builder)
 {
 	val events: List<EventSpec> = builder.events
-	val title: String = builder.title
+	val fileName: String = builder.fileName!!
 	private val prodId: String = "-//University of Arkansas"
 
-	fun file(): File
-	{
-		val file = File("$title.ical")
-		val buffer = file.sink().buffer()
-		buffer.use {
-			it.writeUtf8(text())
-		}
-		return file
-	}
-
-	private fun text(): String
+	fun text(): String
 	{
 		val sb = StringBuilder()
 
@@ -56,9 +47,9 @@ class ICalSpec private constructor(builder: Builder)
 	class Builder internal constructor()
 	{
 		internal val events: MutableList<EventSpec> = mutableListOf()
-		internal var title: String = ""
+		internal var fileName: String? = null
 
-		fun title(title: String) = apply { this.title = title }
+		fun fileName(fileName: String) = apply { this.fileName = fileName }
 
 		fun addEvent(vararg event: EventSpec) = apply { events += event }
 
@@ -69,6 +60,9 @@ class ICalSpec private constructor(builder: Builder)
 			{
 				throw IdsNotUniqueException()
 			}
+
+			// Check that a filename has been given
+			Objects.requireNonNull(fileName, "fileName == null")
 
 			// Return the ICalSpec
 			return ICalSpec(this)

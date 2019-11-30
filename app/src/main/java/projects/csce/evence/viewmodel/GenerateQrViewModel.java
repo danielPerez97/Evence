@@ -10,12 +10,11 @@ import androidx.lifecycle.ViewModel;
 import org.threeten.bp.Month;
 import org.threeten.bp.ZonedDateTime;
 
-import java.io.File;
-
 import javax.inject.Inject;
 
 import projects.csce.evence.ical.EventSpec;
 import projects.csce.evence.ical.ICalSpec;
+import projects.csce.evence.service.model.FileSaver;
 import projects.csce.evence.service.model.event.Event;
 import projects.csce.evence.service.model.qr.QrAttempt;
 import projects.csce.evence.service.model.qr.QrBitmapGenerator;
@@ -24,12 +23,14 @@ public class GenerateQrViewModel extends ViewModel
 {
     private QrBitmapGenerator generator;
     private Context context;
+    private FileSaver fileSaver;
 
     @Inject
-    GenerateQrViewModel(QrBitmapGenerator generator, Context context)
+    GenerateQrViewModel(QrBitmapGenerator generator, Context context, FileSaver fileSaver)
     {
         this.generator = generator;
         this.context = context;
+        this.fileSaver = fileSaver;
     }
 
 
@@ -53,6 +54,11 @@ public class GenerateQrViewModel extends ViewModel
     {
 
 
+    }
+
+    public void saveFile(ICalSpec ical)
+    {
+        fileSaver.saveICalFile(ical);
     }
 
     public void iCalExample()
@@ -92,8 +98,5 @@ public class GenerateQrViewModel extends ViewModel
                 .addEvent(birthday)
                 .addEvent(thanksSpec)
                 .build();
-
-        // Create the ICal File
-        File birthdayFile = ical.file();
     }
 }

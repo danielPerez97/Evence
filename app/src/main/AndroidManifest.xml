@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="projects.csce.evence">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"
@@ -10,7 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.ui.EventActivity"></activity>
         <activity android:name=".view.ui.GenerateQR" />
         <activity android:name=".view.ui.MainActivity">
             <intent-filter>

@@ -12,6 +12,13 @@ import projects.csce.evence.service.model.event.Event;
 
 public class MainViewModel extends ViewModel
 {
+
+    @Inject
+    MainViewModel(List<Event> dummyEvents)
+    {
+        this.dummyEvents = dummyEvents;
+    }
+
     private LiveData<List<Event>> eventsList;
 
     public LiveData<List<Event>> getCardData()
@@ -24,12 +31,12 @@ public class MainViewModel extends ViewModel
         return eventsList;
     }
 
-    List<Event> dummyEvents;
+//    public LiveData<List<Event>> getEventsFromFileSystem()
+//    {
+//        // Get the events written to the file system in the directory
+//    }
 
-    @Inject MainViewModel(List<Event> dummyEvents)
-    {
-        this.dummyEvents = dummyEvents;
-    }
+    List<Event> dummyEvents;
 
     //for testing purposes. to populate the RecyclerView with a list of dummy data
     public List<Event> generateDummyData()
