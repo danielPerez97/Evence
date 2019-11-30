@@ -27,17 +27,4 @@ class QrBitmapGenerator(private val writer: MultiFormatWriter, private val encod
 
 	fun generations(): Flowable<QrAttempt> = attempts
 
-	fun Event.text(): String
-	{
-		return """
-			BEGIN:VEVENT
-			SUMMARY:$title
-			DTSTART:$startDate
-			DTEND:$endDate
-			LOCATION:$location
-			DESCRIPTION:$description
-			END:VEVENT
-		""".trimIndent()
-	}
-
 }

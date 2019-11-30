@@ -10,12 +10,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-import org.threeten.bp.Instant;
-
 import javax.inject.Inject;
 
 import projects.csce.evence.R;
 import projects.csce.evence.databinding.ActivityGenerateQrBinding;
+import projects.csce.evence.ical.EventSpec;
+import projects.csce.evence.ical.ICalSpec;
 import projects.csce.evence.service.model.event.Event;
 import projects.csce.evence.service.model.qr.QrAttempt;
 import projects.csce.evence.utils.Utils;
@@ -60,17 +60,22 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
 
     public void generateQR()
     {
-        currentEvent =  new Event.Builder()
+        // Generate the .ics file
+        int[] startMonthDayYear = Utils.toInts(binding.startDateTextView.getText().toString().split("/"));
+        int[] endMonthDayYear = Utils.toInts(binding.endDateTextView.getText().toString().split("/"));
+        EventSpec event = EventSpec.builder(0)
                 .title(binding.titleEditText.getText().toString())
-                .startDate(binding.startDateTextView.getText().toString())
-                .startTime(Instant.now())
-                .endDate(binding.endDateTextView.getText().toString())
-                .endTime(Instant.now())
-                .location(binding.locationEditText.getText().toString())
-                .description(binding.descriptionEditText.getText().toString())
+                .start(Utils.toZonedDateTime(startMonthDayYear))
+                .end(Utils.toZonedDateTime(endMonthDayYear))
                 .build();
 
-        binding.getViewModel().generateQrBitmap(currentEvent);
+        ICalSpec ical = ICalSpec.builder()
+                .fileName(binding.titleEditText.getText().toString())
+                .addEvent(event)
+                .build();
+
+        // Write the file to the file system
+        viewModel.saveFile(ical);
     }
 
     public void startDateDialog()
@@ -78,6 +83,7 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
         CalendarDialog calendarDialog = new CalendarDialog(this, binding.startDateTextView);
         calendarDialog.dateDialog();
     }
+
     public void startTimeDialog() {
         CalendarDialog calendarDialog = new CalendarDialog(this, binding.startTimeTextView);
         calendarDialog.timeDialog();
