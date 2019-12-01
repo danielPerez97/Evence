@@ -22,6 +22,7 @@ import projects.csce.evence.BaseApplication;
 import projects.csce.evence.R;
 import projects.csce.evence.databinding.ActivityMainBinding;
 import projects.csce.evence.di.viewmodel.ViewModelFactory;
+import projects.csce.evence.service.model.FileManager;
 import projects.csce.evence.utils.Utils;
 import projects.csce.evence.view.adapter.CardsAdapter;
 import projects.csce.evence.viewmodel.MainViewModel;
@@ -31,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private int RC_SIGN_IN = 1;
     private MainViewModel viewModel;
     private ActivityMainBinding binding;
+    private CardsAdapter eventsAdapter;
 
+    @Inject FileManager fileManager;
     @Inject GoogleSignInClient signInClient;
     @Inject ViewModelFactory factory;
 
@@ -41,33 +44,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setView(this);
+        binding.setLifecycleOwner(this);
 
         //apply custom toolbar
         setSupportActionBar(binding.toolbarMain);
 
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
+        eventsAdapter = new CardsAdapter();
         handleRecyclerView();
-        //viewModel.getEventsList().observe(this, data -> adapter.setData(data));
 
         binding.loginBtn.setOnClickListener(view -> signIn());
         Utils.toastLong(getBaseContext(), "Hello");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fileManager.notifyChange();
+    }
+
     private void handleRecyclerView() {
-        CardsAdapter eventsAdapter = new CardsAdapter(this, viewModel.generateDummyData());
 
         //for testing purposes only. populating the recyclerview with dummy data
-        eventsAdapter.setData(viewModel.generateDummyData());
-
         binding.eventsRecyclerView.setAdapter(eventsAdapter);
-        binding.eventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        /** todo: fix
-         * viewModel.getEventsList().observe(this, new Observer<List<Event>>() {
-        @Override public void onChanged(List<Event> events) {
-        eventsAdapter.setData(events);
-        }
-        });**/
+        binding.eventsRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        viewModel.liveFiles().observe(this, events -> {
+            Log.i("SUBSCRIBER", Integer.toString(events.size()));
+            eventsAdapter.onChanged(events);
+        });
     }
 
     public void startQrActivity() {

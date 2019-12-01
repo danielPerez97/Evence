@@ -1,10 +1,12 @@
 package projects.csce.evence.di.appscope
 
+import android.content.Context
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
+import projects.csce.evence.service.model.FileManager
 import projects.csce.evence.service.model.event.Event
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -54,5 +56,12 @@ class NetworkModule
 		dummyEvents.add(Event.Builder().build())
 		dummyEvents.add(Event.Builder().build())
 		return dummyEvents
+	}
+
+	@Provides
+	@Singleton
+	fun provideFileManager(context: Context): FileManager
+	{
+		return FileManager(context)
 	}
 }
