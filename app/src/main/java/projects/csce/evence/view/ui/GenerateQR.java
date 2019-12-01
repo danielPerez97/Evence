@@ -74,13 +74,13 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
         // Generate the .ics file
         int[] startMonthDayYear = Utils.toInts(binding.startDateTextView.getText().toString().split("/"));
         int[] endMonthDayYear = Utils.toInts(binding.endDateTextView.getText().toString().split("/"));
-        EventSpec event = EventSpec.builder(0)
+        EventSpec event = new EventSpec.Builder(0)
                 .title(binding.titleEditText.getText().toString())
                 .start(Utils.toZonedDateTime(startMonthDayYear))
                 .end(Utils.toZonedDateTime(endMonthDayYear))
                 .build();
 
-        currentEvent = ICalSpec.builder()
+        currentEvent = new ICalSpec.Builder()
                 .fileName(binding.titleEditText.getText().toString())
                 .addEvent(event)
                 .build();

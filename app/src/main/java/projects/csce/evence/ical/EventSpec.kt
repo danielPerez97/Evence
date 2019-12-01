@@ -1,6 +1,7 @@
 package projects.csce.evence.ical
 
 import org.threeten.bp.ZonedDateTime
+import projects.csce.evence.service.model.event.Event
 import java.util.Objects
 
 
@@ -11,7 +12,7 @@ class EventSpec private constructor(builder: Builder)
 	val start: ZonedDateTime = builder.start!!
 	val end: ZonedDateTime = builder.end!!
 
-	class Builder internal constructor(internal val id: Int)
+	class Builder constructor(internal val id: Int)
 	{
 		internal var title: String? = null
 		internal var start: ZonedDateTime? = null
@@ -32,11 +33,6 @@ class EventSpec private constructor(builder: Builder)
 		}
 	}
 
-	companion object
-	{
-		@JvmStatic fun builder(id: Int): Builder = Builder(id)
-	}
-
 	private fun formatLocalZone(time: ZonedDateTime): String
 	{
 		return "${time.zone.normalized()}:${time.year}${pad(time.month.value)}${time.dayOfMonth}T${pad(time.hour)}${pad(time.minute)}${pad(time.second)}"
@@ -55,10 +51,10 @@ class EventSpec private constructor(builder: Builder)
 	{
 		val sb = StringBuilder()
 		sb.appendln("BEGIN:VEVENT")
+		sb.appendln("UID:My_iCal_doperez_2019-11-29104627.$id@uark.edu")
 		sb.appendln("DTSTART;TZID=${formatLocalZone(start)}")
 		sb.appendln("DTEND;TZID=${formatLocalZone(end)}")
 		sb.appendln("DTSTAMP;TZID=${formatLocalZone(ZonedDateTime.now())}")
-		sb.appendln("UID:My_iCal_doperez_2019-11-29104627.$id@uark.edu")
 		sb.appendln("CLASS:PRIVATE")
 		sb.appendln("CREATED:20191129T104627Z")
 		sb.appendln("LAST-MODIFIED:20191129T104627Z")

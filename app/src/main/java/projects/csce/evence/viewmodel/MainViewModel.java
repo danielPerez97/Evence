@@ -1,47 +1,30 @@
 package projects.csce.evence.viewmodel;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import projects.csce.evence.service.model.event.Event;
+import projects.csce.evence.ical.EventSpec;
+import projects.csce.evence.service.model.FileManager;
 
 public class MainViewModel extends ViewModel
 {
 
+    private FileManager fileManager;
+
     @Inject
-    MainViewModel(List<Event> dummyEvents)
+    MainViewModel(FileManager fileManager)
     {
-        this.dummyEvents = dummyEvents;
+        this.fileManager = fileManager;
     }
 
-    private LiveData<List<Event>> eventsList;
-
-    public LiveData<List<Event>> getCardData()
+    public LiveData<List<EventSpec>> liveFiles()
     {
-        return new MutableLiveData<>();
-    }
-
-    public LiveData<List<Event>> getEventsList()
-    {
-        return eventsList;
-    }
-
-//    public LiveData<List<Event>> getEventsFromFileSystem()
-//    {
-//        // Get the events written to the file system in the directory
-//    }
-
-    List<Event> dummyEvents;
-
-    //for testing purposes. to populate the RecyclerView with a list of dummy data
-    public List<Event> generateDummyData()
-    {
-       return dummyEvents;
+        return LiveDataReactiveStreams.fromPublisher(fileManager.files());
     }
 
 }

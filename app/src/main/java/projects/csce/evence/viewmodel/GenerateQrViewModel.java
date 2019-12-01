@@ -14,7 +14,7 @@ import javax.inject.Inject;
 
 import projects.csce.evence.ical.EventSpec;
 import projects.csce.evence.ical.ICalSpec;
-import projects.csce.evence.service.model.FileSaver;
+import projects.csce.evence.service.model.FileManager;
 import projects.csce.evence.service.model.event.Event;
 import projects.csce.evence.service.model.qr.QrAttempt;
 import projects.csce.evence.service.model.qr.QrBitmapGenerator;
@@ -23,14 +23,14 @@ public class GenerateQrViewModel extends ViewModel
 {
     private QrBitmapGenerator generator;
     private Context context;
-    private FileSaver fileSaver;
+    private FileManager fileManager;
 
     @Inject
-    GenerateQrViewModel(QrBitmapGenerator generator, Context context, FileSaver fileSaver)
+    GenerateQrViewModel(QrBitmapGenerator generator, Context context, FileManager fileManager)
     {
         this.generator = generator;
         this.context = context;
-        this.fileSaver = fileSaver;
+        this.fileManager = fileManager;
     }
 
 
@@ -58,7 +58,7 @@ public class GenerateQrViewModel extends ViewModel
 
     public void saveFile(ICalSpec ical)
     {
-        fileSaver.saveICalFile(ical);
+        fileManager.saveICalFile(ical);
     }
 
     public void iCalExample()
@@ -80,21 +80,21 @@ public class GenerateQrViewModel extends ViewModel
                 .withMinute(0);
 
         // Create the EventSpec for the birthday
-        EventSpec birthday = EventSpec.builder(0)
+        EventSpec birthday = new EventSpec.Builder(0)
                 .title("Daniel's Birthday")
                 .start(birthDate)
                 .end(birthDate.plusHours(1))
                 .build();
 
         // Create the EventSpec for thanksgiving
-        EventSpec thanksSpec = EventSpec.builder(1)
+        EventSpec thanksSpec = new EventSpec.Builder(1)
                 .title("Thanksgiving")
                 .start(thanksgiving)
                 .end(thanksgiving.plusHours(1))
                 .build();
 
         // Create the ICalSpec
-        ICalSpec ical = ICalSpec.builder()
+        ICalSpec ical = new ICalSpec.Builder()
                 .addEvent(birthday)
                 .addEvent(thanksSpec)
                 .build();
