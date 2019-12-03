@@ -1,5 +1,6 @@
 package projects.csce.evence.ical
 
+import android.util.Log
 import okio.buffer
 import okio.source
 import org.threeten.bp.Month
@@ -114,7 +115,8 @@ object Parser
     {
         val date = dt.substringAfter(":")
         val year = date.substring(0, 3).toInt()
-        val month = date.substring(4, 5).toInt()
+        val month = date.substring(4, 6)
+        Log.i("ERROR", month)
         val day = date.substring(6, 7).toInt()
 
         val time = date.substringAfterLast("T")
@@ -123,7 +125,7 @@ object Parser
         val seconds = time.substring(4,5).toInt()
 
         return ZonedDateTime.now()
-                .withMonth(Month.of(month).value)
+                .withMonth(Month.of(month.toInt()).value)
                 .withDayOfMonth(day)
                 .withYear(year)
                 .withHour(determineHour(hour))
