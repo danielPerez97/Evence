@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbarMain);
 
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
-        eventsAdapter = new CardsAdapter(this, generator);
+        eventsAdapter = new CardsAdapter(this, generator, fileManager);
         handleRecyclerView();
 
         binding.loginBtn.setOnClickListener(view -> signIn());
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        fileManager.notifyChange();
+        fileManager.notifyIcals();
     }
 
     private void handleRecyclerView() {

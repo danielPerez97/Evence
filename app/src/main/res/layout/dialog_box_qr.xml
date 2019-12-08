@@ -119,7 +119,8 @@
 
                     <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
 
-                        <androidx.cardview.widget.CardView style="@style/CircularButtonCardView">
+                        <androidx.cardview.widget.CardView style="@style/CircularButtonCardView"
+                            android:id="@+id/edit_btn">
 
                             <ImageView
                                 style="@style/CircularButtonImageView"

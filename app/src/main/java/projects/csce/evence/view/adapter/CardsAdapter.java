@@ -1,6 +1,7 @@
 package projects.csce.evence.view.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,19 +22,23 @@ import java.util.List;
 
 import projects.csce.evence.R;
 import projects.csce.evence.ical.EventSpec;
+import projects.csce.evence.ical.ICalSpec;
+import projects.csce.evence.service.model.FileManager;
 import projects.csce.evence.service.model.qr.QrBitmapGenerator;
 import projects.csce.evence.view.ui.QRDialog;
 
-public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> implements Observer<List<EventSpec>> {
+public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> implements Observer<List<ICalSpec>> {
     private static final String TAG = "CardsAdapter";
-    private List<EventSpec> dataList = Collections.emptyList();
+    private List<ICalSpec> dataList = Collections.emptyList();
     private Context context;
     private QrBitmapGenerator generator;
+    private FileManager fileManager;
 
-    public CardsAdapter(Context context, QrBitmapGenerator generator)
+    public CardsAdapter(Context context, QrBitmapGenerator generator, FileManager fileManager)
     {
         this.context = context;
         this.generator = generator;
+        this.fileManager = fileManager;
     }
 
     @NonNull
@@ -53,7 +58,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
         return dataList.size();
     }
 
-    public void onChanged(List<EventSpec> newData) {
+    public void onChanged(List<ICalSpec> newData) {
         dataList = newData;
         notifyDataSetChanged();
     }
@@ -65,6 +70,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
         private TextView eventDate;
         private TextView eventTime;
         private ImageView qrImage;
+        private CardView editButton;
 
 
 
@@ -80,7 +86,8 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
         }
 
         //todo: tbc
-        void bindData(EventSpec event) {
+        void bindData(ICalSpec ical) {
+            EventSpec event = ical.getEvents().get(0);
             eventTitle.setText(event.getTitle());
             eventDate.setText(event.getStart().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
             eventTime.setText(event.getStart().format(DateTimeFormatter.ofPattern("hh:mm a")));
@@ -88,7 +95,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
 
 
             //using setOnClickListener loses statelistanimation
-            entryCardView.setOnClickListener(view -> new QRDialog(context, event, generator));
+            entryCardView.setOnClickListener(view -> new QRDialog(context, ical, generator, fileManager));
         }
     }
 }

@@ -7,14 +7,13 @@ import io.reactivex.Flowable
 import io.reactivex.processors.PublishProcessor
 import okio.buffer
 import okio.sink
-import projects.csce.evence.ical.EventSpec
 import projects.csce.evence.ical.ICalSpec
 import projects.csce.evence.ical.Parser
 import java.io.File
 
 class FileManager(context: Context)
 {
-	private val processor = PublishProcessor.create<List<EventSpec>>()
+	private val processor = PublishProcessor.create<List<ICalSpec>>()
 	private val icalDir = File(context.getExternalFilesDir(Environment.DIRECTORY_DCIM), "/ical")
 
 	init
@@ -34,10 +33,18 @@ class FileManager(context: Context)
 		}
 
 		// Notify of change
-		notify()
+		notifyIcals()
 	}
 
-	@JvmName("notifyChange") fun notify()
+	fun notifyIcals()
+	{
+		// Notify of change
+		val files = icalDir.listFiles()
+		val parsedIcals: List<ICalSpec> = files.toList().map { Parser.parse(it) }
+		processor.onNext(parsedIcals)
+	}
+
+	fun notifyEvents()
 	{
 		// Notify of change
 		val files = icalDir.listFiles()
@@ -50,15 +57,18 @@ class FileManager(context: Context)
 			Log.i("UPSTREAM", "FOUND FILES")
 			Log.i("UPSTREAM", "${files.size}")
 		}
-		val parsedIcals = files.toList().map { Parser.parse(it) }
-		Log.i("UPSTREAM", "Parsed ${parsedIcals.size}")
-		Log.i("UPSTREAM", this.toString())
+		val parsedIcals: List<ICalSpec> = files.toList().map { Parser.parse(it) }
 		val events = parsedIcals.flatMap { it.events }
-		Log.i("UPSTREAM", "Events: ${events.size}")
-		processor.onNext(parsedIcals.flatMap { it.events })
+//		processor.onNext(parsedIcals.flatMap { it.events })
 	}
 
-	fun files(): Flowable<List<EventSpec>>
+	fun getFilePath(fileName: String): String
+	{
+		val file: File? = icalDir.listFiles().find { it.name.contains(fileName) }
+		return file!!.absolutePath
+	}
+
+	fun icals(): Flowable<List<ICalSpec>>
 	{
 		return processor
 	}
