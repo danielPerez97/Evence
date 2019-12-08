@@ -15,7 +15,6 @@ import javax.inject.Inject;
 import projects.csce.evence.ical.EventSpec;
 import projects.csce.evence.ical.ICalSpec;
 import projects.csce.evence.service.model.FileManager;
-import projects.csce.evence.service.model.event.Event;
 import projects.csce.evence.service.model.qr.QrAttempt;
 import projects.csce.evence.service.model.qr.QrBitmapGenerator;
 
@@ -34,7 +33,7 @@ public class GenerateQrViewModel extends ViewModel
     }
 
 
-    public void generateQrBitmap(Event event)
+    public void generateQrBitmap(EventSpec event)
     {
         generator.generate(event);
     }
@@ -43,17 +42,6 @@ public class GenerateQrViewModel extends ViewModel
     {
 
         return LiveDataReactiveStreams.fromPublisher(generator.generations());
-    }
-
-    public void saveBitmap(Event event, Bitmap bitmap)
-    {
-        event.newBuilder().title("fdjskfldjask");
-    }
-
-    public void saveEvent(Event event)
-    {
-
-
     }
 
     public void saveFile(ICalSpec ical)

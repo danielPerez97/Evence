@@ -23,6 +23,7 @@ import projects.csce.evence.R;
 import projects.csce.evence.databinding.ActivityMainBinding;
 import projects.csce.evence.di.viewmodel.ViewModelFactory;
 import projects.csce.evence.service.model.FileManager;
+import projects.csce.evence.service.model.qr.QrBitmapGenerator;
 import projects.csce.evence.utils.Utils;
 import projects.csce.evence.view.adapter.CardsAdapter;
 import projects.csce.evence.viewmodel.MainViewModel;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     @Inject FileManager fileManager;
     @Inject GoogleSignInClient signInClient;
     @Inject ViewModelFactory factory;
+    @Inject QrBitmapGenerator generator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbarMain);
 
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
-        eventsAdapter = new CardsAdapter(this);
+        eventsAdapter = new CardsAdapter(this, generator);
         handleRecyclerView();
 
         binding.loginBtn.setOnClickListener(view -> signIn());

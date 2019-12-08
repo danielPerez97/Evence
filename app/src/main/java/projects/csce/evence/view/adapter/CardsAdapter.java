@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,15 +21,19 @@ import java.util.List;
 
 import projects.csce.evence.R;
 import projects.csce.evence.ical.EventSpec;
+import projects.csce.evence.service.model.qr.QrBitmapGenerator;
 import projects.csce.evence.view.ui.QRDialog;
 
 public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> implements Observer<List<EventSpec>> {
     private static final String TAG = "CardsAdapter";
     private List<EventSpec> dataList = Collections.emptyList();
     private Context context;
+    private QrBitmapGenerator generator;
 
-    public CardsAdapter(Context context) {
+    public CardsAdapter(Context context, QrBitmapGenerator generator)
+    {
         this.context = context;
+        this.generator = generator;
     }
 
     @NonNull
@@ -59,17 +64,18 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
         private TextView eventTitle;
         private TextView eventDate;
         private TextView eventTime;
+        private ImageView qrImage;
 
 
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            //todo: change to use databinding
             eventTitle = itemView.findViewById(R.id.list_entry_title_textview);
             entryCardView = itemView.findViewById(R.id.list_entry_cardview);
             eventDate = itemView.findViewById(R.id.list_entry_date_textview);
             eventTime = itemView.findViewById(R.id.list_entry_time_textview);
+            qrImage = itemView.findViewById(R.id.qrImageView);
 
         }
 
@@ -78,15 +84,11 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
             eventTitle.setText(event.getTitle());
             eventDate.setText(event.getStart().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
             eventTime.setText(event.getStart().format(DateTimeFormatter.ofPattern("HH:mm a")));
+            qrImage.setImageBitmap(generator.forceGenerate(event));
 
 
             //using setOnClickListener loses statelistanimation
-            entryCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    QRDialog qrDialog = new QRDialog(context, event);
-                }
-            });
+            entryCardView.setOnClickListener(view -> new QRDialog(context, event));
         }
     }
 }
