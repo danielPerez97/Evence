@@ -114,7 +114,7 @@ object Parser
     private fun dtToZonedTime(dt: String): ZonedDateTime
     {
         val date = dt.substringAfter(":")
-        val year = date.substring(0, 3).toInt()
+        val year = date.substring(0, 4).toInt()
         val month = date.substring(4, 6)
         Log.i("ERROR", month)
         val day = date.substring(6, 7).toInt()
