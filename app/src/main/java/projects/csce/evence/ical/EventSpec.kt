@@ -8,6 +8,7 @@ class EventSpec private constructor(builder: Builder)
 {
 	val id: Int = builder.id
 	val title: String = builder.title!!
+	val description = builder.description ?: ""
 	val location: String = builder.location ?: ""
 	val start: ZonedDateTime = builder.start!!
 	val end: ZonedDateTime = builder.end!!
@@ -15,11 +16,14 @@ class EventSpec private constructor(builder: Builder)
 	data class Builder constructor(internal val id: Int)
 	{
 		internal var title: String? = null
+		internal var description: String? = null
 		internal var location: String? = null
 		internal var start: ZonedDateTime? = null
 		internal var end: ZonedDateTime? = null
 
 		fun title(title: String): Builder = apply { this.title = title }
+
+		fun description(description: String) = apply { this.description = description }
 
 		fun location(location: String): Builder = apply { this.location = location }
 
@@ -64,6 +68,7 @@ class EventSpec private constructor(builder: Builder)
 		sb.appendln("SEQUENCE:0")
 		sb.appendln("STATUS:CONFIRMED")
 		sb.appendln("SUMMARY:$title")
+		sb.appendln("DESCRIPTION:$description")
 		sb.appendln("LOCATION:$location")
 		sb.appendln("TRANSP:OPAQUE")
 		sb.appendln("END:VEVENT")

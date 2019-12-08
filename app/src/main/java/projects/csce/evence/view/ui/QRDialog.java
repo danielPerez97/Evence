@@ -85,6 +85,7 @@ public class QRDialog {
         toCalendar.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, currentEvent.getStart().toInstant().toEpochMilli());
         toCalendar.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, currentEvent.getEnd().toInstant().toEpochMilli());
         toCalendar.putExtra(CalendarContract.Events.EVENT_LOCATION, currentEvent.getLocation());
+        toCalendar.putExtra(CalendarContract.Events.DESCRIPTION, currentEvent.getDescription());
         context.startActivity(toCalendar);
     }
 }
