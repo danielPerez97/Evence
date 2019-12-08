@@ -1,6 +1,5 @@
 package projects.csce.evence.ical
 
-import EventSpec
 import java.util.Objects
 
 
