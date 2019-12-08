@@ -1,3 +1,5 @@
+package projects.csce.evence.ical
+
 import org.threeten.bp.ZonedDateTime
 import java.util.Objects
 

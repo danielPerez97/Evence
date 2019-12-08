@@ -88,7 +88,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
 
 
             //using setOnClickListener loses statelistanimation
-            entryCardView.setOnClickListener(view -> new QRDialog(context, event));
+            entryCardView.setOnClickListener(view -> new QRDialog(context, event, generator));
         }
     }
 }
