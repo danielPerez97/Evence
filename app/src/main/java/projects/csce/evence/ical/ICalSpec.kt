@@ -1,9 +1,10 @@
 package projects.csce.evence.ical
 
+import EventSpec
 import java.util.Objects
 
 
-class ICalSpec private constructor(builder: Builder)
+class ICalSpec private constructor(val builder: Builder)
 {
 	val fileName: String = builder.fileName!!
 	val events: List<EventSpec> = builder.events
@@ -83,5 +84,9 @@ class ICalSpec private constructor(builder: Builder)
 			END:STANDARD
 			END:VTIMEZONE
 		""".trimIndent()
+	}
+
+	override fun toString(): String {
+		return "ICalSpec(fileName=$fileName, events=$events, timeZone=$timeZone)"
 	}
 }

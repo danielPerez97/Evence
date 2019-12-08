@@ -1,6 +1,5 @@
 package projects.csce.evence.ical
 
-import android.util.Log
 import okio.buffer
 import okio.source
 import org.threeten.bp.Month
@@ -73,7 +72,7 @@ object Parser
                 line.startsWith("UID:") ->
                 {
                     val uidUntilAtSymbol = line.substringBefore("@")
-                    val id = uidUntilAtSymbol[uidUntilAtSymbol.lastIndex].toInt()
+                    val id = uidUntilAtSymbol.substring(uidUntilAtSymbol.lastIndex, uidUntilAtSymbol.lastIndex + 1).toInt()
                     eventBuilder = EventSpec.Builder(id)
                 }
                 line.startsWith("DTSTART") ->
@@ -87,6 +86,10 @@ object Parser
                 line.startsWith("SUMMARY:") ->
                 {
                     eventBuilder = eventBuilder!!.title(line.substringAfter(":"))
+                }
+                line.startsWith("LOCATION:") ->
+                {
+                    eventBuilder = eventBuilder!!.location(line.substringAfter(":"))
                 }
                 line == "END:VEVENT" ->
                 {
@@ -116,13 +119,12 @@ object Parser
         val date = dt.substringAfter(":")
         val year = date.substring(0, 4).toInt()
         val month = date.substring(4, 6)
-        Log.i("ERROR", month)
-        val day = date.substring(6, 7).toInt()
+        val day = date.substring(6, 8).toInt()
 
         val time = date.substringAfterLast("T")
-        val hour = time.substring(0, 1)
-        val minute = time.substring(2, 3).toInt()
-        val seconds = time.substring(4,5).toInt()
+        val hour = time.substring(0, 2)
+        val minute = time.substring(2, 4).toInt()
+        val seconds = time.substring(4,6).toInt()
 
         return ZonedDateTime.now()
                 .withMonth(Month.of(month.toInt()).value)
