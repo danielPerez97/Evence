@@ -38,7 +38,7 @@ class EventSpec private constructor(builder: Builder)
 
 	private fun formatLocalZone(time: ZonedDateTime): String
 	{
-		return "${time.zone.normalized()}:${time.year}${pad(time.month.value)}${time.dayOfMonth}T${pad(time.hour)}${pad(time.minute)}${pad(time.second)}"
+		return "${time.zone.normalized()}:${time.year}${pad(time.month.value)}${pad(time.dayOfMonth)}T${pad(time.hour)}${pad(time.minute)}${pad(time.second)}"
 	}
 
 	private fun pad(i: Int): String
