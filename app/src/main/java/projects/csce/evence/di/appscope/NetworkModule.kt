@@ -7,7 +7,6 @@ import dagger.Provides
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import projects.csce.evence.service.model.FileManager
-import projects.csce.evence.service.model.event.Event
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -43,19 +42,6 @@ class NetworkModule
 				.addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
 				.client(okHttpClient)
 				.build()
-	}
-
-	@Provides
-	@Singleton
-	fun provideDummyData(): List<Event>
-	{
-		val dummyEvents = ArrayList<Event>()
-		dummyEvents.add(Event.Builder().build())
-		dummyEvents.add(Event.Builder().build())
-		dummyEvents.add(Event.Builder().build())
-		dummyEvents.add(Event.Builder().build())
-		dummyEvents.add(Event.Builder().build())
-		return dummyEvents
 	}
 
 	@Provides

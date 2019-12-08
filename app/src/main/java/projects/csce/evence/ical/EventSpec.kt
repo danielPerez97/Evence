@@ -1,7 +1,6 @@
 package projects.csce.evence.ical
 
 import org.threeten.bp.ZonedDateTime
-import projects.csce.evence.service.model.event.Event
 import java.util.Objects
 
 
