@@ -82,6 +82,7 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
                 .title(binding.titleEditText.getText().toString())
                 .start(Utils.toZonedDateTime(startMonthDayYear, startHourMinutes))
                 .end(Utils.toZonedDateTime(endMonthDayYear, endHourMinutes))
+                .location(binding.locationEditText.getText().toString())
                 .build();
 
         currentEvent = new ICalSpec.Builder()

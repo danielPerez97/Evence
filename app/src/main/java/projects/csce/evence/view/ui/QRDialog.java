@@ -43,6 +43,7 @@ public class QRDialog {
         binding.qrDialogEventTitleTextview.setText(currentEvent.getTitle());
         binding.qrDialogEventStartDateTextview.setText(currentEvent.getStart().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
         binding.qrDialogEventStartTimeTextview.setText(currentEvent.getStart().format(DateTimeFormatter.ofPattern("hh:mm a")));
+        binding.qrDialogEventLocationTextview.setText(currentEvent.getLocation());
         binding.qrDialogQrImageview.setImageBitmap(generator.forceGenerate(currentEvent));
 
         dialog = new Dialog(context);
@@ -52,15 +53,17 @@ public class QRDialog {
         dialog.show();
     }
 
-    protected void save(ICalSpec iCalSpec) {
+    public void save( ) {
         // Bug the user about storing it
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("application/*");
-        intent.putExtra(Intent.EXTRA_TITLE, iCalSpec.getFileName() + ".ics");
+        intent.putExtra(Intent.EXTRA_TITLE, currentEvent.getTitle() + ".ics");
 
         if (context instanceof GenerateQR) {
             ((GenerateQR) context).startActivityForResult(intent, 1);
+        } else {
+            ((MainActivity) context).startActivityForResult(intent, 1);
         }
     }
 
@@ -79,7 +82,9 @@ public class QRDialog {
         Intent toCalendar = new Intent(ACTION_INSERT);
         toCalendar.setData(CalendarContract.Events.CONTENT_URI);
         toCalendar.putExtra(CalendarContract.Events.TITLE, currentEvent.getTitle());
-        toCalendar.putExtra(CalendarContract.Events.DTSTART, currentEvent.getStart().toEpochSecond()*1000);
+        toCalendar.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, currentEvent.getStart().toInstant().toEpochMilli());
+        toCalendar.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, currentEvent.getEnd().toInstant().toEpochMilli());
+        toCalendar.putExtra(CalendarContract.Events.EVENT_LOCATION, currentEvent.getLocation());
         context.startActivity(toCalendar);
     }
 }
