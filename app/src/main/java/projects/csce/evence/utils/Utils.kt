@@ -31,7 +31,12 @@ fun Array<String>.toInts(): IntArray
 	return this.map { it.toInt() }.toIntArray()
 }
 
-fun IntArray.toZonedDateTime(): ZonedDateTime
+fun toZonedDateTime(dates: IntArray, hourMinute: IntArray): ZonedDateTime
 {
-	return ZonedDateTime.now().withMonth(this[0]).withDayOfMonth(this[1]).withYear(this[2])
+	return ZonedDateTime.now()
+			.withHour(hourMinute[0])
+			.withMinute(hourMinute[1])
+			.withMonth(dates[0])
+			.withDayOfMonth(dates[1])
+			.withYear(dates[2])
 }

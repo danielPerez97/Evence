@@ -87,7 +87,8 @@
 
                     <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
 
-                        <androidx.cardview.widget.CardView style="@style/CircularButtonCardView">
+                        <androidx.cardview.widget.CardView style="@style/CircularButtonCardView"
+                            android:onClick="@{() -> view.importToCalendar()}">
 
                             <ImageView
                                 style="@style/CircularButtonImageView"

@@ -1,5 +1,6 @@
 package projects.csce.evence.ical
 
+import android.util.Log
 import okio.buffer
 import okio.source
 import org.threeten.bp.Month
@@ -119,7 +120,10 @@ object Parser
         val date = dt.substringAfter(":")
         val year = date.substring(0, 4).toInt()
         val month = date.substring(4, 6)
-        val day = date.substring(6, 8).toInt()
+        Log.e("ERROR", date)
+        val dayStr = date.substring(6, 8)
+        Log.e("ERROR", dayStr.toString())
+        val day = dayStr.dePad()
 
         val time = date.substringAfterLast("T")
         val hour = time.substring(0, 2)
@@ -130,7 +134,7 @@ object Parser
                 .withMonth(Month.of(month.toInt()).value)
                 .withDayOfMonth(day)
                 .withYear(year)
-                .withHour(determineHour(hour))
+                .withHour(hour.toInt())
                 .withMinute(minute)
                 .withSecond(seconds)
     }
@@ -141,5 +145,19 @@ object Parser
         object ParsingTimeZone : State()
         object ParsingEvent : State()
         object Finished : State()
+    }
+
+    private fun String.dePad(): Int
+    {
+        Log.e("ERROR", this)
+        return if(this.length > 1 && this[0].toString() == "0")
+        {
+            Log.e("ERROR", this.substring(1, this.lastIndex + 1))
+            this.substring(1, this.lastIndex + 1).toInt()
+        }
+        else
+        {
+            this.toInt()
+        }
     }
 }
