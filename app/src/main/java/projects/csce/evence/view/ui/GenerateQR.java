@@ -32,6 +32,7 @@ import projects.csce.evence.databinding.ActivityGenerateQrBinding;
 import projects.csce.evence.ical.EventSpec;
 import projects.csce.evence.ical.ICalSpec;
 import projects.csce.evence.service.model.qr.QrAttempt;
+import projects.csce.evence.service.model.qr.QrBitmapGenerator;
 import projects.csce.evence.utils.Utils;
 import projects.csce.evence.viewmodel.GenerateQrViewModel;
 
@@ -40,8 +41,8 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
     private ActivityGenerateQrBinding binding;
     private ICalSpec currentEvent;
     private QRDialog qrDialog;
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
+    @Inject QrBitmapGenerator generator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +84,7 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
 
         // Write the file to the file system
         viewModel.saveFile(currentEvent);
-        qrDialog = new QRDialog(this, event);
+        qrDialog = new QRDialog(this, event, generator);
     }
 
     // Handle the user choosing a place to store the file

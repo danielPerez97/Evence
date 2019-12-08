@@ -17,6 +17,7 @@ import projects.csce.evence.R;
 import projects.csce.evence.databinding.DialogBoxQrBinding;
 import projects.csce.evence.ical.EventSpec;
 import projects.csce.evence.ical.ICalSpec;
+import projects.csce.evence.service.model.qr.QrBitmapGenerator;
 
 public class QRDialog {
     private static final String TAG = "QRDialog";
@@ -24,25 +25,27 @@ public class QRDialog {
     private Dialog dialog;
     private EventSpec currentEvent;
     DialogBoxQrBinding binding;
+    private QrBitmapGenerator generator;
 
 
-    public QRDialog(Context context, EventSpec currentEvent){
+    public QRDialog(Context context, EventSpec currentEvent, QrBitmapGenerator generator) {
         this.context = context;
         this.currentEvent = currentEvent;
         binding = DataBindingUtil.inflate(LayoutInflater.from(context),
                 R.layout.dialog_box_qr, null, false);
+        this.generator = generator;
         binding.setView(this);
 
         binding.qrDialogEventTitleTextview.setText(currentEvent.getTitle());
         binding.qrDialogEventStartDateTextview.setText(currentEvent.getStart().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
-
         binding.qrDialogEventStartTimeTextview.setText(currentEvent.getStart().format(DateTimeFormatter.ofPattern("HH:mm a")));
+        binding.qrDialogQrImageview.setImageBitmap(generator.forceGenerate(currentEvent));
 
         dialog = new Dialog(context);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(true);
         dialog.show();
-
     }
 
     protected void save(ICalSpec iCalSpec) {
