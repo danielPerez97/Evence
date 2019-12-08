@@ -88,6 +88,10 @@ object Parser
                 {
                     eventBuilder = eventBuilder!!.title(line.substringAfter(":"))
                 }
+                line.startsWith("DESCRIPTION:") ->
+                {
+                    eventBuilder = eventBuilder!!.description(line)
+                }
                 line.startsWith("LOCATION:") ->
                 {
                     eventBuilder = eventBuilder!!.location(line.substringAfter(":"))
