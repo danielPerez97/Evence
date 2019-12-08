@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.Toast;
@@ -18,6 +20,8 @@ import projects.csce.evence.databinding.DialogBoxQrBinding;
 import projects.csce.evence.ical.EventSpec;
 import projects.csce.evence.ical.ICalSpec;
 import projects.csce.evence.service.model.qr.QrBitmapGenerator;
+
+import static android.content.Intent.ACTION_INSERT;
 
 public class QRDialog {
     private static final String TAG = "QRDialog";
@@ -38,7 +42,7 @@ public class QRDialog {
 
         binding.qrDialogEventTitleTextview.setText(currentEvent.getTitle());
         binding.qrDialogEventStartDateTextview.setText(currentEvent.getStart().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
-        binding.qrDialogEventStartTimeTextview.setText(currentEvent.getStart().format(DateTimeFormatter.ofPattern("HH:mm a")));
+        binding.qrDialogEventStartTimeTextview.setText(currentEvent.getStart().format(DateTimeFormatter.ofPattern("hh:mm a")));
         binding.qrDialogQrImageview.setImageBitmap(generator.forceGenerate(currentEvent));
 
         dialog = new Dialog(context);
@@ -62,5 +66,20 @@ public class QRDialog {
 
     public void shareQR() {
         Log.d(TAG, "share:");
+
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/png");
+        intent.putExtra(Intent.EXTRA_STREAM, generator.forceGenerate(currentEvent));
+        //context.startActivity(intent);
+    }
+
+    public void importToCalendar() {
+        Toast.makeText(context, "import", Toast.LENGTH_SHORT).show();
+        Intent toCalendar = new Intent(ACTION_INSERT);
+        toCalendar.setData(CalendarContract.Events.CONTENT_URI);
+        toCalendar.putExtra(CalendarContract.Events.TITLE, currentEvent.getTitle());
+        toCalendar.putExtra(CalendarContract.Events.DTSTART, currentEvent.getStart().toEpochSecond()*1000);
+        context.startActivity(toCalendar);
     }
 }

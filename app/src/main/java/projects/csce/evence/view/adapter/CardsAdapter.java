@@ -83,7 +83,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
         void bindData(EventSpec event) {
             eventTitle.setText(event.getTitle());
             eventDate.setText(event.getStart().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
-            eventTime.setText(event.getStart().format(DateTimeFormatter.ofPattern("HH:mm a")));
+            eventTime.setText(event.getStart().format(DateTimeFormatter.ofPattern("hh:mm a")));
             qrImage.setImageBitmap(generator.forceGenerate(event));
 
 

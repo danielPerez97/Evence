@@ -68,13 +68,20 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
     }
 
     public void generateQR() {
-        // Generate the .ics file
+        // Handle the dates
         int[] startMonthDayYear = Utils.toInts(binding.startDateTextView.getText().toString().split("/"));
         int[] endMonthDayYear = Utils.toInts(binding.endDateTextView.getText().toString().split("/"));
+
+        // Handle the hours and minutes
+        int[] startHourMinutes = Utils.toInts(binding.startTimeTextView.getText().toString().split(":"));
+        int[] endHourMinutes = Utils.toInts(binding.endTimeTextView.getText().toString().split(":"));
+
+
+
         EventSpec event = new EventSpec.Builder(0)
                 .title(binding.titleEditText.getText().toString())
-                .start(Utils.toZonedDateTime(startMonthDayYear))
-                .end(Utils.toZonedDateTime(endMonthDayYear))
+                .start(Utils.toZonedDateTime(startMonthDayYear, startHourMinutes))
+                .end(Utils.toZonedDateTime(endMonthDayYear, endHourMinutes))
                 .build();
 
         currentEvent = new ICalSpec.Builder()
