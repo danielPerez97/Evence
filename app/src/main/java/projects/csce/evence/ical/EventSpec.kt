@@ -1,5 +1,3 @@
-package projects.csce.evence.ical
-
 import org.threeten.bp.ZonedDateTime
 import java.util.Objects
 
@@ -8,16 +6,20 @@ class EventSpec private constructor(builder: Builder)
 {
 	val id: Int = builder.id
 	val title: String = builder.title!!
+	val location: String = builder.location ?: ""
 	val start: ZonedDateTime = builder.start!!
 	val end: ZonedDateTime = builder.end!!
 
-	class Builder constructor(internal val id: Int)
+	data class Builder constructor(internal val id: Int)
 	{
 		internal var title: String? = null
+		internal var location: String? = null
 		internal var start: ZonedDateTime? = null
 		internal var end: ZonedDateTime? = null
 
 		fun title(title: String): Builder = apply { this.title = title }
+
+		fun location(location: String): Builder = apply { this.location = location }
 
 		fun start(start: ZonedDateTime): Builder = apply { this.start = start }
 
@@ -60,8 +62,13 @@ class EventSpec private constructor(builder: Builder)
 		sb.appendln("SEQUENCE:0")
 		sb.appendln("STATUS:CONFIRMED")
 		sb.appendln("SUMMARY:$title")
+		sb.appendln("LOCATION:$location")
 		sb.appendln("TRANSP:OPAQUE")
 		sb.appendln("END:VEVENT")
 		return sb.toString().trim()
+	}
+
+	override fun toString(): String {
+		return "EventSpec(id=$id, title=$title, location=$location, start=$start, end=$end)"
 	}
 }
