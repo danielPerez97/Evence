@@ -19,6 +19,7 @@ import projects.csce.evence.R;
 import projects.csce.evence.databinding.DialogBoxQrBinding;
 import projects.csce.evence.ical.EventSpec;
 import projects.csce.evence.ical.ICalSpec;
+import projects.csce.evence.service.model.FileManager;
 import projects.csce.evence.service.model.qr.QrBitmapGenerator;
 
 import static android.content.Intent.ACTION_INSERT;
@@ -27,17 +28,20 @@ public class QRDialog {
     private static final String TAG = "QRDialog";
     private Context context;
     private Dialog dialog;
+    private ICalSpec ical;
     private EventSpec currentEvent;
     DialogBoxQrBinding binding;
     private QrBitmapGenerator generator;
+    private FileManager fileManager;
 
 
-    public QRDialog(Context context, EventSpec currentEvent, QrBitmapGenerator generator) {
+    public QRDialog(Context context, ICalSpec ical, QrBitmapGenerator generator, FileManager fileManager) {
         this.context = context;
-        this.currentEvent = currentEvent;
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context),
-                R.layout.dialog_box_qr, null, false);
+        this.ical = ical;
+        this.currentEvent = ical.getEvents().get(0);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_box_qr, null, false);
         this.generator = generator;
+        this.fileManager = fileManager;
         binding.setView(this);
 
         binding.qrDialogEventTitleTextview.setText(currentEvent.getTitle());
@@ -45,6 +49,11 @@ public class QRDialog {
         binding.qrDialogEventStartTimeTextview.setText(currentEvent.getStart().format(DateTimeFormatter.ofPattern("hh:mm a")));
         binding.qrDialogEventLocationTextview.setText(currentEvent.getLocation());
         binding.qrDialogQrImageview.setImageBitmap(generator.forceGenerate(currentEvent));
+        binding.editBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(context, GenerateQR.class);
+            intent.putExtra("FILE_PATH", fileManager.getFilePath(ical.getFileName()));
+            context.startActivity(intent);
+        });
 
         dialog = new Dialog(context);
         dialog.setContentView(binding.getRoot());

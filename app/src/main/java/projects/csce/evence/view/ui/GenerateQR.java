@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,6 +32,8 @@ import projects.csce.evence.R;
 import projects.csce.evence.databinding.ActivityGenerateQrBinding;
 import projects.csce.evence.ical.EventSpec;
 import projects.csce.evence.ical.ICalSpec;
+import projects.csce.evence.ical.Parser;
+import projects.csce.evence.service.model.FileManager;
 import projects.csce.evence.service.model.qr.QrAttempt;
 import projects.csce.evence.service.model.qr.QrBitmapGenerator;
 import projects.csce.evence.utils.Utils;
@@ -40,9 +43,9 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
     private GenerateQrViewModel viewModel;
     private ActivityGenerateQrBinding binding;
     private ICalSpec currentEvent;
-    private QRDialog qrDialog;
     @Inject ViewModelProvider.Factory viewModelFactory;
     @Inject QrBitmapGenerator generator;
+    @Inject FileManager fileManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,13 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
         binding.setViewModel(viewModel);
 
         viewModel.qrImages().observe(this, this);
+
+        if(getIntent() != null && getIntent().getStringExtra("FILE_PATH") != null)
+        {
+            File file = new File(getIntent().getStringExtra("FILE_PATH"));
+            ICalSpec ical = Parser.INSTANCE.parse(file);
+            Log.i("ICALFILEPATH", ical.getEvents().get(0).toString());
+        }
     }
 
     public void onChanged(QrAttempt attempt) {
@@ -93,7 +103,7 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
 
         // Write the file to the file system
         viewModel.saveFile(currentEvent);
-        qrDialog = new QRDialog(this, event, generator);
+        QRDialog qrDialog = new QRDialog(this, currentEvent, generator, fileManager);
     }
 
     // Handle the user choosing a place to store the file

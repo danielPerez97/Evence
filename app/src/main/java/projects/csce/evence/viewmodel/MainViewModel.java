@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import projects.csce.evence.ical.EventSpec;
+import projects.csce.evence.ical.ICalSpec;
 import projects.csce.evence.service.model.FileManager;
 
 public class MainViewModel extends ViewModel
@@ -22,9 +22,9 @@ public class MainViewModel extends ViewModel
         this.fileManager = fileManager;
     }
 
-    public LiveData<List<EventSpec>> liveFiles()
+    public LiveData<List<ICalSpec>> liveFiles()
     {
-        return LiveDataReactiveStreams.fromPublisher(fileManager.files());
+        return LiveDataReactiveStreams.fromPublisher(fileManager.icals());
     }
 
 }

@@ -90,7 +90,7 @@ object Parser
                 }
                 line.startsWith("DESCRIPTION:") ->
                 {
-                    eventBuilder = eventBuilder!!.description(line)
+                    eventBuilder = eventBuilder!!.description(line.substringAfter(":"))
                 }
                 line.startsWith("LOCATION:") ->
                 {
