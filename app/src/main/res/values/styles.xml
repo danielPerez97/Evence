@@ -65,7 +65,45 @@
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
     </style>
 
+    <style name="EventDetailsDialogBoxTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#000</item>
+    </style>
 
+    <style name="CircularButtonAndTextLinearLayout">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:gravity">center</item>
+    </style>
 
+    <style name="CircularButtonCardView" parent="ButtonCardView">
+        <item name="android:layout_height">46dp</item>
+        <item name="android:layout_width">46dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:backgroundTint">#2196F3</item>
+        <item name="android:gravity">center</item>
+        <item name="cardCornerRadius">23dp</item>
+        <item name="cardElevation">6dp</item>
+    </style>
+
+    <style name="CircularButtonImageView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">12dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="CircularButtonTextView">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 
 </resources>

@@ -1,7 +1,10 @@
 package projects.csce.evence.view.ui;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
@@ -32,17 +35,16 @@ import projects.csce.evence.service.model.qr.QrAttempt;
 import projects.csce.evence.utils.Utils;
 import projects.csce.evence.viewmodel.GenerateQrViewModel;
 
-public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
-{
+public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt> {
     private GenerateQrViewModel viewModel;
     private ActivityGenerateQrBinding binding;
     private ICalSpec currentEvent;
-    @Inject ViewModelProvider.Factory viewModelFactory;
-
+    private QRDialog qrDialog;
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         Utils.getAppComponent(this).inject(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_generate_qr);
@@ -53,24 +55,18 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
         viewModel.qrImages().observe(this, this);
     }
 
-    public void onChanged(QrAttempt attempt)
-    {
-            if(attempt instanceof QrAttempt.Success)
-            {
-                Bitmap bitmap = ((QrAttempt.Success) attempt).getBitmap();
-                binding.QRImage.setImageBitmap(bitmap);
-            }
-            else if(attempt instanceof QrAttempt.Failure)
-            {
-                Throwable e = ((QrAttempt.Failure) attempt).getE();
-                e.printStackTrace();
-                Utils.toastShort(getApplicationContext(), Objects.requireNonNull(e.getLocalizedMessage()));
-            }
+    public void onChanged(QrAttempt attempt) {
+        if (attempt instanceof QrAttempt.Success) {
+            Bitmap bitmap = ((QrAttempt.Success) attempt).getBitmap();
+            binding.QRImage.setImageBitmap(bitmap);
+        } else if (attempt instanceof QrAttempt.Failure) {
+            Throwable e = ((QrAttempt.Failure) attempt).getE();
+            e.printStackTrace();
+            Utils.toastShort(getApplicationContext(), Objects.requireNonNull(e.getLocalizedMessage()));
+        }
     }
 
-
-    public void generateQR()
-    {
+    public void generateQR() {
         // Generate the .ics file
         int[] startMonthDayYear = Utils.toInts(binding.startDateTextView.getText().toString().split("/"));
         int[] endMonthDayYear = Utils.toInts(binding.endDateTextView.getText().toString().split("/"));
@@ -87,14 +83,7 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
 
         // Write the file to the file system
         viewModel.saveFile(currentEvent);
-
-        // Bug the user about storing it
-        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("application/*");
-        intent.putExtra(Intent.EXTRA_TITLE, currentEvent.getFileName() + ".ics");
-        startActivityForResult(intent, 1);
-
+        qrDialog = new QRDialog(this, event);
     }
 
     // Handle the user choosing a place to store the file
@@ -105,24 +94,18 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
             Uri uri;
             if (data != null) {
                 uri = data.getData();
-                try
-                {
+                try {
                     ParcelFileDescriptor pfd = getContentResolver().openFileDescriptor(uri, "w");
 
                     FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
-                    try(BufferedSink sink = Okio.buffer(Okio.sink(fileOutputStream)))
-                    {
+                    try (BufferedSink sink = Okio.buffer(Okio.sink(fileOutputStream))) {
                         sink.writeUtf8(currentEvent.text());
-                    }
-                    catch (IOException e)
-                    {
+                    } catch (IOException e) {
                         Log.i("FILEWRITER", e.getMessage());
                         e.printStackTrace();
                     }
                     pfd.close();
-                }
-                catch (FileNotFoundException e)
-                {
+                } catch (FileNotFoundException e) {
                     Log.i("FILEWRITER", e.getMessage());
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -131,12 +114,9 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
                 Log.i("FILEWRITER", "Wrote File");
             }
         }
-
-
     }
 
-    public void startDateDialog()
-    {
+    public void startDateDialog() {
         CalendarDialog calendarDialog = new CalendarDialog(this, binding.startDateTextView);
         calendarDialog.dateDialog();
     }
@@ -156,8 +136,6 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
         calendarDialog.timeDialog();
     }
 
-    public void saveQrButton() {
-        Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
-    }
+
 
 }

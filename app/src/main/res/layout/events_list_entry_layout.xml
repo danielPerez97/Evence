@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ButtonCardView"
+    android:id="@+id/list_entry_cardview"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -21,11 +22,12 @@
 
 
     <LinearLayout
-
-
+        android:id="@+id/list_entry_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="?attr/selectableItemBackground"
+        >
 
         <ImageView
             android:id="@+id/imageView"
@@ -40,23 +42,33 @@
             android:layout_gravity="center"
             android:layout_margin="12dp">
             <TextView
-                android:id="@+id/entry_title_textview"
+                android:id="@+id/list_entry_title_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="6dp"
                 android:text="Event Title"
-                android:textSize="22sp"
+                android:textSize="20sp"
                  />
 
             <TextView
-                android:id="@+id/entry_date_textview"
+                android:id="@+id/list_entry_date_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:textSize="18sp"
+                android:layout_margin="6dp"
+                android:textSize="16sp"
 
                 android:text="Date"
                  />
+
+            <TextView
+                android:id="@+id/list_entry_time_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:textSize="16sp"
+
+                android:text="time"
+                />
         </LinearLayout>
     </LinearLayout>
 

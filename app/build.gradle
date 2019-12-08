@@ -5,8 +5,8 @@ apply plugin: 'kotlin-kapt'
 android {
     signingConfigs {
         debug {
-            storeFile file('/home/daniel/.android/debug.keystore')
-//            storeFile file('C:/Users/del carmen/.android/debug.keystore')
+  //          storeFile file('/home/daniel/.android/debug.keystore')
+            storeFile file('C:/Users/delca/.android/debug.keystore')
             storePassword 'android'
             keyAlias = 'androiddebugkey'
             keyPassword 'android'

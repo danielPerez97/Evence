@@ -33,13 +33,11 @@ public class CalendarDialog {
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                 mHour = hour;
                 mMinute = minute;
-                newTimeDateString.setText( mHour + ":" + mMinute);
+                newTimeDateString.setText(mHour + ":" + mMinute);
             }
         }, mHour, mMinute, false);
 
-
         timePickerDialog.show();
-
     }
 
     public void dateDialog() {
@@ -48,18 +46,15 @@ public class CalendarDialog {
         mMonth = calendar.get(Calendar.MONTH);
         mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-
         DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 mYear = year;
                 mMonth = month + 1;
                 mDay = day;
-
                 newTimeDateString.setText(mMonth + "/" + mDay + "/" + mYear);
             }
         }, mYear, mMonth, mDay);
-
         datePickerDialog.show();
     }
 }

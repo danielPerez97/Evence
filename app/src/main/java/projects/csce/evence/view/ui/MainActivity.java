@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbarMain);
 
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
-        eventsAdapter = new CardsAdapter();
+        eventsAdapter = new CardsAdapter(this);
         handleRecyclerView();
 
         binding.loginBtn.setOnClickListener(view -> signIn());
