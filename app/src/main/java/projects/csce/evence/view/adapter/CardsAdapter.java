@@ -76,13 +76,11 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             eventTitle = itemView.findViewById(R.id.list_entry_title_textview);
             entryCardView = itemView.findViewById(R.id.list_entry_cardview);
             eventDate = itemView.findViewById(R.id.list_entry_date_textview);
             eventTime = itemView.findViewById(R.id.list_entry_time_textview);
             qrImage = itemView.findViewById(R.id.qrImageView);
-
         }
 
         //todo: tbc
@@ -92,7 +90,6 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
             eventDate.setText(event.getStart().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
             eventTime.setText(event.getStart().format(DateTimeFormatter.ofPattern("hh:mm a")));
             qrImage.setImageBitmap(generator.forceGenerate(event));
-
 
             //using setOnClickListener loses statelistanimation
             entryCardView.setOnClickListener(view -> new QRDialog(context, ical, generator, fileManager));

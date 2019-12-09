@@ -18,6 +18,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import org.threeten.bp.format.DateTimeFormatter;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -62,9 +64,27 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
         {
             File file = new File(getIntent().getStringExtra("FILE_PATH"));
             ICalSpec ical = Parser.INSTANCE.parse(file);
+            currentEvent = ical;
             Log.i("ICALFILEPATH", ical.getEvents().get(0).toString());
+            fillInFields();
         }
     }
+
+    //fill in editText and other fields when event is being edited
+    public void fillInFields(){
+        EventSpec event = currentEvent.getEvents().get(0);
+        binding.titleEditText.setText(event.getTitle());
+        binding.startDateTextView.setText(event.getStart().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
+        binding.startTimeTextView.setText(event.getStart().format(DateTimeFormatter.ofPattern("hh:mm a")));
+        binding.endDateTextView.setText(event.getEnd().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
+        binding.endTimeTextView.setText(event.getEnd().format(DateTimeFormatter.ofPattern("hh:mm a")));
+        binding.locationEditText.setText(event.getLocation());
+        binding.descriptionEditText.setText(event.getDescription());
+
+
+    }
+
+
 
     public void onChanged(QrAttempt attempt) {
         if (attempt instanceof QrAttempt.Success) {

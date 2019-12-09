@@ -58,6 +58,7 @@ public class QRDialog {
         dialog = new Dialog(context);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
     }
@@ -78,8 +79,6 @@ public class QRDialog {
 
     public void shareQR() {
         Log.d(TAG, "share:");
-
-
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("image/png");
         intent.putExtra(Intent.EXTRA_STREAM, generator.forceGenerate(currentEvent));
@@ -87,7 +86,6 @@ public class QRDialog {
     }
 
     public void importToCalendar() {
-        Toast.makeText(context, "import", Toast.LENGTH_SHORT).show();
         Intent toCalendar = new Intent(ACTION_INSERT);
         toCalendar.setData(CalendarContract.Events.CONTENT_URI);
         toCalendar.putExtra(CalendarContract.Events.TITLE, currentEvent.getTitle());
