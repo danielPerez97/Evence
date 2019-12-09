@@ -10,8 +10,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-
     app:cardCornerRadius="16dp"
     android:layout_marginTop="8dp"
     android:layout_marginBottom="8dp"
@@ -27,6 +25,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:padding="8dp"
         >
 
         <ImageView
@@ -40,22 +40,22 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
-            android:layout_margin="12dp">
+            android:layout_margin="6dp">
             <TextView
                 android:id="@+id/list_entry_title_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="6dp"
                 android:text="Event Title"
-                android:textSize="20sp"
+                android:textSize="18sp"
+                android:textColor="#000"
                  />
 
             <TextView
                 android:id="@+id/list_entry_date_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="6dp"
-                android:textSize="16sp"
+                android:layout_marginTop="4dp"
+                android:textSize="14sp"
 
                 android:text="Date"
                  />
@@ -64,8 +64,8 @@
                 android:id="@+id/list_entry_time_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="6dp"
-                android:textSize="16sp"
+                android:layout_marginTop="2dp"
+                android:textSize="14sp"
 
                 android:text="time"
                 />

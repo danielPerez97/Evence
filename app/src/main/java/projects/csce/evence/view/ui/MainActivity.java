@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         handleRecyclerView();
 
         binding.loginBtn.setOnClickListener(view -> signIn());
-        Utils.toastLong(getBaseContext(), "Hello");
+
     }
 
     @Override
