@@ -7,6 +7,7 @@ import dagger.Provides
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import projects.csce.evence.service.model.FileManager
+import projects.csce.evence.service.model.qr.QrBitmapGenerator
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -46,8 +47,8 @@ class NetworkModule
 
 	@Provides
 	@Singleton
-	fun provideFileManager(context: Context): FileManager
+	fun provideFileManager(context: Context, generator: QrBitmapGenerator): FileManager
 	{
-		return FileManager(context)
+		return FileManager(context, generator)
 	}
 }

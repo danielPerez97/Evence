@@ -33,6 +33,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
     private Context context;
     private QrBitmapGenerator generator;
     private FileManager fileManager;
+    private SelectionListener listener;
 
     public CardsAdapter(Context context, QrBitmapGenerator generator, FileManager fileManager)
     {
@@ -63,6 +64,11 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    public void setSelectionListener(SelectionListener listener)
+    {
+        this.listener = listener;
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         private LinearLayout linearLayout;
         private CardView entryCardView;
@@ -91,8 +97,23 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
             eventTime.setText(event.getStart().format(DateTimeFormatter.ofPattern("hh:mm a")));
             qrImage.setImageBitmap(generator.forceGenerate(event));
 
-            //using setOnClickListener loses statelistanimation
-            entryCardView.setOnClickListener(view -> new QRDialog(context, ical, generator, fileManager));
+            entryCardView.setOnClickListener(view ->
+            {
+                new QRDialog(context, ical, generator, fileManager);
+
+                if(listener != null)
+                {
+                    listener.onClick(ical);
+                }
+            });
+
+
+
         }
+    }
+
+    public interface SelectionListener
+    {
+        void onClick(ICalSpec ical);
     }
 }

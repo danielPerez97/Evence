@@ -21,6 +21,32 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.ui.SecondActivity" />
+        <activity
+            android:name=".view.ui.FileSelectActivity"
+            android:label="File Selector">
+            <intent-filter>
+                <action
+                    android:name="android.intent.action.PICK"/>
+                <category
+                    android:name="android.intent.category.DEFAULT"/>
+                <category
+                    android:name="android.intent.category.OPENABLE"/>
+                <data android:mimeType="text/plain"/>
+
+            </intent-filter>
+
+
+        </activity>
+
+        <provider
+            android:authorities="projects.csce.evence.FileProvider"
+            android:name="androidx.core.content.FileProvider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths"/>
+        </provider>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
