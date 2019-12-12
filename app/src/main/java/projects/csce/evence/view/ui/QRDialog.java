@@ -78,11 +78,11 @@ public class QRDialog {
     }
 
     public void shareQR() {
-        Log.d(TAG, "share:");
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("image/png");
-        intent.putExtra(Intent.EXTRA_STREAM, generator.forceGenerate(currentEvent));
-        //context.startActivity(intent);
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, fileManager.getFileUri("image_" + ical.getFileName()));
+        shareIntent.setType("image/*");
+        context.startActivity(Intent.createChooser(shareIntent, "Share images to.."));
     }
 
     public void importToCalendar() {

@@ -81,7 +81,9 @@
 
                             <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
 
-                                <androidx.cardview.widget.CardView style="@style/CircularButtonCardView"
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/share_qr_btn"
+                                    style="@style/CircularButtonCardView"
                                     android:onClick="@{() -> view.shareQR()}">
 
                                     <ImageView
