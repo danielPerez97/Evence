@@ -76,6 +76,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void startQrReaderActivity(){
+        Intent generateQRActivity = new Intent(this, QrReaderActivity.class);
+        startActivity(generateQRActivity);
+    }
+
     public void startQrActivity() {
         Intent generateQRActivity = new Intent(this, GenerateQR.class);
         startActivity(generateQRActivity);

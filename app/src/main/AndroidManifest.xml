@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="projects.csce.evence">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".BaseApplication"
@@ -12,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".view.ui.QrReaderActivity"></activity>
         <activity android:name=".view.ui.GenerateQR" />
         <activity android:name=".view.ui.MainActivity">
             <intent-filter>
@@ -25,30 +27,28 @@
             android:name=".view.ui.FileSelectActivity"
             android:label="File Selector">
             <intent-filter>
-                <action
-                    android:name="android.intent.action.PICK"/>
-                <category
-                    android:name="android.intent.category.DEFAULT"/>
-                <category
-                    android:name="android.intent.category.OPENABLE"/>
-                <data android:mimeType="text/plain"/>
+                <action android:name="android.intent.action.PICK" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+
+                <data android:mimeType="text/plain" />
             </intent-filter>
-
-
         </activity>
 
         <provider
-            android:authorities="projects.csce.evence.FileProvider"
             android:name="androidx.core.content.FileProvider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:authorities="projects.csce.evence.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths"/>
+                android:resource="@xml/filepaths" />
         </provider>
-    </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode"/>
+    </application>
 
 </manifest>

@@ -63,18 +63,27 @@
             android:layout_marginTop="68dp"
             tools:listitem="@layout/events_list_entry_layout" />
 
-
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/qr_camera_btn"
+            android:onClick="@{() -> view.startQrReaderActivity()}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_photo_camera_white_24dp"
+            android:layout_margin="16dp"
+            android:layout_gravity="top|end"
+            app:layout_anchorGravity="top"
+            app:layout_anchor="@id/qr_btn"
+            />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/qr_btn"
             android:onClick="@{() -> view.startQrActivity()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:layout_gravity="bottom|center"
+            android:layout_gravity="bottom|end"
             android:src="@drawable/ic_add_white_24dp"
             android:layout_margin="16dp"
-            app:useCompatPadding="true"
             />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
