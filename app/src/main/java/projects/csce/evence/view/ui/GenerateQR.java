@@ -80,11 +80,7 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
         binding.endTimeTextView.setText(event.getEnd().format(DateTimeFormatter.ofPattern("hh:mm a")));
         binding.locationEditText.setText(event.getLocation());
         binding.descriptionEditText.setText(event.getDescription());
-
-
     }
-
-
 
     public void onChanged(QrAttempt attempt) {
         if (attempt instanceof QrAttempt.Success) {
@@ -105,8 +101,6 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
         // Handle the hours and minutes
         int[] startHourMinutes = Utils.toInts(binding.startTimeTextView.getText().toString().split(":"));
         int[] endHourMinutes = Utils.toInts(binding.endTimeTextView.getText().toString().split(":"));
-
-
 
         EventSpec event = new EventSpec.Builder(0)
                 .title(binding.titleEditText.getText().toString())
