@@ -10,6 +10,7 @@ import projects.csce.evence.di.viewmodel.ViewModelFactory;
 import projects.csce.evence.di.viewmodel.ViewModelKey;
 import projects.csce.evence.viewmodel.GenerateQrViewModel;
 import projects.csce.evence.viewmodel.MainViewModel;
+import projects.csce.evence.viewmodel.QrReaderViewModel;
 
 @Module
 public abstract class ViewModelModule
@@ -26,4 +27,9 @@ public abstract class ViewModelModule
     @IntoMap
     @ViewModelKey(GenerateQrViewModel.class)
     abstract ViewModel generateQrViewModel(GenerateQrViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(QrReaderViewModel.class)
+    abstract ViewModel qrReaderViewModel(QrReaderViewModel viewModel);
 }

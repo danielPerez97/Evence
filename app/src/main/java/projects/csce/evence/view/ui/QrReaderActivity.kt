@@ -1,40 +1,31 @@
 package projects.csce.evence.view.ui
 
 import android.Manifest
-import android.animation.Animator
-import android.animation.Animator.AnimatorListener
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
-import android.animation.ValueAnimator
 import android.app.SearchManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.hardware.camera2.CameraManager
 import android.hardware.camera2.CameraAccessException
+import android.hardware.camera2.CameraManager
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.SurfaceHolder
-import android.view.View
-import android.view.ViewAnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
-import io.reactivex.Observable
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
-import io.reactivex.subjects.PublishSubject
-import org.apache.http.protocol.HTTP
 import projects.csce.evence.R
 import projects.csce.evence.databinding.ActivityQrReaderBinding
 import projects.csce.evence.ical.EventSpec
@@ -43,11 +34,13 @@ import projects.csce.evence.service.model.FileManager
 import projects.csce.evence.service.model.qr.QrBitmapGenerator
 import projects.csce.evence.utils.getAppComponent
 import projects.csce.evence.utils.toZonedDateTime
+import projects.csce.evence.viewmodel.QrReaderViewModel
 import java.io.IOException
 import javax.inject.Inject
 
 class QrReaderActivity : AppCompatActivity(), SurfaceHolder.Callback, Detector.Processor<Barcode> {
     lateinit var binding: ActivityQrReaderBinding
+    private lateinit var viewModel : QrReaderViewModel
     private lateinit var cameraSource: CameraSource
     private var qr = Barcode()
     private var isScanning = true
@@ -55,6 +48,8 @@ class QrReaderActivity : AppCompatActivity(), SurfaceHolder.Callback, Detector.P
     private lateinit var cameraManager: CameraManager
     private lateinit var cameraId: String
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var generator: QrBitmapGenerator
     @Inject lateinit var fileManager: FileManager
 
@@ -64,6 +59,7 @@ class QrReaderActivity : AppCompatActivity(), SurfaceHolder.Callback, Detector.P
         binding = DataBindingUtil.setContentView(this, R.layout.activity_qr_reader)
         binding.view = this
         binding.lifecycleOwner = this
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(QrReaderViewModel::class.java)
 
         cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         try {
@@ -71,12 +67,11 @@ class QrReaderActivity : AppCompatActivity(), SurfaceHolder.Callback, Detector.P
         } catch (e : CameraAccessException) {
             e.printStackTrace()
         }
-
     }
 
     override fun onResume(){
         super.onResume()
-        setupReader()
+        setupCameraAndReader()
     }
 
     override fun onPause() {
@@ -84,7 +79,7 @@ class QrReaderActivity : AppCompatActivity(), SurfaceHolder.Callback, Detector.P
         cameraSource.release()
     }
 
-    private fun setupReader(){
+    private fun setupCameraAndReader(){
         val barcodeDetector: BarcodeDetector = BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build()
@@ -96,7 +91,6 @@ class QrReaderActivity : AppCompatActivity(), SurfaceHolder.Callback, Detector.P
                 .setRequestedPreviewSize(displayMetrics.heightPixels,displayMetrics.widthPixels)
                 .setAutoFocusEnabled(true)
                 .build()
-
         binding.cameraSurfaceView.holder.addCallback(this)
         barcodeDetector.setProcessor(this)
     }
@@ -200,8 +194,7 @@ class QrReaderActivity : AppCompatActivity(), SurfaceHolder.Callback, Detector.P
 
 
         // Write the file to the file system
-        // todo: create viewmodel
-        //viewModel.saveFile(currentEvent)
+        viewModel.saveFile(currentEvent)
 
         QRDialog(this, currentEvent, generator, fileManager)
     }
@@ -294,7 +287,7 @@ class QrReaderActivity : AppCompatActivity(), SurfaceHolder.Callback, Detector.P
     }
 
     fun toggleFlash(){
-
+        //todo fix flash
         if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
             if (!flashOn) {
                 binding.flashImageview.setImageDrawable(getDrawable(R.drawable.ic_flash_off_white_24dp))
