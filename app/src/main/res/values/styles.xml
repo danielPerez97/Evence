@@ -111,5 +111,11 @@
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">12sp</item>
     </style>
+    <style name="viewShadow">
+        <item name="android:shadowColor">#000</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">8</item>
+    </style>
 
 </resources>
