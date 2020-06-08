@@ -12,14 +12,27 @@
     </data>
 
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <androidx.cardview.widget.CardView
+            android:layout_height="42dp"
+            android:layout_width="42dp"
+            app:layout_anchor="@id/qr_main_cardview"
+            app:layout_anchorGravity="top|end"
+            style="@style/CircularButtonCardView"
+            android:backgroundTint="#F4511E"
+            android:onClick="@{() -> view.closeDialog()}"
+            >
+            <ImageView
+                style="@style/CircularButtonImageView"
+                android:src="@drawable/ic_close_white_24dp" />
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-
+            android:id="@+id/qr_main_cardview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="55dp"
@@ -152,5 +165,5 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
-    </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

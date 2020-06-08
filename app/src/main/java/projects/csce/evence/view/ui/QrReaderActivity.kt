@@ -1,16 +1,40 @@
 package projects.csce.evence.view.ui
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.Animator.AnimatorListener
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.animation.ValueAnimator
+import android.app.SearchManager
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.hardware.camera2.CameraManager
+import android.hardware.camera2.CameraAccessException
+import android.net.Uri
+import android.opengl.Visibility
+import android.os.Build
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.util.DisplayMetrics
+import android.util.Log
 import android.view.SurfaceHolder
+import android.view.View
+import android.view.ViewAnimationUtils
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import io.reactivex.Observable
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
+import io.reactivex.subjects.PublishSubject
+import org.apache.http.protocol.HTTP
 import projects.csce.evence.R
 import projects.csce.evence.databinding.ActivityQrReaderBinding
 import projects.csce.evence.ical.EventSpec
@@ -25,6 +49,11 @@ import javax.inject.Inject
 class QrReaderActivity : AppCompatActivity(), SurfaceHolder.Callback, Detector.Processor<Barcode> {
     lateinit var binding: ActivityQrReaderBinding
     private lateinit var cameraSource: CameraSource
+    private var qr = Barcode()
+    private var isScanning = true
+    private var flashOn = false
+    private lateinit var cameraManager: CameraManager
+    private lateinit var cameraId: String
 
     @Inject lateinit var generator: QrBitmapGenerator
     @Inject lateinit var fileManager: FileManager
@@ -35,6 +64,14 @@ class QrReaderActivity : AppCompatActivity(), SurfaceHolder.Callback, Detector.P
         binding = DataBindingUtil.setContentView(this, R.layout.activity_qr_reader)
         binding.view = this
         binding.lifecycleOwner = this
+
+        cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        try {
+            cameraId = cameraManager.cameraIdList[0]
+        } catch (e : CameraAccessException) {
+            e.printStackTrace()
+        }
+
     }
 
     override fun onResume(){
@@ -52,8 +89,11 @@ class QrReaderActivity : AppCompatActivity(), SurfaceHolder.Callback, Detector.P
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build()
 
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+
         cameraSource = CameraSource.Builder(this, barcodeDetector)
-                .setRequestedPreviewSize(1080,1080)
+                .setRequestedPreviewSize(displayMetrics.heightPixels,displayMetrics.widthPixels)
                 .setAutoFocusEnabled(true)
                 .build()
 
@@ -89,15 +129,51 @@ class QrReaderActivity : AppCompatActivity(), SurfaceHolder.Callback, Detector.P
 
     override fun receiveDetections(detections: Detector.Detections<Barcode>?) {
         val barcodeArray = detections?.detectedItems
-        if(barcodeArray?.size() != 0 ) {
-            binding.result.post( Runnable {
-                val qr = barcodeArray?.valueAt(0)
-                if (qr?.valueFormat == Barcode.CALENDAR_EVENT)
-                    openQrEventDialog(qr.calendarEvent)
-                else
-                    binding.result.text = qr?.displayValue ?: "No detections"
-            })
-        }
+
+        binding.result.post( Runnable {
+            if (barcodeArray?.size() != 0) {
+                isScanning = false
+                qr = barcodeArray?.valueAt(0)!!
+
+                qr.let {
+                    binding.result.text = qr.displayValue
+
+                    when (qr.valueFormat) {
+                        Barcode.CALENDAR_EVENT ->
+                            binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_event_white_36dp))
+                        Barcode.URL ->
+                            binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_open_in_new_white_24dp))
+                        Barcode.CONTACT_INFO ->
+                            binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_person_add_white_24dp))
+                        Barcode.EMAIL ->
+                            binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_email_white_24dp))
+                        Barcode.PHONE ->
+                            binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_phone_white_24dp))
+                        Barcode.SMS ->
+                            binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_textsms_black_24dp))
+                        Barcode.ISBN ->
+                            binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_shopping_cart_white_24dp))
+                        Barcode.WIFI -> {
+                            binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_wifi_white_24dp))
+                            binding.result.text = "Network name: " + qr.wifi.ssid + "\nPassword: " + qr.wifi.password
+                        }
+                        Barcode.GEO ->
+                            binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_place_white_24dp))
+                        Barcode.DRIVER_LICENSE ->
+                            binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_account_box_white_24dp))
+                        else ->
+                            binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_short_text_white_24dp))
+                    }
+                }
+
+            } else {
+                isScanning = true
+                binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_search_white_24dp))
+                binding.result.text = "Scanning..."
+            }
+
+            animate()
+        })
     }
 
     fun openQrEventDialog(qr : Barcode.CalendarEvent){
@@ -127,7 +203,130 @@ class QrReaderActivity : AppCompatActivity(), SurfaceHolder.Callback, Detector.P
         // todo: create viewmodel
         //viewModel.saveFile(currentEvent)
 
-        val qrDialog = QRDialog(this, currentEvent, generator, fileManager)
+        QRDialog(this, currentEvent, generator, fileManager)
+    }
+
+    fun clickityClick(){
+        Log.d("QrReaderActivity", "raw value= " + qr.rawValue )
+        if (isScanning) {
+            Toast.makeText(this, "No QR code found", Toast.LENGTH_SHORT).show()
+        } else {
+            //Toast.makeText(this, qr.rawValue, Toast.LENGTH_SHORT).show()
+
+            when(qr.valueFormat) {
+                Barcode.CALENDAR_EVENT -> {
+                    openQrEventDialog(qr.calendarEvent)
+                }
+                Barcode.URL -> {
+                    val webpage: Uri = Uri.parse(qr.url.url)
+                    val intent = Intent(Intent.ACTION_VIEW, webpage)
+                    if (intent.resolveActivity(packageManager) != null) {
+                        startActivity(intent)
+                    }
+                }
+                Barcode.CONTACT_INFO -> {
+                    val intent = Intent(Intent.ACTION_INSERT).apply {
+                        type = ContactsContract.Contacts.CONTENT_TYPE
+                        putExtra(ContactsContract.Intents.Insert.NAME, qr.contactInfo.name?.formattedName)
+                        putExtra(ContactsContract.Intents.Insert.EMAIL, qr.contactInfo.emails?.get(0)?.address)
+                        putExtra(ContactsContract.Intents.Insert.PHONE, qr.contactInfo.phones?.get(0)?.number)
+                        putExtra(ContactsContract.Intents.Insert.COMPANY, qr.contactInfo.organization?.toString())
+                    }
+                    if (intent.resolveActivity(packageManager) != null) {
+                        startActivity(intent)
+                    }
+                }
+                Barcode.EMAIL -> {
+                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                        data = Uri.parse("mailto:")
+                        putExtra(Intent.EXTRA_EMAIL, listOf(qr.email.address).toTypedArray())
+                        putExtra(Intent.EXTRA_SUBJECT, qr.email.subject)
+                        putExtra(Intent.EXTRA_TEXT, qr.email.body)
+                    }
+                    if (intent.resolveActivity(packageManager) != null) {
+                        startActivity(intent)
+                    }
+                }
+                Barcode.PHONE -> {
+                    val intent = Intent(Intent.ACTION_DIAL).apply {
+                        data = Uri.parse("tel:" + qr.phone.number)
+                    }
+                    if (intent.resolveActivity(packageManager) != null) {
+                        startActivity(intent)
+                    }
+                }
+                Barcode.SMS -> {
+                    Toast.makeText(this, qr.sms.phoneNumber, Toast.LENGTH_SHORT).show()
+                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                        data = Uri.parse("smsto: " + qr.sms.phoneNumber)  // This ensures only SMS apps respond
+                        putExtra("sms_body", qr.sms.message)
+                        putExtra("exit_on_sent", true)
+                    }
+                    if (intent.resolveActivity(packageManager) != null) {
+                        startActivity(intent)
+                    }
+                }
+                Barcode.ISBN -> {
+                    val intent = Intent(Intent.ACTION_WEB_SEARCH).apply {
+                        putExtra(SearchManager.QUERY, qr.displayValue)
+                    }
+                    if (intent.resolveActivity(packageManager) != null) {
+                        startActivity(intent)
+                    }
+                }
+                Barcode.WIFI -> {
+                    val clipboard =  getSystemService(CLIPBOARD_SERVICE) as ClipboardManager;
+                    val clip = ClipData.newPlainText("wifi password", qr.wifi.password);
+                    clipboard.setPrimaryClip(clip)
+
+                    Toast.makeText(this, "Password copied", Toast.LENGTH_SHORT).show()
+                }
+                Barcode.GEO -> {
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse(qr.geoPoint.toString())
+                    }
+                    if (intent.resolveActivity(packageManager) != null) {
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
+
+    fun toggleFlash(){
+
+        if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
+            if (!flashOn) {
+                binding.flashImageview.setImageDrawable(getDrawable(R.drawable.ic_flash_off_white_24dp))
+                flashOn = true
+            } else {
+                binding.flashImageview.setImageDrawable(getDrawable(R.drawable.ic_flash_on_white_24dp))
+                flashOn = false
+            }
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    cameraManager.setTorchMode(cameraId, flashOn)
+                }
+            } catch (e : CameraAccessException) {
+                e.printStackTrace()
+            }
+        } else {
+            Toast.makeText(this, "Device torch not found", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun animate(){
+       /* val centerX = binding.qrTypeCardview.width / 2
+        val centerY = binding.qrTypeCardview.height / 2
+        val radius = Math.hypot(centerX.toDouble(), centerY.toDouble()).toFloat()
+        val shrinkAnim = ViewAnimationUtils.createCircularReveal(binding.qrTypeCardview, centerX, centerY, radius, 0.0F)
+        val growAnim = ViewAnimationUtils.createCircularReveal(binding.qrTypeCardview, centerX, centerY, radius, 0.0F)
+
+        shrinkAnim.start()
+        growAnim.start()*/
+
+
+
     }
 
 

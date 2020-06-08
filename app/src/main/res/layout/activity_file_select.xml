@@ -38,7 +38,7 @@
                     android:textColor="@color/colorPrimary"
                     />
                 <androidx.cardview.widget.CardView
-                    style="@style/ButtonCardView"
+                    style="@style/ClickableView"
                     android:layout_margin="8dp"
                     android:layout_width="40dp"
                     android:layout_height="40dp"

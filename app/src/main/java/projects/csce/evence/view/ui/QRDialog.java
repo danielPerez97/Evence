@@ -95,4 +95,8 @@ public class QRDialog {
         toCalendar.putExtra(CalendarContract.Events.DESCRIPTION, currentEvent.getDescription());
         context.startActivity(toCalendar);
     }
+
+    public void closeDialog() {
+        dialog.dismiss();
+    }
 }

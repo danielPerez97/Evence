@@ -42,7 +42,7 @@
         <item name="android:layout_marginRight">14dp</item>
     </style>
 
-    <style name="FormCardView"  parent="ButtonCardView">
+    <style name="FormCardView"  parent="ClickableView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">8dp</item>
@@ -64,7 +64,7 @@
         <item name="cardElevation">8dp</item>
     </style>
 
-    <style name="ButtonCardView">
+    <style name="ClickableView">
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
         <item name="android:stateListAnimator">@animator/anim_button_push</item>
@@ -88,7 +88,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="CircularButtonCardView" parent="ButtonCardView">
+    <style name="CircularButtonCardView" parent="ClickableView">
         <item name="android:layout_height">46dp</item>
         <item name="android:layout_width">46dp</item>
         <item name="android:layout_margin">4dp</item>

@@ -38,7 +38,7 @@
                     android:textColor="@color/colorPrimary"
                     />
                 <androidx.cardview.widget.CardView
-                    style="@style/ButtonCardView"
+                    style="@style/ClickableView"
                     android:layout_margin="8dp"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -65,15 +65,14 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/qr_camera_btn"
-            android:onClick="@{() -> view.startQrReaderActivity()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_photo_camera_white_24dp"
-            android:layout_margin="16dp"
             android:layout_gravity="top|end"
-            app:layout_anchorGravity="top"
+            android:translationY="-10dp"
+            android:onClick="@{() -> view.startQrReaderActivity()}"
+            android:src="@drawable/ic_photo_camera_white_24dp"
             app:layout_anchor="@id/qr_btn"
-            />
+            app:layout_anchorGravity="top" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/qr_btn"
