@@ -2,9 +2,11 @@ package projects.csce.evence.view.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -39,10 +41,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActivityMainBinding binding;
     private CardsAdapter eventsAdapter;
 
-    @Inject FileManager fileManager;
-    @Inject GoogleSignInClient signInClient;
-    @Inject ViewModelFactory factory;
-    @Inject QrBitmapGenerator generator;
+    @Inject
+    FileManager fileManager;
+    @Inject
+    GoogleSignInClient signInClient;
+    @Inject
+    ViewModelFactory factory;
+    @Inject
+    QrBitmapGenerator generator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +69,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //binding.loginBtn.setOnClickListener(view -> signIn());
 
         //handle drawer
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, binding.drawerMain, binding.toolbarMain, R.string.app_name, R.string.app_name );
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, binding.drawerMain, binding.toolbarMain, R.string.app_name, R.string.app_name);
         binding.drawerMain.closeDrawer(binding.navigationDrawer);
         binding.drawerMain.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
+        binding.navigationDrawer.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -84,10 +91,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.menu_settings) {
-            Log.d("MAIN", "yo MAma so fat");
-            Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show();
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                startSettingsActivity();
+                break;
+            case R.id.menu_about:
+                break;
         }
+
         binding.drawerMain.closeDrawer(binding.navigationDrawer);
         return true;
     }
@@ -109,6 +120,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void startSecondActivity() {
         Intent secondActivityIntent = new Intent(this, SecondActivity.class);
         startActivity(secondActivityIntent);
+    }
+
+    public void startSettingsActivity() {
+        Intent settingsActivity = new Intent(this, SettingsActivity.class);
+        startActivity(settingsActivity);
     }
 
     public void signIn() {

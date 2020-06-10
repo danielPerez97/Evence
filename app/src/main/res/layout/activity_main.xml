@@ -82,9 +82,6 @@
             android:foregroundGravity="left"
             app:itemIconTint="@color/white"
             app:itemTextColor="@color/white"
-            app:menu="@menu/menu_drawer">
-
-
-        </com.google.android.material.navigation.NavigationView>
+            app:menu="@menu/menu_drawer"/>
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>
