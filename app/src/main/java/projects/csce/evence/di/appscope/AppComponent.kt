@@ -6,6 +6,7 @@ import projects.csce.evence.di.loginscope.LoggedInSubComponent
 import projects.csce.evence.view.ui.FileSelectActivity
 import projects.csce.evence.view.ui.GenerateQR
 import projects.csce.evence.view.ui.MainActivity
+import projects.csce.evence.view.ui.SettingsActivity
 import javax.inject.Singleton
 
 @Singleton
@@ -15,5 +16,6 @@ interface AppComponent
 	fun inject(mainActivity: MainActivity)
 	fun inject(generateQR: GenerateQR)
 	fun inject(activity: FileSelectActivity)
+	fun inject(activity: SettingsActivity)
 	fun newLoggedInSubComponent(module: LoggedInModule): LoggedInSubComponent
 }

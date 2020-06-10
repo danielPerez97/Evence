@@ -20,6 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.ui.SettingsActivity" />
         <activity android:name=".view.ui.SecondActivity" />
         <activity
             android:name=".view.ui.FileSelectActivity"
@@ -34,8 +35,6 @@
                 <data android:mimeType="text/plain"/>
 
             </intent-filter>
-
-
         </activity>
 
         <provider
