@@ -3,8 +3,11 @@ package projects.csce.evence.view.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
@@ -15,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 
 import javax.inject.Inject;
 
@@ -28,7 +32,7 @@ import projects.csce.evence.utils.Utils;
 import projects.csce.evence.view.adapter.CardsAdapter;
 import projects.csce.evence.viewmodel.MainViewModel;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private int RC_SIGN_IN = 1;
     private MainViewModel viewModel;
@@ -51,11 +55,18 @@ public class MainActivity extends AppCompatActivity {
         //apply custom toolbar
         setSupportActionBar(binding.toolbarMain);
 
+
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
         eventsAdapter = new CardsAdapter(this, generator, fileManager);
         handleRecyclerView();
 
-        binding.loginBtn.setOnClickListener(view -> signIn());
+        //binding.loginBtn.setOnClickListener(view -> signIn());
+
+        //handle drawer
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, binding.drawerMain, binding.toolbarMain, R.string.app_name, R.string.app_name );
+        binding.drawerMain.closeDrawer(binding.navigationDrawer);
+        binding.drawerMain.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
 
     }
 
@@ -65,9 +76,23 @@ public class MainActivity extends AppCompatActivity {
         fileManager.notifyIcals();
     }
 
-    private void handleRecyclerView() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
-        //for testing purposes only. populating the recyclerview with dummy data
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.menu_settings) {
+            Log.d("MAIN", "yo MAma so fat");
+            Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show();
+        }
+        binding.drawerMain.closeDrawer(binding.navigationDrawer);
+        return true;
+    }
+
+    private void handleRecyclerView() {
         binding.eventsRecyclerView.setAdapter(eventsAdapter);
         binding.eventsRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         viewModel.liveFiles().observe(this, events -> {

@@ -6,4 +6,6 @@
     <string name="end_date">End date</string>
     <string name="description">Description</string>
     <string name="location">Location</string>
+    <string name="scan_qr">Scan QR</string>
+    <string name="search">Search</string>
 </resources>
