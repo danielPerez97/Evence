@@ -6,8 +6,29 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">true</item>
+
+        <!-- specify enter and exit transitions -->
+        <item name="android:windowEnterTransition">@android:transition/slide_left</item>
+        <item name="android:windowExitTransition">@android:transition/slide_left</item>
+
+        <!-- specify shared element transitions -->
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/change_image_transform</item>
+        <item name="android:windowSharedElementExitTransition">
+            @transition/change_image_transform</item>
     </style>
 
+    <style name="RootLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:clipToPadding">false</item>
+    </style>
     <style name="FormTitleTextView">
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
@@ -110,6 +131,35 @@
         <item name="android:layout_margin">4dp</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="SettingsEntry">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/grey1</item>
+        <item name="android:layout_margin">12dp</item>
+    </style>
+
+    <style name="CustomBottomAppBar" parent="@style/Widget.MaterialComponents.BottomAppBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="theme">@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="fabAnimationMode">slide</item>
+        <item name="fabCradleMargin">17dp</item>
+        <item name="fabCradleRoundedCornerRadius">32dp</item>
+        <item name="fabCradleVerticalOffset">12dp</item>
+        <item name="hideOnScroll">true</item>
+        <item name="android:transitionName">toolbarTransition</item>
+    </style>
+
+    <style name="FAB">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="android:transitionName">fabTransition</item>
     </style>
 
 </resources>

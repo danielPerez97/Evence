@@ -13,14 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".view.ui.GenerateQR" />
-        <activity android:name=".view.ui.MainActivity">
+        <activity android:name=".view.ui.MainActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.ui.SettingsActivity" />
+        <activity android:name=".view.ui.SettingsActivity"
+            android:parentActivityName=".view.ui.MainActivity"/>
         <activity android:name=".view.ui.SecondActivity" />
         <activity
             android:name=".view.ui.FileSelectActivity"

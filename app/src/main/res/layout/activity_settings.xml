@@ -5,15 +5,62 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="view"
             type="projects.csce.evence.view.ui.SettingsActivity" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        style="@style/RootLayout"
+        android:paddingBottom="0dp"
+        android:clipToPadding="false">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.cardview.widget.CardView
+            style="@style/LayoutContainerCardView">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp"
+                >
+                <Switch
+                    android:id="@+id/switch1"
+                    style="@style/SettingsEntry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dark theme" />
+                <Switch
+                    style="@style/SettingsEntry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Other stuff" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/toolbar"
+            style="@style/CustomBottomAppBar"
+            app:fabAlignmentMode="end"
+            app:title="@string/settings">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings"
+                    android:textColor="@color/white"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
+
+            </LinearLayout>
+        </com.google.android.material.bottomappbar.BottomAppBar>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/back_btn"
+            android:onClick="@{() -> view.onBackClicked()}"
+            style="@style/FAB"
+            android:layout_gravity="bottom|center"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            app:layout_anchor="@+id/toolbar"
+            />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
