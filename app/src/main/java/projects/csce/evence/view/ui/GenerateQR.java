@@ -89,7 +89,7 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
     public void onChanged(QrAttempt attempt) {
         if (attempt instanceof QrAttempt.Success) {
             Bitmap bitmap = ((QrAttempt.Success) attempt).getBitmap();
-            binding.QRImage.setImageBitmap(bitmap);
+            //binding.QRImage.setImageBitmap(bitmap);
         } else if (attempt instanceof QrAttempt.Failure) {
             Throwable e = ((QrAttempt.Failure) attempt).getE();
             e.printStackTrace();

@@ -24,6 +24,9 @@ class SettingsActivity : AppCompatActivity() {
         binding.view = this
         binding.lifecycleOwner = this
         //viewModel = ViewModelProviders.of(this, viewModelFactory).get(QrReaderViewModel::class.java)
+    }
 
+    fun onBackClicked(){
+        onBackPressed()
     }
 }

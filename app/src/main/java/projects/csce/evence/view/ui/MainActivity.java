@@ -1,16 +1,21 @@
 package projects.csce.evence.view.ui;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +25,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.navigation.NavigationView;
 
 import javax.inject.Inject;
@@ -75,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         actionBarDrawerToggle.syncState();
 
         binding.navigationDrawer.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -90,6 +97,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.qr_camera_btn:
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_settings:
@@ -98,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_about:
                 break;
         }
-
         binding.drawerMain.closeDrawer(binding.navigationDrawer);
         return true;
     }
@@ -114,6 +128,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void startQrActivity() {
         Intent generateQRActivity = new Intent(this, GenerateQR.class);
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,
+                Pair.create(binding.toolbarMain, "toolbarTransition"),
+                Pair.create(binding.qrBtn, "fabTransition"));
+
+        //startActivity(generateQRActivity, options.toBundle());
         startActivity(generateQRActivity);
     }
 
