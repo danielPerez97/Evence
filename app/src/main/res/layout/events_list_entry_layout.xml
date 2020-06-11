@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ButtonCardView"
+    android:backgroundTint="@color/cardviewBackground"
     android:id="@+id/list_entry_cardview"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -33,7 +34,8 @@
             android:id="@+id/qrImageView"
             android:src="@drawable/ic_border_right_black_24dp"
             android:layout_width="150dp"
-            android:layout_height="150dp" />
+            android:layout_height="150dp"
+            android:tintMode="multiply"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -47,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:text="Event Title"
                 android:textSize="18sp"
-                android:textColor="#000"
+                android:textColor="@color/mainText"
                  />
 
             <TextView

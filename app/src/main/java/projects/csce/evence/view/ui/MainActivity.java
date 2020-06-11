@@ -2,6 +2,7 @@ package projects.csce.evence.view.ui;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
@@ -128,11 +130,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void startQrActivity() {
         Intent generateQRActivity = new Intent(this, GenerateQR.class);
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,
-                Pair.create(binding.toolbarMain, "toolbarTransition"),
-                Pair.create(binding.qrBtn, "fabTransition"));
-
-        //startActivity(generateQRActivity, options.toBundle());
         startActivity(generateQRActivity);
     }
 

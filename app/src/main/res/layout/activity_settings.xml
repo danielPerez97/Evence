@@ -12,8 +12,8 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         style="@style/RootLayout"
-        android:paddingBottom="0dp"
-        android:clipToPadding="false">
+        android:clipToPadding="false"
+        android:paddingBottom="0dp">
 
         <androidx.cardview.widget.CardView
             style="@style/LayoutContainerCardView">
@@ -24,11 +24,13 @@
                 android:padding="10dp"
                 >
                 <Switch
-                    android:id="@+id/switch1"
+                    android:id="@+id/darkModeSwitch"
                     style="@style/SettingsEntry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Dark theme" />
+                    android:onClick="@{() -> view.onDarkModeSwitchClicked()}"
+                    android:text="Dark theme"
+                    />
                 <Switch
                     style="@style/SettingsEntry"
                     android:layout_width="match_parent"
@@ -49,16 +51,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/settings"
-                    android:textColor="@color/white"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textColor="@color/white"/>
 
             </LinearLayout>
         </com.google.android.material.bottomappbar.BottomAppBar>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/back_btn"
-            android:onClick="@{() -> view.onBackClicked()}"
             style="@style/FAB"
             android:layout_gravity="bottom|center"
+            android:onClick="@{() -> view.onBackClicked()}"
             android:src="@drawable/ic_arrow_back_black_24dp"
             app:layout_anchor="@+id/toolbar"
             />
