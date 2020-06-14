@@ -8,6 +8,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen;
 import projects.csce.evence.di.appscope.AppComponent;
 import projects.csce.evence.di.appscope.DaggerAppComponent;
 import projects.csce.evence.di.appscope.LoginModule;
+import projects.csce.evence.service.model.SharedPref;
 
 
 public class BaseApplication extends Application
@@ -24,7 +25,12 @@ public class BaseApplication extends Application
         injector = DaggerAppComponent.builder()
                 .loginModule(new LoginModule(getApplicationContext()))
                 .build();
+
+        new SharedPref(getApplicationContext()).setSavedPreferences();
+
     }
+
+
 
     public AppComponent getInjector()
     {

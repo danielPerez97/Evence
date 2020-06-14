@@ -50,6 +50,18 @@
                 app:layout_anchorGravity="top"
                 tools:listitem="@layout/events_list_entry_layout"/>
 
+            <TextView
+                android:id="@+id/empty_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="You have no saved events"
+                android:layout_gravity="center"
+                android:textColor="@color/grey2"
+                android:textAlignment="center"
+                android:textSize="26sp"
+                android:visibility="gone"
+                />
+
             <com.google.android.material.bottomappbar.BottomAppBar
                 android:id="@+id/toolbar_main"
                 style="@style/CustomBottomAppBar"

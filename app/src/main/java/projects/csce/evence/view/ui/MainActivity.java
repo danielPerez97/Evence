@@ -9,6 +9,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("MainActivity", "yo mama so fat");
+        setTheme(R.style.AppTheme);
         Utils.getAppComponent(this).inject(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
@@ -125,6 +128,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewModel.liveFiles().observe(this, events -> {
             Log.i("SUBSCRIBER", Integer.toString(events.size()));
             eventsAdapter.onChanged(events);
+            if (events.size() == 0)
+                binding.emptyTextview.setVisibility(View.VISIBLE);
+            else
+                binding.emptyTextview.setVisibility(View.GONE);
         });
     }
 

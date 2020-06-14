@@ -10,6 +10,7 @@
     <color name="white">#fff</color>
     <color name="black">#000</color>
     <color name="grey1">#505050</color>
+    <color name="grey2">#CACACA</color>
     <color name="blue1">#2196F3</color>
     <color name="mainText">#000</color>
     <color name="formInputBackground">#ECEFF1</color>
