@@ -9,4 +9,6 @@
     <string name="scan_qr">Scan QR</string>
     <string name="search">Search</string>
     <string name="settings">Settings</string>
+    <string name="saved_dark_mode_setting">dark_mode_setting</string>
+    <string name="saved_setting_shared_pref_name">saved_setting</string>
 </resources>
