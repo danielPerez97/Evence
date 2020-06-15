@@ -1,2 +1,3 @@
+include ':ICal'
 include ':app'
 rootProject.name='Evence'

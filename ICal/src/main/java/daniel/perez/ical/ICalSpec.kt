@@ -1,4 +1,4 @@
-package projects.csce.evence.ical
+package daniel.perez.ical
 
 import java.util.Objects
 

@@ -10,14 +10,14 @@ import io.reactivex.Flowable
 import io.reactivex.processors.PublishProcessor
 import okio.buffer
 import okio.sink
-import projects.csce.evence.ical.ICalSpec
-import projects.csce.evence.ical.Parser
+import daniel.perez.ical.ICalSpec
+import daniel.perez.ical.Parser
 import projects.csce.evence.service.model.qr.QrBitmapGenerator
 import java.io.File
 
 class FileManager(val context: Context, val qrBitmapGenerator: QrBitmapGenerator)
 {
-	private val processor = PublishProcessor.create<List<ICalSpec>>()
+	private val processor = PublishProcessor.create<List<daniel.perez.ical.ICalSpec>>()
 	private val icalDir = File(context.getExternalFilesDir(Environment.DIRECTORY_DCIM), "/ical")
 
 	init
@@ -26,7 +26,7 @@ class FileManager(val context: Context, val qrBitmapGenerator: QrBitmapGenerator
 	}
 
 
-	fun saveICalFile(ical: ICalSpec)
+	fun saveICalFile(ical: daniel.perez.ical.ICalSpec)
 	{
 		// Create our file
 		Log.e("FILENAMECREATE", ical.fileName)
@@ -47,7 +47,7 @@ class FileManager(val context: Context, val qrBitmapGenerator: QrBitmapGenerator
 
 	private fun saveICalImage(ical: ICalSpec)
 	{
-		val bitmap: Bitmap = qrBitmapGenerator.forceGenerate(ical.events[0])
+		val bitmap: Bitmap = qrBitmapGenerator.forceGenerate(ical.text())
 
 		// Create the image file
 		val newFile = File("${icalDir}/image_${ical.fileName}.png")
@@ -62,7 +62,7 @@ class FileManager(val context: Context, val qrBitmapGenerator: QrBitmapGenerator
 	{
 		// Notify of change
 		val files = icalDir.listFiles()
-		val parsedIcals: List<ICalSpec> = files.toList().filter { !it.name.contains("image_") }.map { Parser.parse(it) }
+		val parsedIcals: List<daniel.perez.ical.ICalSpec> = files.toList().filter { !it.name.contains("image_") }.map { daniel.perez.ical.Parser.parse(it) }
 		processor.onNext(parsedIcals)
 	}
 
@@ -79,7 +79,7 @@ class FileManager(val context: Context, val qrBitmapGenerator: QrBitmapGenerator
 			Log.i("UPSTREAM", "FOUND FILES")
 			Log.i("UPSTREAM", "${files.size}")
 		}
-		val parsedIcals: List<ICalSpec> = files.toList().map { Parser.parse(it) }
+		val parsedIcals: List<daniel.perez.ical.ICalSpec> = files.toList().map { daniel.perez.ical.Parser.parse(it) }
 		val events = parsedIcals.flatMap { it.events }
 //		processor.onNext(parsedIcals.flatMap { it.events })
 	}
@@ -98,7 +98,7 @@ class FileManager(val context: Context, val qrBitmapGenerator: QrBitmapGenerator
 		return file!!.absolutePath
 	}
 
-	fun icals(): Flowable<List<ICalSpec>>
+	fun icals(): Flowable<List<daniel.perez.ical.ICalSpec>>
 	{
 		return processor
 	}

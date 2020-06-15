@@ -52,6 +52,8 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
+    implementation(project(":ICal"))
+
     // Desugaring(Java Streams API)
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.5'
 
@@ -107,12 +109,6 @@ dependencies {
 
     //Material widgets
     implementation 'com.google.android.material:material:1.1.0'
-
-    // ThreeTenABP
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
-
-    // Okio
-    implementation("com.squareup.okio:okio:2.4.0")
 
 }
 
