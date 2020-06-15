@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import projects.csce.evence.R;
+import projects.csce.evence.databinding.EventsListEntryLayoutBinding;
 import projects.csce.evence.ical.EventSpec;
 import projects.csce.evence.ical.ICalSpec;
 import projects.csce.evence.service.model.FileManager;
@@ -49,8 +50,9 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.events_list_entry_layout, parent, false);
-        return new ViewHolder(itemView);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        EventsListEntryLayoutBinding binding = EventsListEntryLayoutBinding.inflate(inflater, parent, false);
+        return new ViewHolder(binding);
     }
 
     @Override
@@ -74,32 +76,19 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout linearLayout;
-        private CardView entryCardView;
-        private TextView eventTitle;
-        private TextView eventDate;
-        private TextView eventTime;
-        private ImageView qrImage;
-        private CardView editButton;
+        EventsListEntryLayoutBinding binding;
 
-        ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            eventTitle = itemView.findViewById(R.id.list_entry_title_textview);
-            entryCardView = itemView.findViewById(R.id.list_entry_cardview);
-            eventDate = itemView.findViewById(R.id.list_entry_date_textview);
-            eventTime = itemView.findViewById(R.id.list_entry_time_textview);
-            qrImage = itemView.findViewById(R.id.qrImageView);
+        ViewHolder(@NonNull EventsListEntryLayoutBinding binding)
+        {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
         //todo: tbc
         void bindData(ICalSpec ical) {
-            EventSpec event = ical.getEvents().get(0);
-            eventTitle.setText(event.getTitle());
-            eventDate.setText(event.getStart().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
-            eventTime.setText(event.getStart().format(DateTimeFormatter.ofPattern("hh:mm a")));
-            qrImage.setImageBitmap(generator.forceGenerate(event));
+            ical.getEvents().forEach(this::bind);
 
-            entryCardView.setOnClickListener(view ->
+            binding.listEntryCardview.setOnClickListener(view ->
             {
                 new QRDialog(context, ical, generator, fileManager);
 
@@ -109,12 +98,20 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
                 }
             });
 
+        }
+
+        private void bind(EventSpec event)
+        {
+            binding.listEntryTitleTextview.setText(event.getTitle());
+            binding.listEntryDateTextview.setText(event.getStart().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
+            binding.listEntryTimeTextview.setText(event.getStart().format(DateTimeFormatter.ofPattern("hh:mm a")));
+            binding.qrImageView.setImageBitmap(generator.forceGenerate(event));
+
             int isDark = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
             if (isDark == Configuration.UI_MODE_NIGHT_YES)
-                qrImage.setColorFilter(ContextCompat.getColor(context, R.color.qr_dark_tint), android.graphics.PorterDuff.Mode.MULTIPLY);
+                binding.qrImageView.setColorFilter(ContextCompat.getColor(context, R.color.qr_dark_tint), android.graphics.PorterDuff.Mode.MULTIPLY);
             else if (isDark == Configuration.UI_MODE_NIGHT_NO)
-                qrImage.clearColorFilter();
-
+                binding.qrImageView.clearColorFilter();
 
         }
     }
