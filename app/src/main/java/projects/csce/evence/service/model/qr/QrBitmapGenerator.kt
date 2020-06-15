@@ -6,7 +6,7 @@ import com.google.zxing.MultiFormatWriter
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import io.reactivex.Flowable
 import io.reactivex.processors.PublishProcessor
-import projects.csce.evence.ical.EventSpec
+import daniel.perez.ical.EventSpec
 
 class QrBitmapGenerator(private val writer: MultiFormatWriter, private val encoder: BarcodeEncoder)
 {
@@ -27,9 +27,9 @@ class QrBitmapGenerator(private val writer: MultiFormatWriter, private val encod
 		}
 	}
 
-	fun forceGenerate(qr: EventSpec): Bitmap
+	fun forceGenerate(iCalText: String): Bitmap
 	{
-		val bitMatrix = writer.encode(qr.text(), BarcodeFormat.QR_CODE, 600, 600)
+		val bitMatrix = writer.encode(iCalText, BarcodeFormat.QR_CODE, 600, 600)
 		return encoder.createBitmap(bitMatrix)
 	}
 
