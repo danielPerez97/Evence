@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.CompositeDisposable;
 import projects.csce.evence.R;
 import projects.csce.evence.service.model.FileManager;
 import projects.csce.evence.service.model.qr.QrBitmapGenerator;
@@ -21,6 +22,7 @@ public class FileSelectActivity extends AppCompatActivity
 {
     @Inject FileManager fileManager;
     @Inject QrBitmapGenerator generator;
+    private CompositeDisposable disposables = new CompositeDisposable();
     private RecyclerView fileSelector;
     private CardsAdapter adapter;
     private Uri fileUri;
@@ -36,12 +38,12 @@ public class FileSelectActivity extends AppCompatActivity
         resultIntent = new Intent("projects.csce.evence.ACTION_RETURN_FILE");
         setResult(AppCompatActivity.RESULT_CANCELED, null);
 
-        adapter = new CardsAdapter(this, generator, fileManager);
+        adapter = new CardsAdapter(this);
         fileSelector = findViewById(R.id.file_selector);
         fileSelector.setAdapter(adapter);
 
 
-        adapter.setSelectionListener(ical ->
+        disposables.add(adapter.clicks().subscribe(ical ->
         {
             fileUri = fileManager.getFileUri(ical.getFileName());
             if(fileUri != null)
@@ -60,12 +62,12 @@ public class FileSelectActivity extends AppCompatActivity
                 resultIntent.setDataAndType(null, "");
                 setResult(RESULT_CANCELED, resultIntent);
             }
-        });
+        }));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        adapter.setSelectionListener(null);
+        disposables.dispose();
     }
 }

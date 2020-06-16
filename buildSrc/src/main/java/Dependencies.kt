@@ -64,6 +64,10 @@ object Libs
     private const val rxReplayingShareVersion = "2.2.0"
     const val rxReplayingShare = "com.jakewharton.rx2:replaying-share:$rxReplayingShareVersion"
 
+    // Timber
+    private const val timberVersion = "4.7.1"
+    const val timber = "com.jakewharton.timber:timber:$timberVersion"
+
     // ViewModel, LiveData
     private const val lifeCycleVersion = "2.1.0"
     const val lifeCycle = "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"

@@ -121,9 +121,18 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
         // Write the file to the file system
         viewModel.saveFile(currentEvent);
 
-        ViewEvent viewEvent = new ViewEvent(event.getTitle(), event.getDescription(), event.getStartTime(), event.getStartDate(), event.getStartInstantEpoch(), event.getEndEpochMilli(), event.getLocation(), event.text());
+        ViewEvent viewEvent = new ViewEvent(event.getTitle(),
+                event.getDescription(),
+                event.getStartTime(),
+                event.getStartDate(),
+                event.getStartInstantEpoch(),
+                event.getEndEpochMilli(),
+                event.getLocation(),
+                event.text(),
+                generator.forceGenerate(event.text())
+        );
         ViewCalendarData calendar = new ViewCalendarData(currentEvent.getFileName(), Collections.singletonList(viewEvent));
-        QRDialog qrDialog = new QRDialog(this, calendar, viewEvent, generator, fileManager);
+        QRDialog qrDialog = new QRDialog(this, calendar, fileManager);
     }
 
     // Handle the user choosing a place to store the file

@@ -12,28 +12,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.subjects.PublishSubject;
 import projects.csce.evence.R;
 import projects.csce.evence.databinding.EventsListEntryLayoutBinding;
-import projects.csce.evence.service.model.FileManager;
-import projects.csce.evence.service.model.qr.QrBitmapGenerator;
-import projects.csce.evence.view.ui.QRDialog;
 import projects.csce.evence.view.ui.model.ViewCalendarData;
 import projects.csce.evence.view.ui.model.ViewEvent;
 
-public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> implements Observer<List<ViewCalendarData>> {
+public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> implements Observer<List<ViewCalendarData>>, Consumer<List<ViewCalendarData>>
+{
     private static final String TAG = "CardsAdapter";
     private List<ViewCalendarData> dataList = Collections.emptyList();
     private Context context;
-    private QrBitmapGenerator generator;
-    private FileManager fileManager;
-    private SelectionListener listener;
+    private PublishSubject<ViewCalendarData> clicks = PublishSubject.create();
 
-    public CardsAdapter(Context context, QrBitmapGenerator generator, FileManager fileManager)
+    public CardsAdapter(Context context)
     {
         this.context = context;
-        this.generator = generator;
-        this.fileManager = fileManager;
     }
 
     @NonNull
@@ -54,14 +52,27 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
         return dataList.size();
     }
 
+    @Override
     public void onChanged(List<ViewCalendarData> newData) {
         dataList = newData;
         notifyDataSetChanged();
     }
 
-    public void setSelectionListener(SelectionListener listener)
+    public Observable<ViewCalendarData> clicks()
     {
-        this.listener = listener;
+        return clicks.debounce(300, TimeUnit.MILLISECONDS);
+    }
+
+    public void setData(List<ViewCalendarData> newData)
+    {
+        dataList = newData;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void accept(List<ViewCalendarData> viewCalendarData)
+    {
+        setData(viewCalendarData);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -73,20 +84,10 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
             this.binding = binding;
         }
 
-        //todo: tbc
         void bindData(ViewCalendarData ical) {
             ical.getEvents().forEach(this::bind);
 
-            binding.listEntryCardview.setOnClickListener(view ->
-            {
-                new QRDialog(context, ical, ical.getEvents().get(0), generator, fileManager);
-
-                if(listener != null)
-                {
-                    listener.onClick(ical);
-                }
-            });
-
+            binding.listEntryCardview.setOnClickListener(view -> clicks.onNext(ical) );
         }
 
         private void bind(ViewEvent event)
@@ -94,7 +95,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
             binding.listEntryTitleTextview.setText(event.getTitle());
             binding.listEntryDateTextview.setText(event.getStartDate());
             binding.listEntryTimeTextview.setText(event.getStartTime());
-            binding.qrImageView.setImageBitmap(generator.forceGenerate(event.getICalText()));
+            binding.qrImageView.setImageBitmap(event.getImage());
 
             int isDark = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
             if (isDark == Configuration.UI_MODE_NIGHT_YES)
@@ -103,10 +104,5 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
                 binding.qrImageView.clearColorFilter();
 
         }
-    }
-
-    public interface SelectionListener
-    {
-        void onClick(ViewCalendarData ical);
     }
 }
