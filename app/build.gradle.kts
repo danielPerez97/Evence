@@ -68,6 +68,9 @@ dependencies {
     implementation( Libs.dagger )
     kapt( Libs.daggerCompiler )
 
+    // Timber
+    implementation( Libs.timber )
+
     // RxJava
     implementation( Libs.rxJava )
     implementation( Libs.reactiveStreams )

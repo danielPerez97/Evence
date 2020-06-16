@@ -20,10 +20,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.navigation.NavigationView;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import projects.csce.evence.BaseApplication;
 import projects.csce.evence.R;
 import projects.csce.evence.databinding.ActivityMainBinding;
@@ -33,6 +34,7 @@ import projects.csce.evence.service.model.qr.QrBitmapGenerator;
 import projects.csce.evence.utils.Utils;
 import projects.csce.evence.view.adapter.CardsAdapter;
 import projects.csce.evence.viewmodel.MainViewModel;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -40,15 +42,12 @@ public class MainActivity extends AppCompatActivity  {
     private MainViewModel viewModel;
     private ActivityMainBinding binding;
     private CardsAdapter eventsAdapter;
+    private CompositeDisposable disposables = new CompositeDisposable();
 
-    @Inject
-    FileManager fileManager;
-    @Inject
-    GoogleSignInClient signInClient;
-    @Inject
-    ViewModelFactory factory;
-    @Inject
-    QrBitmapGenerator generator;
+    @Inject FileManager fileManager;
+    @Inject GoogleSignInClient signInClient;
+    @Inject ViewModelFactory factory;
+    @Inject QrBitmapGenerator generator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity  {
 
 
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
-        eventsAdapter = new CardsAdapter(this, generator, fileManager);
+        eventsAdapter = new CardsAdapter(this);
         handleRecyclerView();
 
         //binding.loginBtn.setOnClickListener(view -> signIn());
@@ -74,12 +73,37 @@ public class MainActivity extends AppCompatActivity  {
         binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer);
         binding.drawerMain.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+
+        setupSubscriptions();
+    }
+
+    private void setupSubscriptions()
+    {
+        disposables.add(viewModel.liveFiles()
+                .doOnSubscribe(event -> fileManager.notifyIcals())
+                .subscribe(files -> {
+                    Timber.i("Received Files");
+                    eventsAdapter.setData(files);
+                }));
+
+        disposables.add(eventsAdapter.clicks()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(viewCalendarData -> new QRDialog(this, viewCalendarData, fileManager)));
+
+        Timber.i("Set up subscriptions");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         fileManager.notifyIcals();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        disposables.dispose();
     }
 
     @Override
@@ -99,14 +123,14 @@ public class MainActivity extends AppCompatActivity  {
     private void handleRecyclerView() {
         binding.eventsRecyclerView.setAdapter(eventsAdapter);
         binding.eventsRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-        viewModel.liveFiles().observe(this, events -> {
+        disposables.add(viewModel.liveFiles().subscribe( events -> {
             Log.i("SUBSCRIBER", Integer.toString(events.size()));
             eventsAdapter.onChanged(events);
             if (events.size() == 0)
                 binding.emptyTextview.setVisibility(View.VISIBLE);
             else
                 binding.emptyTextview.setVisibility(View.GONE);
-        });
+        }));
     }
 
     public void startQrActivity() {

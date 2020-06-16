@@ -1,5 +1,7 @@
 package projects.csce.evence.view.ui.model
 
+import android.graphics.Bitmap
+
 data class ViewEvent(
         val title: String,
         val description: String,
@@ -8,5 +10,6 @@ data class ViewEvent(
         val startInstantEpoch: Long,
         val endEpochMilli: Long,
         val location: String,
-        val iCalText: String
+        val iCalText: String,
+        val image: Bitmap
 )

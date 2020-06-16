@@ -8,6 +8,7 @@ import projects.csce.evence.di.appscope.AppComponent;
 import projects.csce.evence.di.appscope.DaggerAppComponent;
 import projects.csce.evence.di.appscope.LoginModule;
 import projects.csce.evence.service.model.SharedPref;
+import timber.log.Timber;
 
 
 public class BaseApplication extends Application
@@ -20,6 +21,13 @@ public class BaseApplication extends Application
     public void onCreate()
     {
         super.onCreate();
+
+        // Setup Timber
+        if(BuildConfig.DEBUG)
+        {
+            Timber.plant(new Timber.DebugTree());
+        }
+
         injector = DaggerAppComponent.builder()
                 .loginModule(new LoginModule(getApplicationContext()))
                 .build();

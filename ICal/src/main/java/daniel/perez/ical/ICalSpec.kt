@@ -26,6 +26,7 @@ class ICalSpec private constructor(val builder: Builder)
 		sb.appendln(timeZoneString)
 		events.forEach { sb.appendln(it.text()) }
 		sb.appendln("END:VCALENDAR")
+		sb.appendln()
 
 		return sb.toString()
 	}
@@ -81,7 +82,7 @@ class ICalSpec private constructor(val builder: Builder)
 			DTSTART:19701101T020000
 			RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
 			END:STANDARD
-			END:VTIMEZONEbbbb
+			END:VTIMEZONE
 		""".trimIndent()
 	}
 

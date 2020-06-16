@@ -13,8 +13,9 @@ import javax.inject.Inject;
 
 import daniel.perez.ical.EventSpec;
 import daniel.perez.ical.ICalSpec;
-import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import projects.csce.evence.service.model.FileManager;
+import projects.csce.evence.service.model.qr.QrBitmapGenerator;
 import projects.csce.evence.view.ui.model.ViewCalendarData;
 import projects.csce.evence.view.ui.model.ViewEvent;
 
@@ -22,25 +23,29 @@ public class MainViewModel extends ViewModel
 {
 
     private FileManager fileManager;
+    private QrBitmapGenerator generator;
 
     @Inject
-    MainViewModel(FileManager fileManager)
+    MainViewModel(FileManager fileManager, QrBitmapGenerator generator)
     {
         this.fileManager = fileManager;
+        this.generator = generator;
     }
 
-    public LiveData<List<ViewCalendarData>> liveFiles()
+    public Observable<List<ViewCalendarData>> liveFiles()
     {
-        Flowable<List<ViewCalendarData>> viewFiles = fileManager.icals()
-                .flatMapIterable(iCalSpecs -> iCalSpecs)
-                .map((ICalSpec iCalSpec) -> {
-                    List<ViewEvent> events = map(iCalSpec.getEvents());
-                    return new ViewCalendarData(iCalSpec.getFileName(), events);
-                })
-                .toList()
-                .toFlowable();
 
-        return LiveDataReactiveStreams.fromPublisher(viewFiles);
+        return fileManager.icals()
+                .flatMap(iCalSpecs ->
+                        Observable.just(iCalSpecs)
+                                .flatMapIterable(iCalSpec -> iCalSpecs)
+                                .map( (ICalSpec iCalSpec) -> {
+                                    List<ViewEvent> events = map(iCalSpec.getEvents());
+                                    return new ViewCalendarData(iCalSpec.getFileName(), events);
+                                })
+                                .toList()
+                                .toObservable()
+                );
     }
 
     private List<ViewEvent> map(List<EventSpec> eventSpecs)
@@ -54,7 +59,9 @@ public class MainViewModel extends ViewModel
                         event.getStartInstantEpoch(),
                         event.getEndEpochMilli(),
                         event.getLocation(),
-                        event.text()
+                        event.text(),
+                        generator.forceGenerate(event.text())
+
                 ))
                 .collect(Collectors.toList());
     }
