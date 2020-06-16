@@ -2,14 +2,17 @@ apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def props = new Properties()
+props.load( new FileInputStream( keystorePropertiesFile ) )
+
 android {
     signingConfigs {
         debug {
-//            storeFile file('/home/daniel/.android/debug.keystore')
-            storeFile file('/home/daniel/.daniel-dev/keystore.jks')
-            storePassword 'theStrokes23_ks'
-            keyAlias = 'playstorekey'
-            keyPassword 'theStrokes23_ps'
+            storeFile( file( props['storeFile'] ) )
+            storePassword( props['storePassword'] )
+            keyAlias = props['keyAlias']
+            keyPassword( props['keyPassword'] )
         }
     }
     compileSdkVersion 29
