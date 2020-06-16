@@ -1,15 +1,11 @@
 package projects.csce.evence.view.ui;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,27 +14,28 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-import org.threeten.bp.format.DateTimeFormatter;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Objects;
 
 import javax.inject.Inject;
 
+import daniel.perez.ical.EventSpec;
+import daniel.perez.ical.ICalSpec;
+import daniel.perez.ical.Parser;
 import okio.BufferedSink;
 import okio.Okio;
 import projects.csce.evence.R;
 import projects.csce.evence.databinding.ActivityGenerateQrBinding;
-import projects.csce.evence.ical.EventSpec;
-import projects.csce.evence.ical.ICalSpec;
-import projects.csce.evence.ical.Parser;
 import projects.csce.evence.service.model.FileManager;
 import projects.csce.evence.service.model.qr.QrAttempt;
 import projects.csce.evence.service.model.qr.QrBitmapGenerator;
 import projects.csce.evence.utils.Utils;
+import projects.csce.evence.view.ui.model.ViewCalendarData;
+import projects.csce.evence.view.ui.model.ViewEvent;
 import projects.csce.evence.viewmodel.GenerateQrViewModel;
 
 public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt> {
@@ -74,10 +71,10 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
     public void fillInFields(){
         EventSpec event = currentEvent.getEvents().get(0);
         binding.titleEditText.setText(event.getTitle());
-        binding.startDateTextView.setText(event.getStart().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
-        binding.startTimeTextView.setText(event.getStart().format(DateTimeFormatter.ofPattern("hh:mm a")));
-        binding.endDateTextView.setText(event.getEnd().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
-        binding.endTimeTextView.setText(event.getEnd().format(DateTimeFormatter.ofPattern("hh:mm a")));
+        binding.startDateTextView.setText(event.getStartDate());
+        binding.startTimeTextView.setText(event.getStartTime());
+        binding.endDateTextView.setText(event.getEndFormatted("MM-dd-yyyy"));
+        binding.endTimeTextView.setText(event.getEndFormatted("hh:mm a"));
         binding.locationEditText.setText(event.getLocation());
         binding.descriptionEditText.setText(event.getDescription());
 
@@ -123,7 +120,10 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
 
         // Write the file to the file system
         viewModel.saveFile(currentEvent);
-        QRDialog qrDialog = new QRDialog(this, currentEvent, generator, fileManager);
+
+        ViewEvent viewEvent = new ViewEvent(event.getTitle(), event.getDescription(), event.getStartTime(), event.getStartDate(), event.getStartInstantEpoch(), event.getEndEpochMilli(), event.getLocation(), event.text());
+        ViewCalendarData calendar = new ViewCalendarData(currentEvent.getFileName(), Collections.singletonList(viewEvent));
+        QRDialog qrDialog = new QRDialog(this, calendar, viewEvent, generator, fileManager);
     }
 
     // Handle the user choosing a place to store the file

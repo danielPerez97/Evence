@@ -1,4 +1,4 @@
-package projects.csce.evence.ical
+package daniel.perez.ical
 
 import java.util.Objects
 
@@ -81,7 +81,7 @@ class ICalSpec private constructor(val builder: Builder)
 			DTSTART:19701101T020000
 			RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
 			END:STANDARD
-			END:VTIMEZONE
+			END:VTIMEZONEbbbb
 		""".trimIndent()
 	}
 
