@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
         <variable
             name="view"
-            type="projects.csce.evence.view.ui.SettingsActivity" />
+            type="projects.csce.evence.view.ui.ShareAppActivity" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -15,44 +13,57 @@
         android:clipToPadding="false"
         android:paddingBottom="0dp">
 
-        <androidx.cardview.widget.CardView
-            style="@style/LayoutContainerCardView">
-            <LinearLayout
-                style="@style/CardviewLayout"
-                >
-                <Switch
-                    android:id="@+id/darkModeSwitch"
-                    style="@style/SettingsEntry"
-                    android:onClick="@{() -> view.onDarkModeSwitchClicked()}"
-                    android:text="@string/dark_theme"
-                    />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                style="@style/AboutPageCardview"
+                android:onClick="@{()->view.shareAppQr()}">
+
+                <LinearLayout style="@style/CardviewLayout">
+
+                    <ImageView
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="32dp"
+                        android:src="@drawable/ic_border_right_black_24dp" />
+
+                    <TextView
+                        style="@style/AboutPageText"
+                        android:text="@string/app_name" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/toolbar"
             style="@style/CustomBottomAppBar"
             app:fabAlignmentMode="end"
-            app:title="@string/settings">
+            app:title="@string/share_app">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/settings"
+                    android:text="@string/share_app"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white" />
 
             </LinearLayout>
         </com.google.android.material.bottomappbar.BottomAppBar>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/back_btn"
             style="@style/FAB"
             android:layout_gravity="bottom|center"
-            android:onClick="@{() -> view.onBackClicked()}"
-            android:src="@drawable/ic_arrow_back_black_24dp"
-            app:layout_anchor="@+id/toolbar"
-            />
+            android:src="@drawable/ic_share_white_36dp"
+            app:layout_anchor="@+id/toolbar" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
