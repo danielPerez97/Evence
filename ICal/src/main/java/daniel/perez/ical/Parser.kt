@@ -1,11 +1,11 @@
-package projects.csce.evence.ical
+package daniel.perez.ical
 
 import android.util.Log
 import okio.buffer
 import okio.source
-import org.threeten.bp.Month
-import org.threeten.bp.ZonedDateTime
 import java.io.File
+import java.time.Month
+import java.time.ZonedDateTime
 
 object Parser
 {
@@ -14,7 +14,7 @@ object Parser
     private var eventBuilder: EventSpec.Builder? = null
 
 
-    fun parse(file: File): ICalSpec
+    fun parse(file: File): daniel.perez.ical.ICalSpec
     {
         var line = ""
         file.source().buffer().use {
@@ -28,13 +28,13 @@ object Parser
             }
         }
         val ical = builder.fileName(file.nameWithoutExtension).build()
-        builder = ICalSpec.Builder()
+        builder = daniel.perez.ical.ICalSpec.Builder()
         state = null
         eventBuilder = null
         return ical
     }
 
-    private fun handleLine(line: String): ICalSpec.Builder = when (state!!)
+    private fun handleLine(line: String): daniel.perez.ical.ICalSpec.Builder = when (state!!)
     {
         State.VCalendar ->
         {

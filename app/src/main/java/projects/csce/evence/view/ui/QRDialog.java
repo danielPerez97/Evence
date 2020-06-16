@@ -5,22 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.provider.CalendarContract;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 
-import org.threeten.bp.format.DateTimeFormatter;
-
 import projects.csce.evence.R;
 import projects.csce.evence.databinding.DialogBoxQrBinding;
-import projects.csce.evence.ical.EventSpec;
-import projects.csce.evence.ical.ICalSpec;
 import projects.csce.evence.service.model.FileManager;
 import projects.csce.evence.service.model.qr.QrBitmapGenerator;
+import projects.csce.evence.view.ui.model.ViewCalendarData;
+import projects.csce.evence.view.ui.model.ViewEvent;
 
 import static android.content.Intent.ACTION_INSERT;
 
@@ -28,27 +23,27 @@ public class QRDialog {
     private static final String TAG = "QRDialog";
     private Context context;
     private Dialog dialog;
-    private ICalSpec ical;
-    private EventSpec currentEvent;
+    private ViewCalendarData ical;
+    private ViewEvent currentEvent;
     DialogBoxQrBinding binding;
     private QrBitmapGenerator generator;
     private FileManager fileManager;
 
 
-    public QRDialog(Context context, ICalSpec ical, QrBitmapGenerator generator, FileManager fileManager) {
+    public QRDialog(Context context, ViewCalendarData ical, ViewEvent currentEvent, QrBitmapGenerator generator, FileManager fileManager) {
         this.context = context;
         this.ical = ical;
-        this.currentEvent = ical.getEvents().get(0);
+        this.currentEvent = currentEvent;
         binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_box_qr, null, false);
         this.generator = generator;
         this.fileManager = fileManager;
         binding.setView(this);
 
         binding.qrDialogEventTitleTextview.setText(currentEvent.getTitle());
-        binding.qrDialogEventStartDateTextview.setText(currentEvent.getStart().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
-        binding.qrDialogEventStartTimeTextview.setText(currentEvent.getStart().format(DateTimeFormatter.ofPattern("hh:mm a")));
+        binding.qrDialogEventStartDateTextview.setText(currentEvent.getStartDate());
+        binding.qrDialogEventStartTimeTextview.setText(currentEvent.getStartTime());
         binding.qrDialogEventLocationTextview.setText(currentEvent.getLocation());
-        binding.qrDialogQrImageview.setImageBitmap(generator.forceGenerate(currentEvent));
+        binding.qrDialogQrImageview.setImageBitmap(generator.forceGenerate(currentEvent.getICalText()));
         binding.editBtn.setOnClickListener(view -> {
             Intent intent = new Intent(context, GenerateQR.class);
             intent.putExtra("FILE_PATH", fileManager.getFilePath(ical.getFileName()));
@@ -89,8 +84,8 @@ public class QRDialog {
         Intent toCalendar = new Intent(ACTION_INSERT);
         toCalendar.setData(CalendarContract.Events.CONTENT_URI);
         toCalendar.putExtra(CalendarContract.Events.TITLE, currentEvent.getTitle());
-        toCalendar.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, currentEvent.getStart().toInstant().toEpochMilli());
-        toCalendar.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, currentEvent.getEnd().toInstant().toEpochMilli());
+        toCalendar.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, currentEvent.getStartInstantEpoch());
+        toCalendar.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, currentEvent.getEndEpochMilli());
         toCalendar.putExtra(CalendarContract.Events.EVENT_LOCATION, currentEvent.getLocation());
         toCalendar.putExtra(CalendarContract.Events.DESCRIPTION, currentEvent.getDescription());
         context.startActivity(toCalendar);
