@@ -13,5 +13,6 @@
     <color name="grey2">#CACACA</color>
     <color name="blue1">#2196F3</color>
     <color name="mainText">#000</color>
+    <color name="text2">#595959</color>
     <color name="formInputBackground">#ECEFF1</color>
 </resources>

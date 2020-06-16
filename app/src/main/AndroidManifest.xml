@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="projects.csce.evence">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".BaseApplication"
@@ -12,46 +13,49 @@
         android:roundIcon="@drawable/evence_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".view.ui.ShareAppActivity"></activity>
         <activity android:name=".view.ui.GenerateQR" />
-        <activity android:name=".view.ui.SplashscreenActivity"
+        <activity
+            android:name=".view.ui.SplashscreenActivity"
             android:theme="@style/splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.ui.MainActivity"
-            android:theme="@style/AppTheme">
-        </activity>
-        <activity android:name=".view.ui.SettingsActivity"
-            android:parentActivityName=".view.ui.MainActivity"/>
+        <activity
+            android:name=".view.ui.MainActivity"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".view.ui.SettingsActivity"
+            android:parentActivityName=".view.ui.MainActivity" />
+        <activity
+            android:name=".view.ui.AboutActivity"
+            android:parentActivityName=".view.ui.MainActivity" />
         <activity android:name=".view.ui.SecondActivity" />
         <activity
             android:name=".view.ui.FileSelectActivity"
             android:label="File Selector">
             <intent-filter>
-                <action
-                    android:name="android.intent.action.PICK"/>
-                <category
-                    android:name="android.intent.category.DEFAULT"/>
-                <category
-                    android:name="android.intent.category.OPENABLE"/>
-                <data android:mimeType="text/plain"/>
+                <action android:name="android.intent.action.PICK" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
 
         <provider
-            android:authorities="projects.csce.evence.FileProvider"
             android:name="androidx.core.content.FileProvider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:authorities="projects.csce.evence.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths"/>
+                android:resource="@xml/filepaths" />
         </provider>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

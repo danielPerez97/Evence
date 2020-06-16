@@ -12,12 +12,6 @@
         <!-- enable window content transitions -->
         <item name="android:windowActivityTransitions">true</item>
 
-        <!-- specify shared element transitions -->
-        <item name="android:windowSharedElementEnterTransition">
-            @transition/change_image_transform</item>
-        <item name="android:windowSharedElementExitTransition">
-            @transition/change_image_transform</item>
-
     </style>
 
     <style name="splashscreen" parent="Theme.AppCompat.NoActionBar">
@@ -31,6 +25,13 @@
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>
         <item name="android:clipToPadding">false</item>
+    </style>
+
+    <style name="CardviewLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">21dp</item>
     </style>
 
     <style name="FormTitleTextView">
@@ -142,7 +143,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/mainText</item>
+        <item name="android:textColor">@color/text2</item>
         <item name="android:layout_margin">12dp</item>
     </style>
 
@@ -157,7 +158,6 @@
         <item name="fabCradleRoundedCornerRadius">32dp</item>
         <item name="fabCradleVerticalOffset">12dp</item>
         <item name="hideOnScroll">true</item>
-        <item name="android:transitionName">toolbarTransition</item>
     </style>
 
     <style name="FAB">
@@ -167,4 +167,46 @@
         <item name="android:transitionName">fabTransition</item>
     </style>
 
+    <style name="NavigationDrawerItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="NavigationDrawerItemImage">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginLeft">21dp</item>
+        <item name="android:layout_marginRight">21dp</item>
+    </style>
+
+    <style name="NavigationDrawerItemText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+    
+    <style name="AboutPageText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text2</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_margin">2dp</item>
+    </style>
+
+    <style name="AboutPageCardview" parent="LayoutContainerCardView">
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:stateListAnimator">@animator/anim_button_push</item>
+    </style>
 </resources>

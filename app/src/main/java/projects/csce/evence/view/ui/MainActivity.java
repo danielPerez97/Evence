@@ -1,24 +1,16 @@
 package projects.csce.evence.view.ui;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,7 +20,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.navigation.NavigationView;
 
 import javax.inject.Inject;
@@ -43,7 +34,7 @@ import projects.csce.evence.utils.Utils;
 import projects.csce.evence.view.adapter.CardsAdapter;
 import projects.csce.evence.viewmodel.MainViewModel;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity  {
 
     private int RC_SIGN_IN = 1;
     private MainViewModel viewModel;
@@ -61,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("MainActivity", "yo mama so fat");
         setTheme(R.style.AppTheme);
         Utils.getAppComponent(this).inject(this);
         super.onCreate(savedInstanceState);
@@ -81,12 +71,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //handle drawer
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, binding.drawerMain, binding.toolbarMain, R.string.app_name, R.string.app_name);
-        binding.drawerMain.closeDrawer(binding.navigationDrawer);
+        binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer);
         binding.drawerMain.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-
-        binding.navigationDrawer.setNavigationItemSelectedListener(this);
-
     }
 
     @Override
@@ -107,19 +94,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.qr_camera_btn:
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_settings:
-                startSettingsActivity();
-                break;
-            case R.id.menu_about:
-                break;
-        }
-        binding.drawerMain.closeDrawer(binding.navigationDrawer);
-        return true;
     }
 
     private void handleRecyclerView() {
@@ -145,9 +119,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(secondActivityIntent);
     }
 
-    public void startSettingsActivity() {
+    public void startSettingsActivity(View view) {
+        binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer);
         Intent settingsActivity = new Intent(this, SettingsActivity.class);
         startActivity(settingsActivity);
+    }
+
+    public void startShareAppActivity(View view) {
+        binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer);
+        Intent shareActivity = new Intent(this, ShareAppActivity.class);
+        startActivity(shareActivity);
+    }
+
+    public void startAboutActivity(View view){
+        binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer);
+        Intent aboutActivity = new Intent(this, AboutActivity.class);
+        startActivity(aboutActivity);
     }
 
     public void signIn() {
