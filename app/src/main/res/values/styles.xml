@@ -1,17 +1,43 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:windowBackground">@color/screenBackground</item>
+
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">true</item>
+
+    </style>
+
+    <style name="splashscreen" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splashscreen</item>
+        <item name="android:layout_margin">25dp</item>
+    </style>
+
+    <style name="RootLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:clipToPadding">false</item>
+    </style>
+
+    <style name="CardviewLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">21dp</item>
     </style>
 
     <style name="FormTitleTextView">
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#2979FF</item>
+        <item name="android:textColor">@color/blue1</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">12dp</item>
@@ -27,7 +53,7 @@
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:layout_marginLeft">14dp</item>
         <item name="android:layout_marginRight">14dp</item>
-        <item name="android:textColor">#666666</item>
+        <item name="android:textColor">@color/edittext_font_color</item>
         <item name="android:backgroundTint">#BEBEBE</item>
     </style>
 
@@ -42,7 +68,7 @@
         <item name="android:layout_marginRight">14dp</item>
     </style>
 
-    <style name="FormCardView"  parent="ClickableView">
+    <style name="FormCardView"  parent="ButtonCardView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">8dp</item>
@@ -52,7 +78,7 @@
         <item name="android:layout_marginRight">14dp</item>
         <item name="cardElevation">4dp</item>
         <item name="cardCornerRadius">18dp</item>
-        <item name="android:backgroundTint">#ECEFF1</item>
+        <item name="android:backgroundTint">@color/formInputBackground</item>
     </style>
 
     <style name="LayoutContainerCardView">
@@ -62,9 +88,10 @@
         <item name="android:padding">10dp</item>
         <item name="cardCornerRadius">14dp      </item>
         <item name="cardElevation">8dp</item>
+        <item name="android:backgroundTint">@color/cardviewBackground</item>
     </style>
 
-    <style name="ClickableView">
+    <style name="ButtonCardView">
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
         <item name="android:stateListAnimator">@animator/anim_button_push</item>
@@ -76,7 +103,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">#000</item>
+        <item name="android:textColor">@color/mainText</item>
     </style>
 
     <style name="CircularButtonAndTextLinearLayout">
@@ -88,11 +115,11 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="CircularButtonCardView" parent="ClickableView">
+    <style name="CircularButtonCardView" parent="ButtonCardView">
         <item name="android:layout_height">46dp</item>
         <item name="android:layout_width">46dp</item>
         <item name="android:layout_margin">4dp</item>
-        <item name="android:backgroundTint">#2196F3</item>
+        <item name="android:backgroundTint">@color/blue1</item>
         <item name="android:gravity">center</item>
         <item name="cardCornerRadius">23dp</item>
         <item name="cardElevation">6dp</item>
@@ -111,6 +138,78 @@
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">12sp</item>
     </style>
+
+    <style name="SettingsEntry">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text2</item>
+        <item name="android:layout_margin">12dp</item>
+    </style>
+
+    <style name="CustomBottomAppBar" parent="@style/Widget.MaterialComponents.BottomAppBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="theme">@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="fabAnimationMode">slide</item>
+        <item name="fabCradleMargin">17dp</item>
+        <item name="fabCradleRoundedCornerRadius">32dp</item>
+        <item name="fabCradleVerticalOffset">12dp</item>
+        <item name="hideOnScroll">true</item>
+    </style>
+
+    <style name="FAB">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="android:transitionName">fabTransition</item>
+    </style>
+
+    <style name="NavigationDrawerItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="NavigationDrawerItemImage">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginLeft">21dp</item>
+        <item name="android:layout_marginRight">21dp</item>
+    </style>
+
+    <style name="NavigationDrawerItemText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="AboutPageText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text2</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_margin">2dp</item>
+    </style>
+
+    <style name="AboutPageCardview" parent="LayoutContainerCardView">
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:stateListAnimator">@animator/anim_button_push</item>
+    </style>
+
     <style name="viewShadow">
         <item name="android:shadowColor">#000</item>
         <item name="android:shadowDx">2</item>

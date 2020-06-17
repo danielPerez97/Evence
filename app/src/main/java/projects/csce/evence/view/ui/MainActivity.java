@@ -3,8 +3,13 @@ package projects.csce.evence.view.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
@@ -18,6 +23,8 @@ import com.google.android.gms.tasks.Task;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import projects.csce.evence.BaseApplication;
 import projects.csce.evence.R;
 import projects.csce.evence.databinding.ActivityMainBinding;
@@ -27,13 +34,15 @@ import projects.csce.evence.service.model.qr.QrBitmapGenerator;
 import projects.csce.evence.utils.Utils;
 import projects.csce.evence.view.adapter.CardsAdapter;
 import projects.csce.evence.viewmodel.MainViewModel;
+import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     private int RC_SIGN_IN = 1;
     private MainViewModel viewModel;
     private ActivityMainBinding binding;
     private CardsAdapter eventsAdapter;
+    private CompositeDisposable disposables = new CompositeDisposable();
 
     @Inject FileManager fileManager;
     @Inject GoogleSignInClient signInClient;
@@ -42,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         Utils.getAppComponent(this).inject(this);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
@@ -51,12 +61,36 @@ public class MainActivity extends AppCompatActivity {
         //apply custom toolbar
         setSupportActionBar(binding.toolbarMain);
 
+
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
-        eventsAdapter = new CardsAdapter(this, generator, fileManager);
+        eventsAdapter = new CardsAdapter(this);
         handleRecyclerView();
 
-        binding.loginBtn.setOnClickListener(view -> signIn());
+        //binding.loginBtn.setOnClickListener(view -> signIn());
 
+        //handle drawer
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, binding.drawerMain, binding.toolbarMain, R.string.app_name, R.string.app_name);
+        binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer);
+        binding.drawerMain.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+        setupSubscriptions();
+    }
+
+    private void setupSubscriptions()
+    {
+        disposables.add(viewModel.liveFiles()
+                .doOnSubscribe(event -> fileManager.notifyIcals())
+                .subscribe(files -> {
+                    Timber.i("Received Files");
+                    eventsAdapter.setData(files);
+                }));
+
+        disposables.add(eventsAdapter.clicks()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(viewCalendarData -> new QRDialog(this, viewCalendarData, fileManager)));
+
+        Timber.i("Set up subscriptions");
     }
 
     @Override
@@ -65,20 +99,44 @@ public class MainActivity extends AppCompatActivity {
         fileManager.notifyIcals();
     }
 
-    private void handleRecyclerView() {
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        disposables.dispose();
+    }
 
-        //for testing purposes only. populating the recyclerview with dummy data
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.qr_camera_btn:
+                startQrReaderActivity();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void handleRecyclerView() {
         binding.eventsRecyclerView.setAdapter(eventsAdapter);
         binding.eventsRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-        viewModel.liveFiles().observe(this, events -> {
+        disposables.add(viewModel.liveFiles().subscribe( events -> {
             Log.i("SUBSCRIBER", Integer.toString(events.size()));
             eventsAdapter.onChanged(events);
-        });
+            if (events.size() == 0)
+                binding.emptyTextview.setVisibility(View.VISIBLE);
+            else
+                binding.emptyTextview.setVisibility(View.GONE);
+        }));
     }
 
     public void startQrReaderActivity(){
-        Intent generateQRActivity = new Intent(this, QrReaderActivity.class);
-        startActivity(generateQRActivity);
+        Intent qrReaderActivity = new Intent(this, QrReaderActivity.class);
+        startActivity(qrReaderActivity);
     }
 
     public void startQrActivity() {
@@ -89,6 +147,24 @@ public class MainActivity extends AppCompatActivity {
     public void startSecondActivity() {
         Intent secondActivityIntent = new Intent(this, SecondActivity.class);
         startActivity(secondActivityIntent);
+    }
+
+    public void startSettingsActivity(View view) {
+        binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer);
+        Intent settingsActivity = new Intent(this, SettingsActivity.class);
+        startActivity(settingsActivity);
+    }
+
+    public void startShareAppActivity(View view) {
+        binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer);
+        Intent shareActivity = new Intent(this, ShareAppActivity.class);
+        startActivity(shareActivity);
+    }
+
+    public void startAboutActivity(View view){
+        binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer);
+        Intent aboutActivity = new Intent(this, AboutActivity.class);
+        startActivity(aboutActivity);
     }
 
     public void signIn() {

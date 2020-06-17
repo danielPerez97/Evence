@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="view"
+            type="projects.csce.evence.view.ui.SettingsActivity" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        style="@style/RootLayout"
+        android:clipToPadding="false"
+        android:paddingBottom="0dp">
+
+        <androidx.cardview.widget.CardView
+            style="@style/LayoutContainerCardView">
+            <LinearLayout
+                style="@style/CardviewLayout"
+                >
+                <Switch
+                    android:id="@+id/darkModeSwitch"
+                    style="@style/SettingsEntry"
+                    android:onClick="@{() -> view.onDarkModeSwitchClicked()}"
+                    android:text="@string/dark_theme"
+                    />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/toolbar"
+            style="@style/CustomBottomAppBar"
+            app:fabAlignmentMode="end"
+            app:title="@string/settings">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textColor="@color/white"/>
+
+            </LinearLayout>
+        </com.google.android.material.bottomappbar.BottomAppBar>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/back_btn"
+            style="@style/FAB"
+            android:layout_gravity="bottom|center"
+            android:onClick="@{() -> view.onBackClicked()}"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            app:layout_anchor="@+id/toolbar"
+            />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

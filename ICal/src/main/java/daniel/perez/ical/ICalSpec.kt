@@ -1,4 +1,4 @@
-package projects.csce.evence.ical
+package daniel.perez.ical
 
 import java.util.Objects
 
@@ -26,11 +26,12 @@ class ICalSpec private constructor(val builder: Builder)
 		sb.appendln(timeZoneString)
 		events.forEach { sb.appendln(it.text()) }
 		sb.appendln("END:VCALENDAR")
+		sb.appendln()
 
 		return sb.toString()
 	}
 
-	class Builder internal constructor()
+	class Builder constructor()
 	{
 		internal var fileName: String? = null
 		internal val events: MutableList<EventSpec> = mutableListOf()
