@@ -91,6 +91,9 @@ public class QRDialog
     }
 
     public void closeDialog() {
-        dialog.dismiss();
+        if (context instanceof GenerateQR){
+            ((GenerateQR) context).finish();
+        } else
+            dialog.dismiss();
     }
 }
