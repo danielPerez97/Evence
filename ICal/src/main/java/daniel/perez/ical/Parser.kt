@@ -1,11 +1,12 @@
-package projects.csce.evence.ical
+package daniel.perez.ical
 
 import android.util.Log
 import okio.buffer
 import okio.source
-import org.threeten.bp.Month
-import org.threeten.bp.ZonedDateTime
+import timber.log.Timber
 import java.io.File
+import java.time.Month
+import java.time.ZonedDateTime
 
 object Parser
 {
@@ -24,7 +25,12 @@ object Parser
                 {
                     state = State.VCalendar
                 }
-                builder = handleLine(line)
+                if(line == "END:VCALENDAR")
+                {
+                    state = State.Finished
+                }
+                if(state != null && state != State.Finished)
+                    builder = handleLine(line)
             }
         }
         val ical = builder.fileName(file.nameWithoutExtension).build()
@@ -124,15 +130,13 @@ object Parser
         val date = dt.substringAfter(":")
         val year = date.substring(0, 4).toInt()
         val month = date.substring(4, 6)
-        Log.e("ERROR", date)
         val dayStr = date.substring(6, 8)
-        Log.e("ERROR", dayStr.toString())
         val day = dayStr.dePad()
 
         val time = date.substringAfterLast("T")
         val hour = time.substring(0, 2)
         val minute = time.substring(2, 4).toInt()
-        val seconds = time.substring(4,6).toInt()
+        val seconds = time.substring(4, 6).toInt()
 
         return ZonedDateTime.now()
                 .withMonth(Month.of(month.toInt()).value)
@@ -153,13 +157,10 @@ object Parser
 
     private fun String.dePad(): Int
     {
-        Log.e("ERROR", this)
-        return if(this.length > 1 && this[0].toString() == "0")
+        return if (this.length > 1 && this[0].toString() == "0")
         {
-            Log.e("ERROR", this.substring(1, this.lastIndex + 1))
             this.substring(1, this.lastIndex + 1).toInt()
-        }
-        else
+        } else
         {
             this.toInt()
         }

@@ -10,14 +10,17 @@ import io.reactivex.Flowable
 import io.reactivex.processors.PublishProcessor
 import okio.buffer
 import okio.sink
-import projects.csce.evence.ical.ICalSpec
-import projects.csce.evence.ical.Parser
+import daniel.perez.ical.ICalSpec
+import daniel.perez.ical.Parser
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import projects.csce.evence.service.model.qr.QrBitmapGenerator
+import timber.log.Timber
 import java.io.File
 
 class FileManager(val context: Context, val qrBitmapGenerator: QrBitmapGenerator)
 {
-	private val processor = PublishProcessor.create<List<ICalSpec>>()
+	private val processor = PublishSubject.create<List<ICalSpec>>()
 	private val icalDir = File(context.getExternalFilesDir(Environment.DIRECTORY_DCIM), "/ical")
 
 	init
@@ -29,8 +32,7 @@ class FileManager(val context: Context, val qrBitmapGenerator: QrBitmapGenerator
 	fun saveICalFile(ical: ICalSpec)
 	{
 		// Create our file
-		Log.e("FILENAMECREATE", ical.fileName)
-//		val newFile = File.createTempFile(ical.fileName, ".ics", icalDir)
+		Timber.e(ical.fileName)
 		val newFile = File("$icalDir/${ical.fileName}.ics")
 
 		// Write the file
@@ -47,7 +49,7 @@ class FileManager(val context: Context, val qrBitmapGenerator: QrBitmapGenerator
 
 	private fun saveICalImage(ical: ICalSpec)
 	{
-		val bitmap: Bitmap = qrBitmapGenerator.forceGenerate(ical.events[0])
+		val bitmap: Bitmap = qrBitmapGenerator.forceGenerate(ical.text())
 
 		// Create the image file
 		val newFile = File("${icalDir}/image_${ical.fileName}.png")
@@ -69,25 +71,28 @@ class FileManager(val context: Context, val qrBitmapGenerator: QrBitmapGenerator
 	fun notifyEvents()
 	{
 		// Notify of change
-		val files = icalDir.listFiles()
+		processor.onNext( getCurrentFiles() )
+	}
+
+	private fun getCurrentFiles(): List<ICalSpec>
+	{
+		val files: Array<File>? = icalDir.listFiles()
 		if(files == null)
 		{
-			Log.i("UPSTREAM", "FOUND NO FILES")
+			Timber.i("FOUND NO FILES")
 		}
 		else
 		{
-			Log.i("UPSTREAM", "FOUND FILES")
-			Log.i("UPSTREAM", "${files.size}")
+			Timber.i("FOUND FILES")
+			Timber.tag("UPSTREAM").i(files.size.toString())
 		}
-		val parsedIcals: List<ICalSpec> = files.toList().map { Parser.parse(it) }
-		val events = parsedIcals.flatMap { it.events }
-//		processor.onNext(parsedIcals.flatMap { it.events })
+		return files?.toList()?.map { Parser.parse(it) } ?: emptyList()
 	}
 
 	fun getFileUri(fileName: String): Uri?
 	{
-		Log.e("FILENAME", fileName)
-		Log.e("FILENAME", icalDir.listFiles()[1].toString())
+		Timber.tag("FILENAME").e(fileName)
+		Timber.tag("FILENAME").e(icalDir.listFiles()[1].toString())
 		val file: File = icalDir.listFiles().find { it.name.contains(fileName) }!!
 		return FileProvider.getUriForFile(context, "projects.csce.evence.FileProvider", file)
 	}
@@ -98,8 +103,10 @@ class FileManager(val context: Context, val qrBitmapGenerator: QrBitmapGenerator
 		return file!!.absolutePath
 	}
 
-	fun icals(): Flowable<List<ICalSpec>>
+	fun icals(): Observable<List<ICalSpec>>
 	{
-		return processor
+		val currentIcals: Observable<List<ICalSpec>> = Observable.just( getCurrentFiles() )
+		return Observable.merge(processor, currentIcals)
+				.doOnNext{ Timber.i( "Size of array: ${it.size}" ) }
 	}
 }

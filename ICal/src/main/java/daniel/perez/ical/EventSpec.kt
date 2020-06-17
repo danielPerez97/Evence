@@ -1,6 +1,7 @@
-package projects.csce.evence.ical
+package daniel.perez.ical
 
-import org.threeten.bp.ZonedDateTime
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Objects
 
 
@@ -40,6 +41,32 @@ class EventSpec private constructor(builder: Builder)
 		}
 	}
 
+	fun getStartDate(): String
+	{
+		return start.format(DateTimeFormatter.ofPattern("MM-dd-yyyy"))
+	}
+
+	fun getStartTime(): String
+	{
+		return start.format(DateTimeFormatter.ofPattern("hh:mm a"))
+	}
+
+	@JvmOverloads
+	fun getEndFormatted(pattern: String = "MM-dd-yyyy"): String
+	{
+		return end.format(DateTimeFormatter.ofPattern(pattern))
+	}
+
+	fun getStartInstantEpoch(): Long
+	{
+		return start.toInstant().toEpochMilli()
+	}
+
+	fun getEndEpochMilli(): Long
+	{
+		return end.toInstant().toEpochMilli()
+	}
+
 	private fun formatLocalZone(time: ZonedDateTime): String
 	{
 		return "${time.zone.normalized()}:${time.year}${pad(time.month.value)}${pad(time.dayOfMonth)}T${pad(time.hour)}${pad(time.minute)}${pad(time.second)}"
@@ -54,7 +81,7 @@ class EventSpec private constructor(builder: Builder)
 		}
 	}
 
-	internal fun text(): String
+	fun text(): String
 	{
 		val sb = StringBuilder()
 		sb.appendln("BEGIN:VEVENT")

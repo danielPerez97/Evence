@@ -26,14 +26,16 @@ import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
+import daniel.perez.ical.EventSpec
+import daniel.perez.ical.ICalSpec
 import projects.csce.evence.R
 import projects.csce.evence.databinding.ActivityQrReaderBinding
-import projects.csce.evence.ical.EventSpec
-import projects.csce.evence.ical.ICalSpec
 import projects.csce.evence.service.model.FileManager
 import projects.csce.evence.service.model.qr.QrBitmapGenerator
 import projects.csce.evence.utils.getAppComponent
 import projects.csce.evence.utils.toZonedDateTime
+import projects.csce.evence.view.ui.model.ViewCalendarData
+import projects.csce.evence.view.ui.model.ViewEvent
 import projects.csce.evence.viewmodel.QrReaderViewModel
 import java.io.IOException
 import javax.inject.Inject
@@ -192,11 +194,20 @@ class QrReaderActivity : AppCompatActivity(), SurfaceHolder.Callback, Detector.P
                 .addEvent(event)
                 .build()
 
-
         // Write the file to the file system
         viewModel.saveFile(currentEvent)
-
-        QRDialog(this, currentEvent, generator, fileManager)
+        val viewEvent = ViewEvent(event.title,
+                event.description,
+                event.getStartTime(),
+                event.getStartDate(),
+                event.getStartInstantEpoch(),
+                event.getEndEpochMilli(),
+                event.location,
+                event.text(),
+                generator.forceGenerate(event.text())
+        )
+        val calendar = ViewCalendarData(currentEvent.fileName, listOf(viewEvent))
+        val qrDialog = QRDialog(this, calendar, fileManager)
     }
 
     fun clickityClick(){
