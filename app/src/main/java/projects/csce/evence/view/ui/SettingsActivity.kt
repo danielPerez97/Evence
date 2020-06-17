@@ -54,9 +54,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     fun onDarkModeSwitchClicked(){
-
         isDark = sharedPref.loadIntValue(getString(R.string.saved_dark_mode_setting), Configuration.UI_MODE_NIGHT_NO)
-        Toast.makeText(this, "isDark= $isDark", Toast.LENGTH_SHORT).show()
         when (isDark) {
             Configuration.UI_MODE_NIGHT_YES -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)

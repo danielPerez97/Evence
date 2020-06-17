@@ -127,7 +127,6 @@ public class GenerateQR extends AppCompatActivity implements Observer<QrAttempt>
         );
         ViewCalendarData calendar = new ViewCalendarData(currentEvent.getFileName(), Collections.singletonList(viewEvent));
         QRDialog qrDialog = new QRDialog(this, calendar, fileManager);
-
     }
 
     // Handle the user choosing a place to store the file
