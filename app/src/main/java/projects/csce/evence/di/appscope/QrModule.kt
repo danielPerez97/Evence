@@ -4,11 +4,12 @@ import com.google.zxing.MultiFormatWriter
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import dagger.Module
 import dagger.Provides
-import projects.csce.evence.service.model.qr.QrBitmapGenerator
+import daniel.perez.core.DialogStarter
+import daniel.perez.core.service.qr.QrBitmapGenerator
 import javax.inject.Singleton
 
 @Module
-class QrModule
+class QrModule(private val dialogStarter: DialogStarter)
 {
 	@Provides
 	@Singleton
@@ -29,5 +30,12 @@ class QrModule
 	fun provideBitmapGenerator(writer: MultiFormatWriter, encoder: BarcodeEncoder): QrBitmapGenerator
 	{
 		return QrBitmapGenerator(writer, encoder)
+	}
+
+	@Provides
+	@Singleton
+	fun provideDialogStarter(): DialogStarter
+	{
+		return dialogStarter
 	}
 }

@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModelProvider;
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
-import projects.csce.evence.di.viewmodel.ViewModelFactory;
+import daniel.perez.core.di.ViewModelFactory;
+import daniel.perez.generateqrview.GenerateQrViewModel;
 import projects.csce.evence.di.viewmodel.ViewModelKey;
-import projects.csce.evence.viewmodel.GenerateQrViewModel;
 import projects.csce.evence.viewmodel.MainViewModel;
-import projects.csce.evence.viewmodel.QrReaderViewModel;
+import daniel.perez.qrcameraview.viewmodel.QrReaderViewModel;
 
 @Module
 public abstract class ViewModelModule

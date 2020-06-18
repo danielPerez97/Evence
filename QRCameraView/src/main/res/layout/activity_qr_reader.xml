@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="daniel.perez.qrcameraview.QrReaderActivity">
+
+    <SurfaceView
+        android:id="@+id/cameraSurfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/qr_type_cardview"
+        style="@style/CircularButtonCardView"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/cameraSurfaceView"
+        app:layout_constraintEnd_toEndOf="@+id/cameraSurfaceView"
+        app:layout_constraintStart_toStartOf="@+id/cameraSurfaceView"
+        app:layout_constraintTop_toTopOf="@+id/cameraSurfaceView">
+
+        <ImageView
+            android:id="@+id/qr_type_imageview"
+            style="@style/CircularButtonImageView"
+            android:src="@drawable/ic_search_white_24dp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/result"
+        style="@style/viewShadow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Scanning..."
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/qr_type_cardview" />
+
+    <ImageView
+        android:id="@+id/flash_imageview"
+        style="@style/ButtonCardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:elevation="4dp"
+        android:shadowColor="#000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:src="@drawable/ic_flash_on_white_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/cameraSurfaceView"
+        app:layout_constraintTop_toBottomOf="@+id/result"
+        app:layout_constraintVertical_bias="0.894" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

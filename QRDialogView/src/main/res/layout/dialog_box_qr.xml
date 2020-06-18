@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        style="@style/CircularButtonCardView"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:backgroundTint="#F4511E"
+        android:onClick="@{() -> view.closeDialog()}"
+        app:layout_anchor="@id/qr_main_cardview"
+        app:layout_anchorGravity="top|end">
+
+        <ImageView
+            style="@style/CircularButtonImageView"
+            android:src="@drawable/ic_close_white_24dp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/qr_main_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="55dp"
+        android:backgroundTint="@color/cardviewBackground"
+        app:cardCornerRadius="32dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="6dp">
+
+            <ImageView
+                android:id="@+id/qr_dialog_qr_imageview"
+                android:layout_width="match_parent"
+                android:layout_height="315dp"
+                android:src="@drawable/ic_border_right_black_24dp" />
+
+            <androidx.cardview.widget.CardView
+                style="@style/LayoutContainerCardView"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="7dp">
+
+                    <TextView
+                        android:id="@+id/qr_dialog_event_title_textview"
+                        style="@style/EventDetailsDialogBoxTextView"
+                        android:text="Graduation Day"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/qr_dialog_event_start_date_textview"
+                        style="@style/EventDetailsDialogBoxTextView"
+                        android:text="10/24/2019" />
+
+                    <TextView
+                        android:id="@+id/qr_dialog_event_start_time_textview"
+                        style="@style/EventDetailsDialogBoxTextView"
+                        android:text="10:00PM" />
+
+                    <TextView
+                        android:id="@+id/qr_dialog_event_location_textview"
+                        style="@style/EventDetailsDialogBoxTextView"
+                        android:text="Bud Walton Arena" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/share_qr_btn"
+                                style="@style/CircularButtonCardView"
+                                android:onClick="@{() -> view.shareQR()}">
+
+                                <ImageView
+                                    style="@style/CircularButtonImageView"
+                                    android:src="@drawable/ic_share_white_36dp" />
+                            </androidx.cardview.widget.CardView>
+
+                            <TextView
+                                style="@style/CircularButtonTextView"
+                                android:text="Share QR" />
+
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
+
+                            <androidx.cardview.widget.CardView
+                                style="@style/CircularButtonCardView"
+                                android:onClick="@{() -> view.importToCalendar()}">
+
+                                <ImageView
+                                    style="@style/CircularButtonImageView"
+                                    android:src="@drawable/ic_event_white_36dp" />
+                            </androidx.cardview.widget.CardView>
+
+                            <TextView
+                                style="@style/CircularButtonTextView"
+                                android:text="Import to calendar" />
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
+
+                            <androidx.cardview.widget.CardView
+                                style="@style/CircularButtonCardView"
+                                android:onClick="@{() -> view.save()}">
+
+                                <ImageView
+                                    style="@style/CircularButtonImageView"
+                                    android:src="@drawable/ic_save_white_36dp" />
+                            </androidx.cardview.widget.CardView>
+
+                            <TextView
+                                style="@style/CircularButtonTextView"
+                                android:text="Save ical" />
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/edit_btn"
+                                style="@style/CircularButtonCardView">
+
+                                <ImageView
+                                    style="@style/CircularButtonImageView"
+                                    android:src="@drawable/ic_edit_white_36dp" />
+                            </androidx.cardview.widget.CardView>
+
+                            <TextView
+                                style="@style/CircularButtonTextView"
+                                android:text="Edit" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

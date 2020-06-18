@@ -14,19 +14,9 @@ fun AppCompatActivity.getAppComponent(): AppComponent
 	return (this.application as BaseApplication).injector
 }
 
-fun Context.toastShort(message: String)
-{
-	Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-}
-
 fun Context.toastLong(message: String)
 {
 	Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-}
-
-fun Array<String>.toInts(): IntArray
-{
-	return this.map { it.toInt() }.toIntArray()
 }
 
 fun toZonedDateTime(dates: IntArray, hourMinute: IntArray): ZonedDateTime
