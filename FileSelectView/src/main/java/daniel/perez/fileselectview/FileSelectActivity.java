@@ -1,4 +1,4 @@
-package projects.csce.evence.view.ui;
+package daniel.perez.fileselectview;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -7,40 +7,41 @@ import android.os.PersistableBundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import javax.inject.Inject;
 
-import io.reactivex.disposables.CompositeDisposable;
-import projects.csce.evence.R;
+import daniel.perez.core.adapter.CardsAdapter;
 import daniel.perez.core.service.FileManager;
 import daniel.perez.core.service.qr.QrBitmapGenerator;
-import projects.csce.evence.utils.Utils;
-import projects.csce.evence.view.adapter.CardsAdapter;
+import daniel.perez.fileselectview.databinding.ActivityFileSelectBinding;
+import daniel.perez.fileselectview.di.FileSelectComponentProvider;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class FileSelectActivity extends AppCompatActivity
 {
     @Inject FileManager fileManager;
     @Inject QrBitmapGenerator generator;
     private CompositeDisposable disposables = new CompositeDisposable();
-    private RecyclerView fileSelector;
     private CardsAdapter adapter;
     private Uri fileUri;
     private Intent resultIntent;
+    private ActivityFileSelectBinding binding;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState)
     {
-        Utils.getAppComponent(this).inject(this);
+        ((FileSelectComponentProvider) getApplication())
+                .provideFileSelectComponent()
+                .inject(this);
         super.onCreate(savedInstanceState, persistentState);
-        setContentView(R.layout.activity_file_select);
+        binding = ActivityFileSelectBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         resultIntent = new Intent("projects.csce.evence.ACTION_RETURN_FILE");
         setResult(AppCompatActivity.RESULT_CANCELED, null);
 
         adapter = new CardsAdapter(this);
-        fileSelector = findViewById(R.id.file_selector);
-        fileSelector.setAdapter(adapter);
+        binding.fileSelector.setAdapter(adapter);
 
 
         disposables.add(adapter.clicks().subscribe(ical ->

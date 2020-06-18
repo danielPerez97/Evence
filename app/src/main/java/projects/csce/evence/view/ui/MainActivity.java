@@ -2,7 +2,6 @@ package projects.csce.evence.view.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,18 +23,17 @@ import javax.inject.Inject;
 
 import daniel.perez.core.BaseActivity;
 import daniel.perez.core.DialogStarter;
+import daniel.perez.core.StartActivity;
+import daniel.perez.core.adapter.CardsAdapter;
 import daniel.perez.core.di.ViewModelFactory;
-import daniel.perez.generateqrview.GenerateQR;
-import daniel.perez.qrcameraview.QrReaderActivity;
+import daniel.perez.core.service.FileManager;
+import daniel.perez.core.service.qr.QrBitmapGenerator;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import projects.csce.evence.BaseApplication;
 import projects.csce.evence.R;
 import projects.csce.evence.databinding.ActivityMainBinding;
-import daniel.perez.core.service.FileManager;
-import daniel.perez.core.service.qr.QrBitmapGenerator;
 import projects.csce.evence.utils.Utils;
-import projects.csce.evence.view.adapter.CardsAdapter;
 import projects.csce.evence.viewmodel.MainViewModel;
 import timber.log.Timber;
 
@@ -54,6 +51,7 @@ public class MainActivity extends BaseActivity
     @Inject ViewModelFactory factory;
     @Inject QrBitmapGenerator generator;
     @Inject DialogStarter dialogStarter;
+    @Inject StartActivity startActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,9 +118,9 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.qr_camera_btn:
-                startQrReaderActivity();
+        if (item.getItemId() == R.id.qr_camera_btn)
+        {
+            startQrReaderActivity();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -131,7 +129,7 @@ public class MainActivity extends BaseActivity
         binding.eventsRecyclerView.setAdapter(eventsAdapter);
         binding.eventsRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         disposables.add(viewModel.liveFiles().subscribe( events -> {
-            Log.i("SUBSCRIBER", Integer.toString(events.size()));
+            Timber.i(Integer.toString(events.size()));
             eventsAdapter.onChanged(events);
             if (events.size() == 0)
                 binding.emptyTextview.setVisibility(View.VISIBLE);
@@ -140,37 +138,32 @@ public class MainActivity extends BaseActivity
         }));
     }
 
-    public void startQrReaderActivity(){
-        Intent qrReaderActivity = new Intent(this, QrReaderActivity.class);
-        startActivity(qrReaderActivity);
+    public void startQrReaderActivity()
+    {
+        startActivity.startQrReader(this);
     }
 
     public void startQrActivity() {
-        Intent generateQRActivity = new Intent(this, GenerateQR.class);
-        startActivity(generateQRActivity);
+        startActivity.startGenerateQr(this);
     }
 
     public void startSecondActivity() {
-        Intent secondActivityIntent = new Intent(this, SecondActivity.class);
-        startActivity(secondActivityIntent);
+        startActivity.startSecondActivity(this);
     }
 
     public void startSettingsActivity(View view) {
         binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer);
-        Intent settingsActivity = new Intent(this, SettingsActivity.class);
-        startActivity(settingsActivity);
+        startActivity.startSettingsActivity(this);
     }
 
     public void startShareAppActivity(View view) {
         binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer);
-        Intent shareActivity = new Intent(this, ShareAppActivity.class);
-        startActivity(shareActivity);
+        startActivity.startShareAppActivity(this);
     }
 
     public void startAboutActivity(View view){
         binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer);
-        Intent aboutActivity = new Intent(this, AboutActivity.class);
-        startActivity(aboutActivity);
+        startActivity.startAboutActivity(this);
     }
 
     public void signIn() {
@@ -183,7 +176,7 @@ public class MainActivity extends BaseActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        Log.d("Google", Integer.toString(requestCode));
+        Timber.d(Integer.toString(requestCode));
         if (requestCode == RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
@@ -199,7 +192,7 @@ public class MainActivity extends BaseActivity
             startSecondActivity();
 
         } catch (ApiException e) {
-            Log.w("SigninAttempt", Integer.toString(e.getStatusCode()));
+            Timber.tag("SigninAttempt").w(Integer.toString(e.getStatusCode()));
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Sign-In Failed", Toast.LENGTH_SHORT).show();
         }

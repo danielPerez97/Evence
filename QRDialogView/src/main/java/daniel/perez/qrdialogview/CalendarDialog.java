@@ -1,12 +1,9 @@
-package projects.csce.evence.view.ui;
+package daniel.perez.qrdialogview;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.util.Log;
-import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import java.util.Calendar;
 
@@ -43,14 +40,11 @@ public class CalendarDialog {
         mMonth = calendar.get(Calendar.MONTH);
         mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                mYear = year;
-                mMonth = month + 1;
-                mDay = day;
-                newTimeDateString.setText(mMonth + "/" + mDay + "/" + mYear);
-            }
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context, (datePicker, year, month, day) -> {
+            mYear = year;
+            mMonth = month + 1;
+            mDay = day;
+            newTimeDateString.setText(mMonth + "/" + mDay + "/" + mYear);
         }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }

@@ -65,7 +65,7 @@ public class QRDialog
         binding.closeDialogBtn.setOnClickListener(view -> closeDialog());
         binding.shareQrBtn.setOnClickListener(view -> shareQR());
         binding.importToCalendarBtn.setOnClickListener(view -> importToCalendar());
-        ;binding.editBtn.setOnClickListener(view -> startActivity.startGenerateQr(context, fileManager.getFilePath(ical.getFileName())));
+        binding.editBtn.setOnClickListener(view -> startActivity.startEditQr(context, fileManager.getFilePath(ical.getFileName())));
         binding.saveBtn.setOnClickListener(view -> save());
     }
 

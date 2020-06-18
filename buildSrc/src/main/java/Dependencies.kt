@@ -96,9 +96,10 @@ object Libs
 
 object Project
 {
-    const val ical = ":ICal"
     const val core = ":Core"
+    const val ical = ":ICal"
+    const val fileSelectView = ":FileSelectView"
+    const val generateQrView = ":GenerateQRView"
     const val qrCameraView = ":QRCameraView"
     const val qrDialogView = ":QRDialogView"
-    const val generateQrView = ":GenerateQRView"
 }

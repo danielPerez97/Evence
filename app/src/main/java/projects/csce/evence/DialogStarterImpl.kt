@@ -4,8 +4,8 @@ import android.widget.TextView
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.DialogStarter
 import daniel.perez.core.model.ViewCalendarData
+import daniel.perez.qrdialogview.CalendarDialog
 import daniel.perez.qrdialogview.QRDialog
-import projects.csce.evence.view.ui.CalendarDialog
 
 class DialogStarterImpl: DialogStarter
 {
