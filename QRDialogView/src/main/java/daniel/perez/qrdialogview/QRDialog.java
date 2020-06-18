@@ -65,11 +65,12 @@ public class QRDialog
         binding.closeDialogBtn.setOnClickListener(view -> closeDialog());
         binding.shareQrBtn.setOnClickListener(view -> shareQR());
         binding.importToCalendarBtn.setOnClickListener(view -> importToCalendar());
-        binding.editBtn.setOnClickListener(view -> startActivity.startEditQr(context, fileManager.getFilePath(ical.getFileName())));
+        binding.editBtn.setOnClickListener(view -> startActivity.startEditQr(context, ical));
         binding.saveBtn.setOnClickListener(view -> save());
     }
 
-    public void save( ) {
+    public void save()
+    {
         // Bug the user about storing it
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -82,7 +83,8 @@ public class QRDialog
         }
     }
 
-    public void shareQR() {
+    public void shareQR()
+    {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_STREAM, fileManager.getFileUri("image_" + ical.getFileName()));
@@ -90,7 +92,8 @@ public class QRDialog
         context.startActivity(Intent.createChooser(shareIntent, "Share images to.."));
     }
 
-    public void importToCalendar() {
+    public void importToCalendar()
+    {
         Intent toCalendar = new Intent(ACTION_INSERT);
         toCalendar.setData(CalendarContract.Events.CONTENT_URI);
         toCalendar.putExtra(CalendarContract.Events.TITLE, currentEvent.getTitle());
@@ -101,7 +104,8 @@ public class QRDialog
         context.startActivity(toCalendar);
     }
 
-    public void closeDialog() {
+    public void closeDialog()
+    {
         if (context instanceof DialogClosable){
             ((DialogClosable) context).close();
         } else

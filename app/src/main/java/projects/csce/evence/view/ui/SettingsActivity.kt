@@ -1,15 +1,11 @@
 package projects.csce.evence.view.ui
 
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import projects.csce.evence.R
 import projects.csce.evence.databinding.ActivitySettingsBinding
 import projects.csce.evence.service.model.SharedPref
@@ -49,7 +45,6 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     fun onBackClicked(){
-        //onBackPressed()
         finish()
     }
 
