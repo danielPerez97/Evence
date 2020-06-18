@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import daniel.perez.core.DialogStarter
 import daniel.perez.core.StartActivity
+import daniel.perez.core.service.FileManager
 import projects.csce.evence.DialogStarterImpl
 import projects.csce.evence.StartActivityImpl
 import javax.inject.Singleton
@@ -18,8 +19,8 @@ class AppModule
     }
 
     @Provides @Singleton
-    fun providerActivityStarter(): StartActivity
+    fun providerActivityStarter(fileManager: FileManager): StartActivity
     {
-        return StartActivityImpl()
+        return StartActivityImpl(fileManager)
     }
 }
