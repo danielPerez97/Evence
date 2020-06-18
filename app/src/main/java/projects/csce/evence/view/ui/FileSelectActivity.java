@@ -13,8 +13,8 @@ import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 import projects.csce.evence.R;
-import projects.csce.evence.service.model.FileManager;
-import projects.csce.evence.service.model.qr.QrBitmapGenerator;
+import daniel.perez.core.service.FileManager;
+import daniel.perez.core.service.qr.QrBitmapGenerator;
 import projects.csce.evence.utils.Utils;
 import projects.csce.evence.view.adapter.CardsAdapter;
 

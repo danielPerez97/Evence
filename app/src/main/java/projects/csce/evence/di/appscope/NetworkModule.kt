@@ -6,13 +6,12 @@ import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
-import projects.csce.evence.service.model.FileManager
-import projects.csce.evence.service.model.qr.QrBitmapGenerator
+import daniel.perez.core.service.FileManager
+import daniel.perez.core.service.qr.QrBitmapGenerator
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.util.*
 import javax.inject.Singleton
 
 @Module

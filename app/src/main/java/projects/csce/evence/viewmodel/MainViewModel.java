@@ -1,12 +1,8 @@
 package projects.csce.evence.viewmodel;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.ViewModel;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -14,10 +10,10 @@ import javax.inject.Inject;
 import daniel.perez.ical.EventSpec;
 import daniel.perez.ical.ICalSpec;
 import io.reactivex.Observable;
-import projects.csce.evence.service.model.FileManager;
-import projects.csce.evence.service.model.qr.QrBitmapGenerator;
-import projects.csce.evence.view.ui.model.ViewCalendarData;
-import projects.csce.evence.view.ui.model.ViewEvent;
+import daniel.perez.core.service.FileManager;
+import daniel.perez.core.service.qr.QrBitmapGenerator;
+import daniel.perez.core.model.ViewCalendarData;
+import daniel.perez.core.model.ViewEvent;
 
 public class MainViewModel extends ViewModel
 {

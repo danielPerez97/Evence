@@ -62,7 +62,11 @@ dependencies {
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
     coreLibraryDesugaring( "com.android.tools:desugar_jdk_libs:1.0.5" )
 
+    implementation( project( Project.core ) )
     implementation( project( Project.ical ) )
+    implementation( project( Project.qrCameraView ) )
+    implementation( project( Project.qrDialogView ) )
+    implementation( project( Project.generateQrView ) )
 
     // Dagger 2
     implementation( Libs.dagger )
@@ -113,9 +117,6 @@ dependencies {
 
     //Material widgets
     implementation( Libs.material )
-
-    //Google Mobile Vision API
-    implementation(Libs.vision)
 }
 repositories {
     mavenCentral()

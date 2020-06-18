@@ -19,8 +19,8 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 import projects.csce.evence.R;
 import projects.csce.evence.databinding.EventsListEntryLayoutBinding;
-import projects.csce.evence.view.ui.model.ViewCalendarData;
-import projects.csce.evence.view.ui.model.ViewEvent;
+import daniel.perez.core.model.ViewCalendarData;
+import daniel.perez.core.model.ViewEvent;
 
 public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> implements Observer<List<ViewCalendarData>>, Consumer<List<ViewCalendarData>>
 {

@@ -23,20 +23,25 @@ import com.google.android.gms.tasks.Task;
 
 import javax.inject.Inject;
 
+import daniel.perez.core.BaseActivity;
+import daniel.perez.core.DialogStarter;
+import daniel.perez.core.di.ViewModelFactory;
+import daniel.perez.generateqrview.GenerateQR;
+import daniel.perez.qrcameraview.QrReaderActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import projects.csce.evence.BaseApplication;
 import projects.csce.evence.R;
 import projects.csce.evence.databinding.ActivityMainBinding;
-import projects.csce.evence.di.viewmodel.ViewModelFactory;
-import projects.csce.evence.service.model.FileManager;
-import projects.csce.evence.service.model.qr.QrBitmapGenerator;
+import daniel.perez.core.service.FileManager;
+import daniel.perez.core.service.qr.QrBitmapGenerator;
 import projects.csce.evence.utils.Utils;
 import projects.csce.evence.view.adapter.CardsAdapter;
 import projects.csce.evence.viewmodel.MainViewModel;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends BaseActivity
+{
 
     private int RC_SIGN_IN = 1;
     private MainViewModel viewModel;
@@ -48,6 +53,7 @@ public class MainActivity extends AppCompatActivity  {
     @Inject GoogleSignInClient signInClient;
     @Inject ViewModelFactory factory;
     @Inject QrBitmapGenerator generator;
+    @Inject DialogStarter dialogStarter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +94,7 @@ public class MainActivity extends AppCompatActivity  {
 
         disposables.add(eventsAdapter.clicks()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(viewCalendarData -> new QRDialog(this, viewCalendarData, fileManager)));
+                .subscribe(viewCalendarData -> dialogStarter.startQrDialog(this, viewCalendarData)));
 
         Timber.i("Set up subscriptions");
     }

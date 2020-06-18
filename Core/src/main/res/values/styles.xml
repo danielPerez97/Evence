@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AboutPageCardview" parent="LayoutContainerCardView">
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:stateListAnimator">@animator/anim_button_push</item>
+    </style>
+
+    <style name="ButtonCardView">
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:stateListAnimator">@animator/anim_button_push</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="CircularButtonAndTextLinearLayout">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginRight">6dp</item>
+        <item name="android:layout_marginLeft">6dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="CircularButtonCardView" parent="ButtonCardView">
+        <item name="android:layout_height">46dp</item>
+        <item name="android:layout_width">46dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:backgroundTint">@color/blue1</item>
+        <item name="android:gravity">center</item>
+        <item name="cardCornerRadius">23dp</item>
+        <item name="cardElevation">6dp</item>
+    </style>
+
+    <style name="CircularButtonImageView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">12dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="CircularButtonTextView">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="CustomBottomAppBar" parent="@style/Widget.MaterialComponents.BottomAppBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="theme">@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="fabAnimationMode">slide</item>
+        <item name="fabCradleMargin">17dp</item>
+        <item name="fabCradleRoundedCornerRadius">32dp</item>
+        <item name="fabCradleVerticalOffset">12dp</item>
+        <item name="hideOnScroll">true</item>
+    </style>
+
+    <style name="FAB">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="android:transitionName">fabTransition</item>
+    </style>
+
+    <style name="FormCardView"  parent="ButtonCardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginLeft">14dp</item>
+        <item name="android:layout_marginRight">14dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardCornerRadius">18dp</item>
+        <item name="android:backgroundTint">@color/formInputBackground</item>
+    </style>
+
+    <style name="FormDateTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginLeft">14dp</item>
+        <item name="android:layout_marginRight">14dp</item>
+    </style>
+
+    <style name="FormEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginLeft">14dp</item>
+        <item name="android:layout_marginRight">14dp</item>
+        <item name="android:textColor">@color/edittext_font_color</item>
+        <item name="android:backgroundTint">#BEBEBE</item>
+    </style>
+
+    <style name="FormTitleTextView">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/blue1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+
+    </style>
+
+    <style name="LayoutContainerCardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="cardCornerRadius">14dp      </item>
+        <item name="cardElevation">8dp</item>
+        <item name="android:backgroundTint">@color/cardviewBackground</item>
+    </style>
+
+    <style name="RootLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:clipToPadding">false</item>
+    </style>
+
+    <style name="viewShadow">
+        <item name="android:shadowColor">#000</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">8</item>
+    </style>
+</resources>

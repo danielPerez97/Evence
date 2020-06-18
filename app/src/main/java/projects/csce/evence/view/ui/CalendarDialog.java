@@ -28,13 +28,10 @@ public class CalendarDialog {
         mHour = calendar.get(Calendar.HOUR_OF_DAY);
         mMinute = calendar.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                mHour = hour;
-                mMinute = minute;
-                newTimeDateString.setText(mHour + ":" + mMinute);
-            }
+        TimePickerDialog timePickerDialog = new TimePickerDialog(context, (timePicker, hour, minute) -> {
+            mHour = hour;
+            mMinute = minute;
+            newTimeDateString.setText(mHour + ":" + mMinute);
         }, mHour, mMinute, false);
 
         timePickerDialog.show();
