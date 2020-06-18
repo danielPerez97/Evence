@@ -7,10 +7,10 @@
 
     <androidx.cardview.widget.CardView
         style="@style/CircularButtonCardView"
+        android:id="@+id/close_dialog_btn"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:backgroundTint="#F4511E"
-        android:onClick="@{() -> view.closeDialog()}"
         app:layout_anchor="@id/qr_main_cardview"
         app:layout_anchorGravity="top|end">
 
@@ -86,8 +86,7 @@
 
                             <androidx.cardview.widget.CardView
                                 android:id="@+id/share_qr_btn"
-                                style="@style/CircularButtonCardView"
-                                android:onClick="@{() -> view.shareQR()}">
+                                style="@style/CircularButtonCardView">
 
                                 <ImageView
                                     style="@style/CircularButtonImageView"
@@ -103,8 +102,8 @@
                         <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
 
                             <androidx.cardview.widget.CardView
-                                style="@style/CircularButtonCardView"
-                                android:onClick="@{() -> view.importToCalendar()}">
+                                android:id="@+id/import_to_calendar_btn"
+                                style="@style/CircularButtonCardView">
 
                                 <ImageView
                                     style="@style/CircularButtonImageView"
@@ -119,8 +118,8 @@
                         <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
 
                             <androidx.cardview.widget.CardView
-                                style="@style/CircularButtonCardView"
-                                android:onClick="@{() -> view.save()}">
+                                android:id="@+id/save_btn"
+                                style="@style/CircularButtonCardView">
 
                                 <ImageView
                                     style="@style/CircularButtonImageView"

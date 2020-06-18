@@ -48,5 +48,7 @@ dependencies {
 
     implementation( Libs.cardView )
     implementation( Libs.coordinatorLayout )
+    implementation( Libs.dagger )
+    kapt( Libs.daggerCompiler )
     implementation( Libs.rxBinding )
 }

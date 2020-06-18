@@ -1,12 +1,9 @@
 package daniel.perez.core
 
 import androidx.appcompat.app.AppCompatActivity
+import io.reactivex.disposables.CompositeDisposable
 
-open class BaseActivity: AppCompatActivity(), DialogClosable
+open class BaseActivity: AppCompatActivity()
 {
-    override fun finishActivity()
-    {
-        finish()
-    }
-
+    val disposables = CompositeDisposable()
 }

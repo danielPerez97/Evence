@@ -4,6 +4,7 @@ import dagger.Component
 import daniel.perez.generateqrview.GenerateQR
 import daniel.perez.generateqrview.di.GenerateQRComponent
 import daniel.perez.qrcameraview.di.QrReaderComponent
+import daniel.perez.qrdialogview.di.QRDialogComponent
 import projects.csce.evence.di.loginscope.LoggedInModule
 import projects.csce.evence.di.loginscope.LoggedInSubComponent
 import projects.csce.evence.view.ui.FileSelectActivity
@@ -13,7 +14,7 @@ import projects.csce.evence.view.ui.SettingsActivity
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [NetworkModule::class, LoginModule::class, QrModule::class, ViewModelModule::class, SettingsModule::class])
+@Component(modules = [AppModule::class, NetworkModule::class, LoginModule::class, QrModule::class, ViewModelModule::class, SettingsModule::class])
 interface AppComponent
 {
 	fun inject(application: BaseApplication)
@@ -25,4 +26,5 @@ interface AppComponent
 
 	fun provideQrReaderFactory(): QrReaderComponent.Factory
 	fun provideGenerateQrFactory(): GenerateQRComponent.Factory
+	fun providerQrDialogFactory(): QRDialogComponent.Factory
 }
