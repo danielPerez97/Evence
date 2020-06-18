@@ -1,7 +1,6 @@
 package projects.csce.evence;
 
 import android.app.Application;
-import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
@@ -9,23 +8,17 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
-import daniel.perez.core.BaseActivity;
-import daniel.perez.core.DialogStarter;
-import daniel.perez.core.model.ViewCalendarData;
 import daniel.perez.core.service.FileManager;
 import daniel.perez.generateqrview.di.GenerateQRComponent;
 import daniel.perez.generateqrview.di.GenerateQRComponentProvider;
 import daniel.perez.qrcameraview.di.QrReaderComponent;
 import daniel.perez.qrcameraview.di.QrReaderComponentProvider;
-import daniel.perez.qrdialogview.QRDialog;
 import daniel.perez.qrdialogview.di.QRDialogComponent;
 import daniel.perez.qrdialogview.di.QRDialogComponentProvider;
 import projects.csce.evence.di.appscope.AppComponent;
 import projects.csce.evence.di.appscope.DaggerAppComponent;
 import projects.csce.evence.di.appscope.LoginModule;
-import projects.csce.evence.di.appscope.QrModule;
 import projects.csce.evence.service.model.SharedPref;
-import projects.csce.evence.view.ui.CalendarDialog;
 import timber.log.Timber;
 
 

@@ -1,5 +1,5 @@
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
-import java.util.Properties
+import java.util.*
 
 plugins {
     id("com.android.application")
@@ -64,9 +64,10 @@ dependencies {
 
     implementation( project( Project.core ) )
     implementation( project( Project.ical ) )
+    implementation( project( Project.fileSelectView ) )
+    implementation( project( Project.generateQrView ) )
     implementation( project( Project.qrCameraView ) )
     implementation( project( Project.qrDialogView ) )
-    implementation( project( Project.generateQrView ) )
 
     // Dagger 2
     implementation( Libs.dagger )

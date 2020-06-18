@@ -1,4 +1,4 @@
-package projects.csce.evence.view.adapter;
+package daniel.perez.core.adapter;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -14,13 +14,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import daniel.perez.core.R;
+import daniel.perez.core.databinding.EventsListEntryLayoutBinding;
+import daniel.perez.core.model.ViewCalendarData;
+import daniel.perez.core.model.ViewEvent;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
-import projects.csce.evence.R;
-import projects.csce.evence.databinding.EventsListEntryLayoutBinding;
-import daniel.perez.core.model.ViewCalendarData;
-import daniel.perez.core.model.ViewEvent;
 
 public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> implements Observer<List<ViewCalendarData>>, Consumer<List<ViewCalendarData>>
 {

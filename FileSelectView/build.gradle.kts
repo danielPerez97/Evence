@@ -26,13 +26,13 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
-    compileOptions {
-        coreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
     buildFeatures {
         viewBinding = true
+    }
+    compileOptions {
+//        coreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
@@ -44,34 +44,14 @@ dependencies {
     testImplementation("junit:junit:4.12")
     androidTestImplementation("androidx.test.ext:junit:1.1.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
-
-    implementation(project(Project.ical))
-
     coreLibraryDesugaring( "com.android.tools:desugar_jdk_libs:1.0.5" )
 
-    // CardView
-    implementation( Libs.cardView )
+    implementation( project( Project.core ) )
 
-    // Dagger
+    implementation( Libs.cardView )
+    implementation( Libs.coordinatorLayout )
     implementation( Libs.dagger )
     kapt( Libs.daggerCompiler )
-
-    //Google Mobile Vision API
-    implementation( Libs.vision )
-
-    implementation( Libs.material )
-
-    // Okio
-    implementation( Libs.okio )
-
-    // RxJava
+    implementation( Libs.recyclerView )
     implementation( Libs.rxJava )
-
-    // Timber
-    implementation( Libs.timber )
-
-    // ZXING
-    implementation( Libs.zxing )
-    implementation( Libs.zxingAndroid )
-
 }
