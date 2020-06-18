@@ -4,12 +4,11 @@ import com.google.zxing.MultiFormatWriter
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import dagger.Module
 import dagger.Provides
-import daniel.perez.core.DialogStarter
 import daniel.perez.core.service.qr.QrBitmapGenerator
 import javax.inject.Singleton
 
 @Module
-class QrModule(private val dialogStarter: DialogStarter)
+class QrModule
 {
 	@Provides
 	@Singleton
@@ -30,12 +29,5 @@ class QrModule(private val dialogStarter: DialogStarter)
 	fun provideBitmapGenerator(writer: MultiFormatWriter, encoder: BarcodeEncoder): QrBitmapGenerator
 	{
 		return QrBitmapGenerator(writer, encoder)
-	}
-
-	@Provides
-	@Singleton
-	fun provideDialogStarter(): DialogStarter
-	{
-		return dialogStarter
 	}
 }

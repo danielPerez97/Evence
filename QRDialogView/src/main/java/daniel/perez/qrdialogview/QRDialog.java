@@ -8,17 +8,16 @@ import android.graphics.drawable.ColorDrawable;
 import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 
-import com.jakewharton.rxbinding3.view.RxView;
+import javax.inject.Inject;
 
-import java.util.concurrent.TimeUnit;
-
+import daniel.perez.core.BaseActivity;
 import daniel.perez.core.DialogClosable;
-import daniel.perez.core.service.FileManager;
+import daniel.perez.core.StartActivity;
 import daniel.perez.core.model.ViewCalendarData;
 import daniel.perez.core.model.ViewEvent;
+import daniel.perez.core.service.FileManager;
 import daniel.perez.qrdialogview.databinding.DialogBoxQrBinding;
-import io.reactivex.Observable;
-import kotlin.Unit;
+import daniel.perez.qrdialogview.di.QRDialogComponentProvider;
 
 import static android.content.Intent.ACTION_INSERT;
 
@@ -29,17 +28,21 @@ public class QRDialog
     private Dialog dialog;
     private ViewCalendarData ical;
     private ViewEvent currentEvent;
-    DialogBoxQrBinding binding;
-    private FileManager fileManager;
+    private DialogBoxQrBinding binding;
+    @Inject FileManager fileManager;
+    @Inject StartActivity startActivity;
 
 
-    public QRDialog(Context context, ViewCalendarData ical, FileManager fileManager) {
+    public QRDialog(Context context, ViewCalendarData ical)
+    {
+        ((QRDialogComponentProvider) context.getApplicationContext())
+                .provideQrDialogComponent()
+                .inject(this);
         this.context = context;
         this.ical = ical;
         this.currentEvent = ical.getEvents().get(0);
         binding = DialogBoxQrBinding.inflate(LayoutInflater.from(context));
 
-        this.fileManager = fileManager;
         binding.qrDialogEventTitleTextview.setText(currentEvent.getTitle());
         binding.qrDialogEventStartDateTextview.setText(currentEvent.getStartDate());
         binding.qrDialogEventStartTimeTextview.setText(currentEvent.getStartTime());
@@ -52,18 +55,18 @@ public class QRDialog
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
+
+
+        setupClicks();
     }
 
-    public Observable<Unit> editButtonClicks()
+    public void setupClicks()
     {
-        return RxView.clicks(binding.editBtn).debounce(300, TimeUnit.MILLISECONDS);
-
-        // TODO Implement this on the receiver
-//        binding.editBtn.setOnClickListener(view -> {
-//            Intent intent = new Intent(context, GenerateQR.class);
-//            intent.putExtra("FILE_PATH", fileManager.getFilePath(ical.getFileName()));
-//            context.startActivity(intent);
-//        });
+        binding.closeDialogBtn.setOnClickListener(view -> closeDialog());
+        binding.shareQrBtn.setOnClickListener(view -> shareQR());
+        binding.importToCalendarBtn.setOnClickListener(view -> importToCalendar());
+        ;binding.editBtn.setOnClickListener(view -> startActivity.startGenerateQr(context, fileManager.getFilePath(ical.getFileName())));
+        binding.saveBtn.setOnClickListener(view -> save());
     }
 
     public void save( ) {
@@ -73,11 +76,10 @@ public class QRDialog
         intent.setType("application/*");
         intent.putExtra(Intent.EXTRA_TITLE, currentEvent.getTitle() + ".ics");
 
-//        if (context instanceof GenerateQR) {
-//            ((GenerateQR) context).startActivityForResult(intent, 1);
-//        } else {
-//            ((MainActivity) context).startActivityForResult(intent, 1);
-//        }
+        if (context instanceof BaseActivity)
+        {
+            ((BaseActivity) context).startActivityForResult(intent, 1);
+        }
     }
 
     public void shareQR() {
@@ -101,7 +103,7 @@ public class QRDialog
 
     public void closeDialog() {
         if (context instanceof DialogClosable){
-            ((DialogClosable) context).finishActivity();
+            ((DialogClosable) context).close();
         } else
             dialog.dismiss();
     }

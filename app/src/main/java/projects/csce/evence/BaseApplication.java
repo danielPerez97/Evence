@@ -18,6 +18,8 @@ import daniel.perez.generateqrview.di.GenerateQRComponentProvider;
 import daniel.perez.qrcameraview.di.QrReaderComponent;
 import daniel.perez.qrcameraview.di.QrReaderComponentProvider;
 import daniel.perez.qrdialogview.QRDialog;
+import daniel.perez.qrdialogview.di.QRDialogComponent;
+import daniel.perez.qrdialogview.di.QRDialogComponentProvider;
 import projects.csce.evence.di.appscope.AppComponent;
 import projects.csce.evence.di.appscope.DaggerAppComponent;
 import projects.csce.evence.di.appscope.LoginModule;
@@ -27,7 +29,7 @@ import projects.csce.evence.view.ui.CalendarDialog;
 import timber.log.Timber;
 
 
-public class BaseApplication extends Application implements QrReaderComponentProvider, DialogStarter, GenerateQRComponentProvider
+public class BaseApplication extends Application implements QrReaderComponentProvider, GenerateQRComponentProvider, QRDialogComponentProvider
 {
 
     private AppComponent injector;
@@ -47,8 +49,8 @@ public class BaseApplication extends Application implements QrReaderComponentPro
 
         injector = DaggerAppComponent.builder()
                 .loginModule( new LoginModule( getApplicationContext() ) )
-                .qrModule( new QrModule(this) )
                 .build();
+
         injector.inject(this);
 
         new SharedPref(getApplicationContext()).setSavedPreferences();
@@ -72,26 +74,6 @@ public class BaseApplication extends Application implements QrReaderComponentPro
         return account;
     }
 
-    @Override
-    public void startQrDialog(@NotNull BaseActivity activity, @NotNull ViewCalendarData data)
-    {
-        new QRDialog(activity, data, fileManager);
-    }
-
-    @Override
-    public void startTimeDialog(@NotNull BaseActivity activity, @NotNull TextView textView)
-    {
-        CalendarDialog calendarDialog = new CalendarDialog(activity, textView);
-        calendarDialog.timeDialog();
-    }
-
-    @Override
-    public void startDateDialog(@NotNull BaseActivity activity, @NotNull TextView textView)
-    {
-        CalendarDialog calendarDialog = new CalendarDialog(activity, textView);
-        calendarDialog.dateDialog();
-    }
-
     @NotNull
     @Override
     public QrReaderComponent getQrReaderComponent()
@@ -104,5 +86,12 @@ public class BaseApplication extends Application implements QrReaderComponentPro
     public GenerateQRComponent provideGenerateQRComponent()
     {
         return injector.provideGenerateQrFactory().create();
+    }
+
+    @NotNull
+    @Override
+    public QRDialogComponent provideQrDialogComponent()
+    {
+        return injector.providerQrDialogFactory().create();
     }
 }

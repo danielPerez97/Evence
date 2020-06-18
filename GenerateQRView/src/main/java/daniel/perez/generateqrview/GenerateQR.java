@@ -194,7 +194,7 @@ public class GenerateQR extends BaseActivity implements Consumer<QrAttempt>, Dia
 
 
     @Override
-    public void finishActivity()
+    public void close()
     {
         finish();
     }
