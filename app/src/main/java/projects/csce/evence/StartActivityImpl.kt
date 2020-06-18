@@ -3,6 +3,8 @@ package projects.csce.evence
 import android.content.Context
 import android.content.Intent
 import daniel.perez.core.StartActivity
+import daniel.perez.core.model.ViewCalendarData
+import daniel.perez.core.service.FileManager
 import daniel.perez.generateqrview.GenerateQR
 import daniel.perez.qrcameraview.QrReaderActivity
 import projects.csce.evence.view.ui.AboutActivity
@@ -11,7 +13,7 @@ import projects.csce.evence.view.ui.SettingsActivity
 import projects.csce.evence.view.ui.ShareAppActivity
 import javax.inject.Inject
 
-class StartActivityImpl @Inject constructor(): StartActivity
+class StartActivityImpl @Inject constructor(private val fileManager: FileManager): StartActivity
 {
     override fun startGenerateQr(activity: Context)
     {
@@ -19,10 +21,10 @@ class StartActivityImpl @Inject constructor(): StartActivity
         activity.startActivity(generateQRActivity)
     }
 
-    override fun startEditQr(activity: Context, filePath: String)
+    override fun startEditQr(activity: Context, ical: ViewCalendarData)
     {
         val intent = Intent(activity, GenerateQR::class.java)
-        intent.putExtra("FILE_PATH", filePath)
+        intent.putExtra("FILE_PATH", fileManager.getFilePath(ical.fileName))
         activity.startActivity(intent)
     }
 
