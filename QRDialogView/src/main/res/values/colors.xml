@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="mainText">#000</color>
+    <color name="red1">#F4511E</color>
 </resources>
