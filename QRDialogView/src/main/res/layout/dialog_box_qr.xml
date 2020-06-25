@@ -10,12 +10,18 @@
         android:id="@+id/close_dialog_btn"
         android:layout_width="42dp"
         android:layout_height="42dp"
-        android:backgroundTint="#F4511E"
+        android:backgroundTint="@color/red1"
+        app:cardElevation="8dp"
         app:layout_anchor="@id/qr_main_cardview"
-        app:layout_anchorGravity="top|end">
+        app:layout_anchorGravity="top|end"
+        android:translationX="-4dp"
+        android:translationY="4dp"
+        >
 
         <ImageView
             style="@style/CircularButtonImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_close_white_24dp" />
     </androidx.cardview.widget.CardView>
 
@@ -29,8 +35,10 @@
         android:layout_marginBottom="55dp"
         android:backgroundTint="@color/cardviewBackground"
         app:cardCornerRadius="32dp">
-
-        <LinearLayout
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -153,6 +161,6 @@
 
 
         </LinearLayout>
-
+        </ScrollView>
     </androidx.cardview.widget.CardView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
