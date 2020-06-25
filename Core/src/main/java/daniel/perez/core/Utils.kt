@@ -17,7 +17,11 @@ fun toZonedDateTime(dates: IntArray, hourMinute: IntArray): ZonedDateTime
             .withYear(dates[2])
 }
 
-fun toDayMonthYear(date: String) = SimpleDateFormat("dd/MM/yyyy", Locale.US).parse(date)
+fun toDayMonthYear(dateString: String): String {
+    val dateFormat1 = SimpleDateFormat("MM-dd-yyyy", Locale.US).parse(dateString)
+    val dateFormat2 = SimpleDateFormat("dd-MM-yyyy", Locale.US)
+    return dateFormat2.format(dateFormat1)
+}
 
 fun Array<String>.toInts(): IntArray
 {

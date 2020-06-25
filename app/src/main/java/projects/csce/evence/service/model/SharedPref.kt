@@ -3,10 +3,15 @@ package projects.csce.evence.service.model
 import android.content.Context
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
+import daniel.perez.core.model.UiPreference
+import daniel.perez.ical.ICalSpec
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import projects.csce.evence.R
 
 class SharedPref(val context : Context ) {
     private val sharedPref = context.getSharedPreferences(context.getString(R.string.saved_setting_shared_pref_name),Context.MODE_PRIVATE)
+    private val uiPrefProcessor: PublishSubject<UiPreference> = PublishSubject.create()
 
     fun loadIntValue(key:String, defaultValue: Int) = sharedPref.getInt(key, defaultValue)
     fun loadBooleanValue(key: String, defaultValue: Boolean) = sharedPref.getBoolean(key, defaultValue)
@@ -34,4 +39,16 @@ class SharedPref(val context : Context ) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
+
+    fun notifyUiPref() {
+        val isQrPreviewed = loadBooleanValue(context.getString(R.string.saved_qr_preview_setting), true)
+        val isDayMonthYear = loadBooleanValue(context.getString(R.string.saved_date_format_setting), false)
+        uiPrefProcessor.onNext(UiPreference(isQrPreviewed,isDayMonthYear))
+    }
+
+    fun getUiPref() : Observable<UiPreference>{
+        return uiPrefProcessor
+    }
+
+
 }
