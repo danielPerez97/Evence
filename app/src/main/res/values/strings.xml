@@ -3,11 +3,15 @@
     <string name="server_client_id">AIzaSyDpo6RqH8T91Ez5ZttAyGGXS1jBUz1eVII</string>
     <string name="scan_qr">Scan QR</string>
     <string name="search">Search</string>
-    <string name="saved_dark_mode_setting">dark_mode_setting</string>
-    <string name="saved_setting_shared_pref_name">saved_setting</string>
     <string name="about">About</string>
     <string name="created_by">Created by Daniel Perez and Gabriel Carmen</string>
     <string name="leave_a_rating">Leave a rating</string>
     <string name="dark_theme">Dark theme</string>
     <string name="share_app">Share App</string>
+    <string name="date_format">Use dd-mm-yyy date format</string>
+    <string name="saved_dark_mode_setting">dark_mode_setting</string>
+    <string name="saved_date_format_setting">date_format_setting</string>
+    <string name="saved_qr_preview_setting">qr_preview_setting</string>
+    <string name="saved_setting_shared_pref_name">saved_setting</string>
+    <string name="appearance">Appearance</string>
 </resources>

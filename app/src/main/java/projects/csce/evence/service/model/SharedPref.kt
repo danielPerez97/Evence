@@ -9,10 +9,18 @@ class SharedPref(val context : Context ) {
     private val sharedPref = context.getSharedPreferences(context.getString(R.string.saved_setting_shared_pref_name),Context.MODE_PRIVATE)
 
     fun loadIntValue(key:String, defaultValue: Int) = sharedPref.getInt(key, defaultValue)
+    fun loadBooleanValue(key: String, defaultValue: Boolean) = sharedPref.getBoolean(key, defaultValue)
 
     fun saveIntValue(key : String, value : Int){
         with (sharedPref.edit()) {
             putInt(key, value)
+            commit()
+        }
+    }
+
+    fun saveBooleanValue(key : String, value : Boolean){
+        with (sharedPref.edit()) {
+            putBoolean(key, value)
             commit()
         }
     }
