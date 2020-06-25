@@ -2,6 +2,7 @@ package projects.csce.evence.view.ui
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,8 @@ import javax.inject.Inject
 class SettingsActivity : AppCompatActivity() {
     lateinit var binding: ActivitySettingsBinding
     private var isDark: Int = -99
+    private var isDayMonthYear = false
+    private var isQrDisplayed = true
 
     @Inject
     lateinit var sharedPref:SharedPref
@@ -44,6 +47,22 @@ class SettingsActivity : AppCompatActivity() {
             else ->
                 binding.darkModeSwitch.isChecked = false
         }
+
+        isQrDisplayed = sharedPref.loadBooleanValue(getString(R.string.saved_qr_preview_setting), true)
+        when(isQrDisplayed){
+            true->
+                binding.qrPreviewSwitch.isChecked = true
+            else->
+                binding.qrPreviewSwitch.isChecked = false
+        }
+
+        isDayMonthYear = sharedPref.loadBooleanValue(getString(R.string.saved_date_format_setting), false)
+        when(isDayMonthYear){
+            true->
+                binding.dateFormatSwitch.isChecked = true
+            else->
+                binding.dateFormatSwitch.isChecked = false
+        }
     }
 
     fun onBackClicked(){
@@ -63,5 +82,13 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
         sharedPref.saveIntValue(getString(R.string.saved_dark_mode_setting), isDark)
+    }
+
+    fun onQrPreviewSwitchClicked(){
+        sharedPref.saveBooleanValue(getString(R.string.saved_qr_preview_setting), binding.qrPreviewSwitch.isChecked)
+    }
+
+    fun onDateFormatSwitchClicked(){
+        sharedPref.saveBooleanValue(getString(R.string.saved_date_format_setting), binding.dateFormatSwitch.isChecked)
     }
 }

@@ -38,7 +38,6 @@ import timber.log.Timber;
 
 public class MainActivity extends BaseActivity
 {
-
     private int RC_SIGN_IN = 1;
     private MainViewModel viewModel;
     private ActivityMainBinding binding;

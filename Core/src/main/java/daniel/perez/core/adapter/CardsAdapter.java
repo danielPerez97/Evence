@@ -103,6 +103,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
             else if (isDark == Configuration.UI_MODE_NIGHT_NO)
                 binding.qrImageView.clearColorFilter();
 
+
         }
     }
 }

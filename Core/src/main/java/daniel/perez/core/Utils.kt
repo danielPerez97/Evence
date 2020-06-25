@@ -3,7 +3,9 @@ package daniel.perez.core
 
 import android.content.Context
 import android.widget.Toast
+import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
+import java.util.*
 
 fun toZonedDateTime(dates: IntArray, hourMinute: IntArray): ZonedDateTime
 {
@@ -14,6 +16,8 @@ fun toZonedDateTime(dates: IntArray, hourMinute: IntArray): ZonedDateTime
             .withDayOfMonth(dates[1])
             .withYear(dates[2])
 }
+
+fun toDayMonthYear(date: String) = SimpleDateFormat("dd/MM/yyyy", Locale.US).parse(date)
 
 fun Array<String>.toInts(): IntArray
 {
