@@ -3,6 +3,7 @@ package daniel.perez.core.adapter;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -15,7 +16,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import daniel.perez.core.R;
+import daniel.perez.core.Utils;
 import daniel.perez.core.databinding.EventsListEntryLayoutBinding;
+import daniel.perez.core.model.UiPreference;
 import daniel.perez.core.model.ViewCalendarData;
 import daniel.perez.core.model.ViewEvent;
 import io.reactivex.Observable;
@@ -28,6 +31,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
     private List<ViewCalendarData> dataList = Collections.emptyList();
     private Context context;
     private PublishSubject<ViewCalendarData> clicks = PublishSubject.create();
+    private UiPreference uiPreference;
 
     public CardsAdapter(Context context)
     {
@@ -63,6 +67,10 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
         return clicks.debounce(300, TimeUnit.MILLISECONDS);
     }
 
+    public void updateUiFormat(UiPreference uiPref) {
+        uiPreference = uiPref;
+    }
+
     public void setData(List<ViewCalendarData> newData)
     {
         dataList = newData;
@@ -94,8 +102,8 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
         {
             binding.listEntryTitleTextview.setText(event.getTitle());
             binding.listEntryDateTextview.setText(event.getStartDate());
+            binding.listEntryDatePreview.setText(event.getStartDate());
             binding.listEntryTimeTextview.setText(event.getStartTime());
-            binding.qrImageView.setImageBitmap(event.getImage());
 
             int isDark = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
             if (isDark == Configuration.UI_MODE_NIGHT_YES)
@@ -103,7 +111,22 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
             else if (isDark == Configuration.UI_MODE_NIGHT_NO)
                 binding.qrImageView.clearColorFilter();
 
+            binding.qrImageView.setImageBitmap(event.getImage());
+            if (uiPreference.isQrPreviewed()) {
+                binding.qrImageView.setVisibility(View.VISIBLE);
+                binding.datePreview.setVisibility(View.GONE);
+                binding.listEntryDateTextview.setVisibility(View.VISIBLE);
+            } else  {
+                binding.qrImageView.setVisibility(View.GONE);
+                binding.datePreview.setVisibility(View.VISIBLE);
+                binding.listEntryDateTextview.setVisibility(View.GONE);
+            }
 
+            if (uiPreference.isDayMonthYear()) {
+                binding.listEntryDateTextview.setText(Utils.toDayMonthYear(event.getStartDate()));
+            } else {
+                binding.listEntryDateTextview.setText(event.getStartDate());
+            }
         }
     }
 }

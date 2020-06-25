@@ -32,6 +32,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import projects.csce.evence.BaseApplication;
 import projects.csce.evence.R;
 import projects.csce.evence.databinding.ActivityMainBinding;
+import projects.csce.evence.service.model.SharedPref;
 import projects.csce.evence.utils.Utils;
 import projects.csce.evence.viewmodel.MainViewModel;
 import timber.log.Timber;
@@ -50,6 +51,7 @@ public class MainActivity extends BaseActivity
     @Inject QrBitmapGenerator generator;
     @Inject DialogStarter dialogStarter;
     @Inject StartActivity startActivity;
+    @Inject SharedPref sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +65,6 @@ public class MainActivity extends BaseActivity
 
         //apply custom toolbar
         setSupportActionBar(binding.toolbarMain);
-
 
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
         eventsAdapter = new CardsAdapter(this);
@@ -93,6 +94,13 @@ public class MainActivity extends BaseActivity
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(viewCalendarData -> dialogStarter.startQrDialog(this, viewCalendarData)));
 
+        disposables.add(sharedPref.getUiPref()
+                .doOnSubscribe(pref -> sharedPref.notifyUiPref())
+                .subscribe(uiPref -> {
+                  eventsAdapter.updateUiFormat(uiPref);
+                  Toast.makeText(this, uiPref.isQrPreviewed() + " ", Toast.LENGTH_SHORT).show();
+                }));
+
         Timber.i("Set up subscriptions");
     }
 
@@ -100,6 +108,7 @@ public class MainActivity extends BaseActivity
     protected void onResume() {
         super.onResume();
         fileManager.notifyIcals();
+        sharedPref.notifyUiPref();
     }
 
     @Override

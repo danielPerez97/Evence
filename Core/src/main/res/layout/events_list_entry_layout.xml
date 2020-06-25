@@ -26,12 +26,27 @@
         android:gravity="center_vertical"
         android:padding="8dp"
         >
-
+        <LinearLayout
+            android:id="@+id/date_preview"
+            android:layout_width="@dimen/events_entry_date_preview_size"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/list_entry_date_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="mm-dd-yyyy"
+                android:textColor="@color/blue1"
+                android:textSize="16sp"/>
+        </LinearLayout>
         <ImageView
             android:id="@+id/qrImageView"
             android:src="@drawable/ic_border_right_black_24dp"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="@dimen/events_entry_qr_preview_size"
+            android:layout_height="@dimen/events_entry_qr_preview_size"
             android:tintMode="multiply"/>
 
         <LinearLayout
