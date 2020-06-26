@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import daniel.perez.core.BaseActivity;
 import daniel.perez.core.DialogClosable;
 import daniel.perez.core.StartActivity;
+import daniel.perez.core.Utils;
 import daniel.perez.core.model.ViewCalendarData;
 import daniel.perez.core.model.ViewEvent;
 import daniel.perez.core.service.FileManager;
@@ -44,7 +45,7 @@ public class QRDialog
         binding = DialogBoxQrBinding.inflate(LayoutInflater.from(context));
 
         binding.qrDialogEventTitleTextview.setText(currentEvent.getTitle());
-        binding.qrDialogEventStartDateTextview.setText(currentEvent.getStartDate());
+        binding.qrDialogEventStartDateTextview.setText(Utils.setLocaleDateFormat(currentEvent.getStartDate()));
         binding.qrDialogEventStartTimeTextview.setText(currentEvent.getStartTime());
         binding.qrDialogEventLocationTextview.setText(currentEvent.getLocation());
         binding.qrDialogQrImageview.setImageBitmap(currentEvent.getImage());

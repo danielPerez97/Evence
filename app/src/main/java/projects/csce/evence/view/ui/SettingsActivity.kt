@@ -48,7 +48,7 @@ class SettingsActivity : AppCompatActivity() {
                 binding.darkModeSwitch.isChecked = false
         }
 
-        isQrDisplayed = sharedPref.loadBooleanValue(getString(R.string.saved_qr_preview_setting), true)
+        isQrDisplayed = sharedPref.loadBooleanValue(getString(R.string.saved_qr_preview_setting), false)
         when(isQrDisplayed){
             true->
                 binding.qrPreviewSwitch.isChecked = true
@@ -56,13 +56,6 @@ class SettingsActivity : AppCompatActivity() {
                 binding.qrPreviewSwitch.isChecked = false
         }
 
-        isDayMonthYear = sharedPref.loadBooleanValue(getString(R.string.saved_date_format_setting), false)
-        when(isDayMonthYear){
-            true->
-                binding.dateFormatSwitch.isChecked = true
-            else->
-                binding.dateFormatSwitch.isChecked = false
-        }
     }
 
     fun onBackClicked(){
@@ -88,7 +81,4 @@ class SettingsActivity : AppCompatActivity() {
         sharedPref.saveBooleanValue(getString(R.string.saved_qr_preview_setting), binding.qrPreviewSwitch.isChecked)
     }
 
-    fun onDateFormatSwitchClicked(){
-        sharedPref.saveBooleanValue(getString(R.string.saved_date_format_setting), binding.dateFormatSwitch.isChecked)
-    }
 }

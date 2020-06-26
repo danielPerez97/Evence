@@ -34,13 +34,20 @@
             android:gravity="center"
             >
             <TextView
-                android:id="@+id/list_entry_date_preview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="mm-dd-yyyy"
-                android:textColor="@color/blue1"
-                android:textSize="16sp"/>
+                android:id="@+id/list_entry_preview_month"
+                style="@style/EventItemPreviewText"
+                android:text="Jan"
+                android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/list_entry_preview_day"
+                style="@style/EventItemPreviewText"
+                android:text="12"
+                android:textSize="28sp"/>
+            <TextView
+                android:id="@+id/list_entry_preview_year"
+                style="@style/EventItemPreviewText"
+                android:text="2020"
+                android:textSize="12sp"/>
         </LinearLayout>
         <ImageView
             android:id="@+id/qrImageView"
@@ -60,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Event Title"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="@color/mainText"
                  />
 
