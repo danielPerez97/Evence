@@ -101,8 +101,10 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
         private void bind(ViewEvent event)
         {
             binding.listEntryTitleTextview.setText(event.getTitle());
-            binding.listEntryDateTextview.setText(event.getStartDate());
-            binding.listEntryDatePreview.setText(event.getStartDate());
+            binding.listEntryDateTextview.setText(Utils.setLocaleDateFormat(event.getStartDate()));
+            binding.listEntryPreviewDay.setText(Utils.getDay(event.getStartDate()));
+            binding.listEntryPreviewMonth.setText(Utils.getLocaleMonth(event.getStartDate()));
+            binding.listEntryPreviewYear.setText(Utils.getYear(event.getStartDate()));
             binding.listEntryTimeTextview.setText(event.getStartTime());
 
             int isDark = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
@@ -120,12 +122,6 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> 
                 binding.qrImageView.setVisibility(View.GONE);
                 binding.datePreview.setVisibility(View.VISIBLE);
                 binding.listEntryDateTextview.setVisibility(View.GONE);
-            }
-
-            if (uiPreference.isDayMonthYear()) {
-                binding.listEntryDateTextview.setText(Utils.toDayMonthYear(event.getStartDate()));
-            } else {
-                binding.listEntryDateTextview.setText(event.getStartDate());
             }
         }
     }

@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 
+import daniel.perez.core.Utils;
+
 public class CalendarDialog {
     private static final String TAG = "CalendarDialog";
     private Context context;
@@ -44,7 +46,7 @@ public class CalendarDialog {
             mYear = year;
             mMonth = month + 1;
             mDay = day;
-            newTimeDateString.setText(mMonth + "/" + mDay + "/" + mYear);
+            newTimeDateString.setText(mMonth + "-" + mDay + "-" + mYear);
         }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }

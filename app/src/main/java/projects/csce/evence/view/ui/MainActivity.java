@@ -98,7 +98,6 @@ public class MainActivity extends BaseActivity
                 .doOnSubscribe(pref -> sharedPref.notifyUiPref())
                 .subscribe(uiPref -> {
                   eventsAdapter.updateUiFormat(uiPref);
-                  Toast.makeText(this, uiPref.isQrPreviewed() + " ", Toast.LENGTH_SHORT).show();
                 }));
 
         Timber.i("Set up subscriptions");

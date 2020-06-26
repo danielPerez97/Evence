@@ -41,9 +41,8 @@ class SharedPref(val context : Context ) {
     }
 
     fun notifyUiPref() {
-        val isQrPreviewed = loadBooleanValue(context.getString(R.string.saved_qr_preview_setting), true)
-        val isDayMonthYear = loadBooleanValue(context.getString(R.string.saved_date_format_setting), false)
-        uiPrefProcessor.onNext(UiPreference(isQrPreviewed,isDayMonthYear))
+        val isQrPreviewed = loadBooleanValue(context.getString(R.string.saved_qr_preview_setting), false)
+        uiPrefProcessor.onNext(UiPreference(isQrPreviewed))
     }
 
     fun getUiPref() : Observable<UiPreference>{

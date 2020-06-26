@@ -105,10 +105,12 @@ public class GenerateQR extends BaseActivity implements Consumer<QrAttempt>, Dia
 
     public void generateQR() {
         // Handle the dates
-        int[] startMonthDayYear = Utils.toInts(binding.startDateTextView.getText().toString().split("/"));
-        int[] endMonthDayYear = Utils.toInts(binding.endDateTextView.getText().toString().split("/"));
+        //todo: find better way than getting the string from textview. Instead, get string directly from the calendar dialog
+        int[] startMonthDayYear = Utils.toInts(binding.startDateTextView.getText().toString().split("-"));
+        int[] endMonthDayYear = Utils.toInts(binding.endDateTextView.getText().toString().split("-"));
 
         // Handle the hours and minutes
+        //todo: find better way than getting the string from textview. Instead, get string directly from the calendar dialog
         int[] startHourMinutes = Utils.toInts(binding.startTimeTextView.getText().toString().split(":"));
         int[] endHourMinutes = Utils.toInts(binding.endTimeTextView.getText().toString().split(":"));
 
