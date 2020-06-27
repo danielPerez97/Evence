@@ -13,7 +13,7 @@ public class CalendarDialog {
     private static final String TAG = "CalendarDialog";
     private Context context;
     private int mMinute, mHour, mDay, mMonth, mYear;
-    private TextView newTimeDateString;
+    private String newTimeDateString;
 
     public CalendarDialog(Context context, TextView textView) {
         this.context = context;

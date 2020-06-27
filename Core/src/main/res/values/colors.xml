@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Evence</string>
-    <color name="blue1">#2196F3</color>
-    <color name="cardviewBackground">#fff</color>
     <color name="colorAccent">#2196F3</color>
     <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#C9C9C9</color>
+    <color name="blue1">#2196F3</color>
+    <color name="cardviewBackground">#fff</color>
     <color name="edittext_font_color">#666</color>
     <color name="formInputBackground">#ECEFF1</color>
     <color name="mainText">#000</color>
     <color name="qr_dark_tint">#6A6B85</color>
     <color name="white">#fff</color>
-
+    <color name="greyText">#5C5C5C</color>
+    <color name="screenBackground">#fff</color>
+    <color name="black">#000</color>
+    <color name="grey1">#505050</color>
+    <color name="grey2">#CACACA</color>
+    <color name="text2">#595959</color>
 
 </resources>
