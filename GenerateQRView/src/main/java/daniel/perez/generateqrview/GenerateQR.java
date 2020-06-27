@@ -25,6 +25,11 @@ import daniel.perez.core.BaseActivity;
 import daniel.perez.core.DialogClosable;
 import daniel.perez.core.DialogStarter;
 import daniel.perez.core.Utils;
+import daniel.perez.core.model.ViewCalendarData;
+import daniel.perez.core.model.ViewEvent;
+import daniel.perez.core.service.FileManager;
+import daniel.perez.core.service.qr.QrAttempt;
+import daniel.perez.core.service.qr.QrBitmapGenerator;
 import daniel.perez.generateqrview.databinding.ActivityGenerateQrBinding;
 import daniel.perez.generateqrview.di.GenerateQRComponentProvider;
 import daniel.perez.ical.EventSpec;
@@ -33,11 +38,6 @@ import daniel.perez.ical.Parser;
 import io.reactivex.functions.Consumer;
 import okio.BufferedSink;
 import okio.Okio;
-import daniel.perez.core.service.FileManager;
-import daniel.perez.core.service.qr.QrAttempt;
-import daniel.perez.core.service.qr.QrBitmapGenerator;
-import daniel.perez.core.model.ViewCalendarData;
-import daniel.perez.core.model.ViewEvent;
 
 public class GenerateQR extends BaseActivity implements Consumer<QrAttempt>, DialogClosable
 {
