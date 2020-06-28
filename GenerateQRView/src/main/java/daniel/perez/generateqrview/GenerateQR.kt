@@ -76,6 +76,8 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
         //TODO("Implement the enum properly, calculate if its morning or after noon for AM, PM")
         startTime = TimeSetEvent(event.start.hour, event.start.minute, Half.AM)
         endTime = TimeSetEvent(event.end.hour, event.end.minute, Half.PM)
+        startDate = DateSetEvent(event.start.monthValue, event.start.dayOfMonth, event.start.year)
+        endDate = DateSetEvent(event.end.monthValue, event.end.dayOfMonth, event.end.year)
 
         binding.titleEditText.setText(event.title)
         binding.startDateTextView.text = event.getStartDate()
@@ -120,8 +122,8 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
         viewModel.saveFile(currentEvent)
         val viewEvent = ViewEvent(event.title,
                 event.description,
-                event.getStartTime(),
                 event.getStartDate(),
+                event.getStartTime(),
                 event.getStartInstantEpoch(),
                 event.getEndEpochMilli(),
                 event.location,
