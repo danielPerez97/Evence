@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion(Project.sdkVersion)
     buildToolsVersion = Project.buildToolsVerion
 
     defaultConfig {
@@ -27,6 +27,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -49,8 +50,10 @@ dependencies {
 
     implementation( Libs.dagger )
     kapt( Libs.daggerCompiler )
+    coreLibraryDesugaring( Libs.desugar )
     implementation( Libs.lifeCycle )
     implementation( Libs.material )
     implementation( Libs.okio )
     implementation( Libs.rxJava )
+    implementation( Libs.timber )
 }

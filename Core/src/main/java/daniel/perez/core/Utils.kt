@@ -10,14 +10,14 @@ import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
 import java.util.*
 
-fun toZonedDateTime(dates: IntArray, hourMinute: IntArray): ZonedDateTime
+fun toZonedDateTime(month: Int, dayOfMonth: Int, year: Int, hour: Int, minute: Int): ZonedDateTime
 {
     return ZonedDateTime.now()
-            .withHour(hourMinute[0])
-            .withMinute(hourMinute[1])
-            .withMonth(dates[0])
-            .withDayOfMonth(dates[1])
-            .withYear(dates[2])
+            .withHour(hour)
+            .withMinute(minute)
+            .withMonth(month)
+            .withDayOfMonth(dayOfMonth)
+            .withYear(year)
 }
 
 //auto set date format according to devices locale

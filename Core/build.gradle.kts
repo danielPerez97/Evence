@@ -47,7 +47,7 @@ dependencies {
 
     implementation( project(Project.ical) )
 
-    coreLibraryDesugaring( "com.android.tools:desugar_jdk_libs:1.0.5" )
+    coreLibraryDesugaring( Libs.desugar )
 
     // CardView
     implementation( Libs.cardView )
@@ -66,6 +66,7 @@ dependencies {
 
     // RxJava
     implementation( Libs.rxJava )
+    implementation( Libs.rxAndroid )
 
     // Timber
     implementation( Libs.timber )

@@ -27,6 +27,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -49,6 +50,8 @@ dependencies {
     implementation( Libs.cardView )
     implementation( Libs.coordinatorLayout )
     implementation( Libs.dagger )
+    coreLibraryDesugaring( Libs.desugar )
     kapt( Libs.daggerCompiler )
     implementation( Libs.rxBinding )
+    implementation( Libs.timber )
 }
