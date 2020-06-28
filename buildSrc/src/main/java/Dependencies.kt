@@ -13,6 +13,11 @@ object Libs
     const val dagger = "com.google.dagger:dagger:$daggerVersion"
     const val daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
 
+    // Desugar
+    private const val desugarVersion = "1.0.9"
+    const val desugar = "com.android.tools:desugar_jdk_libs:1.0.9"
+
+
     // ICal4J
     private const val ical4jVersion = "3.0.9"
     const val ical4j = "org.mnode.ical4j:ical4j:$ical4jVersion"

@@ -1,11 +1,13 @@
 package projects.csce.evence
 
-import android.widget.TextView
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.DialogStarter
+import daniel.perez.core.model.DateSetEvent
+import daniel.perez.core.model.TimeSetEvent
 import daniel.perez.core.model.ViewCalendarData
 import daniel.perez.qrdialogview.CalendarDialog
 import daniel.perez.qrdialogview.QRDialog
+import io.reactivex.Observable
 
 class DialogStarterImpl: DialogStarter
 {
@@ -14,15 +16,15 @@ class DialogStarterImpl: DialogStarter
         QRDialog(activity, data)
     }
 
-    override fun startTimeDialog(activity: BaseActivity, textView: TextView)
+    override fun startTimeDialog(activity: BaseActivity): Observable<TimeSetEvent>
     {
-        val calendarDialog = CalendarDialog(activity, textView)
-        calendarDialog.timeDialog()
+        val calendarDialog = CalendarDialog(activity)
+        return calendarDialog.timeDialog()
     }
 
-    override fun startDateDialog(activity: BaseActivity, textView: TextView)
+    override fun startDateDialog(activity: BaseActivity): Observable<DateSetEvent>
     {
-        val calendarDialog = CalendarDialog(activity, textView)
-        calendarDialog.dateDialog()
+        val calendarDialog = CalendarDialog(activity)
+        return calendarDialog.dateDialog()
     }
 }
