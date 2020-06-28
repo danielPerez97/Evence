@@ -13,11 +13,11 @@ import java.util.*
 fun toZonedDateTime(month: Int, dayOfMonth: Int, year: Int, hour: Int, minute: Int): ZonedDateTime
 {
     return ZonedDateTime.now()
-            .withHour(hour)
-            .withMinute(minute)
-            .withMonth(month)
-            .withDayOfMonth(dayOfMonth)
-            .withYear(year)
+            .withHour( hour )
+            .withMinute( minute )
+            .withMonth( month )
+            .withDayOfMonth( dayOfMonth )
+            .withYear( year )
 }
 
 //auto set date format according to devices locale
