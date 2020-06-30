@@ -9,16 +9,23 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraManager
+import android.hardware.camera2.CameraMetadata
+import android.hardware.camera2.CameraMetadata.LENS_FACING_BACK
+import android.hardware.camera2.CameraMetadata.LENS_FACING_FRONT
+import android.media.Image
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.DisplayMetrics
 import android.util.Log
+import android.util.Size
 import android.view.SurfaceHolder
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.*
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 //import com.google.android.gms.vision.CameraSource
@@ -55,6 +62,11 @@ class QrReaderActivity : AppCompatActivity()//, SurfaceHolder.Callback, Detector
     @Inject lateinit var fileManager: FileManager
     @Inject lateinit var dialogStarter: DialogStarter
 
+    companion object {
+        private const val REQUEST_CODE_PERMISSIONS = 10
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         (application as QrReaderComponentProvider).getQrReaderComponent().inject(this)
@@ -63,15 +75,44 @@ class QrReaderActivity : AppCompatActivity()//, SurfaceHolder.Callback, Detector
         setContentView(binding.root)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(QrReaderViewModel::class.java)
 
-        cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        try {
-            cameraId = cameraManager.cameraIdList[0]
-        } catch (e : CameraAccessException) {
-            e.printStackTrace()
-        }
 
 //        binding.qrTypeCardview.setOnClickListener { clickityClick() }
-        binding.flashImageview.setOnClickListener { toggleFlash() }
+     //   binding.flashImageview.setOnClickListener { toggleFlash() }
+    }
+
+    fun setupCamera(){
+        val preview = Preview.Builder()
+                .build()
+
+        val cameraSelector = CameraSelector.Builder()
+                .requireLensFacing(LensFacing.BACK)
+                .build()
+
+        val displayMetrics = DisplayMetrics()
+       windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val scanned = ImageAnalysis.Builder()
+                .setTargetResolution(Size(displayMetrics.widthPixels,displayMetrics.heightPixels))
+                .setBackpressureStrategy(ImageAnalysis.BackpressureStrategy.KEEP_ONLY_LATEST)
+                .build()
+
+    }
+
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(
+                baseContext, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (allPermissionsGranted()) {
+                setupCamera()
+            } else {
+                Toast.makeText(this,
+                        "Permissions not granted by the user.",
+                        Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
     }
 
 //    override fun onResume(){
@@ -300,6 +341,7 @@ class QrReaderActivity : AppCompatActivity()//, SurfaceHolder.Callback, Detector
 //        }
 //    }
 
+    /*
     fun toggleFlash(){
         //todo fix flash
         if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
@@ -322,19 +364,5 @@ class QrReaderActivity : AppCompatActivity()//, SurfaceHolder.Callback, Detector
         }
     }
 
-    private fun animate(){
-       /* val centerX = binding.qrTypeCardview.width / 2
-        val centerY = binding.qrTypeCardview.height / 2
-        val radius = Math.hypot(centerX.toDouble(), centerY.toDouble()).toFloat()
-        val shrinkAnim = ViewAnimationUtils.createCircularReveal(binding.qrTypeCardview, centerX, centerY, radius, 0.0F)
-        val growAnim = ViewAnimationUtils.createCircularReveal(binding.qrTypeCardview, centerX, centerY, radius, 0.0F)
-
-        shrinkAnim.start()
-        growAnim.start()*/
-
-
-
-    }
-
-
+     */
 }

@@ -92,6 +92,10 @@ object Libs
     //Google Mobile Vision
     private const val visionVersion="20.0.0"
     const val vision="com.google.android.gms:play-services-vision:$visionVersion"
+
+    //Google ML Kit barcode-scanning
+    private const val mlkitBarcodeVersion="16.0.0"
+    const val mlkitBarcode = "com.google.mlkit:barcode-scanning:$mlkitBarcodeVersion"
 }
 
 object Project
