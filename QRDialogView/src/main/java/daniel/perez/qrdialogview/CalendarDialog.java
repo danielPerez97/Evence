@@ -20,7 +20,6 @@ public class CalendarDialog {
         this.newTimeDateString = textView;
     }
 
-
     public void timeDialog() {
         final Calendar calendar = Calendar.getInstance();
 

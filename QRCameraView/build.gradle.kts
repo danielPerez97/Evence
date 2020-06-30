@@ -41,6 +41,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
     implementation("androidx.core:core-ktx:1.3.0")
     implementation("androidx.appcompat:appcompat:1.1.0")
+    implementation("androidx.camera:camera-camera2:1.0.0-beta06")
     testImplementation("junit:junit:4.12")
     androidTestImplementation("androidx.test.ext:junit:1.1.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
@@ -65,4 +66,6 @@ dependencies {
     // Vision
 //    implementation( Libs.vision )
 
+    //ML kit barcode
+    implementation( Libs.mlkitBarcode)
 }
