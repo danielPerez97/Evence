@@ -27,10 +27,6 @@ object Libs
     private const val materialVersion = "1.1.0"
     const val material = "com.google.android.material:material:$materialVersion"
 
-    // Material Widgets
-    private const val materialWidgetsVersion = "1.1.0"
-    const val materialWidgets = "com.google.android.material:material:$materialWidgetsVersion"
-
     // Moshi
     private const val moshiVersion = "1.9.2"
     const val moshi = "com.squareup.moshi:moshi:$moshiVersion"
@@ -93,9 +89,27 @@ object Libs
     private const val visionVersion="20.0.0"
     const val vision="com.google.android.gms:play-services-vision:$visionVersion"
 
+    //CameraX
+    private const val cameraXVersion = "1.0.0-beta06"
+    private const val cameraXCameraViewVersion = "1.0.0-alpha13"
+    const val cameraXCamera2 = "androidx.camera:camera-camera2:$cameraXVersion"
+    const val cameraXLifecycle = "androidx.camera:camera-lifecycle:$cameraXVersion"
+    const val cameraXCameraView = "androidx.camera:camera-view:$cameraXCameraViewVersion"
+    const val cameraXCore = "androidx.camera:camera-core:$cameraXVersion"
+
     //Google ML Kit barcode-scanning
     private const val mlkitBarcodeVersion="16.0.0"
     const val mlkitBarcode = "com.google.mlkit:barcode-scanning:$mlkitBarcodeVersion"
+
+    //guava conflict - listenablefuture
+    //private const val guavaConflictVersion = "1.0"
+    private const val guavaConflictVersion = "9999.0-empty-to-avoid-conflict-with-guava"
+    const val guavaConflict = "com.google.guava:listenablefuture:$guavaConflictVersion"
+
+    //guava
+    private const val guavaVersion = "29.0-android"
+    const val guava ="com.google.guava:guava:$guavaVersion"
+
 }
 
 object Project

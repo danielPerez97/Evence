@@ -30,9 +30,14 @@ android {
         viewBinding = true
     }
     compileOptions {
-//        coreLibraryDesugaringEnabled = true
+        coreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    configurations {
+        all {
+            exclude(group = "com.google.guava", module= "listenablefuture")
+        }
     }
 }
 
@@ -41,7 +46,6 @@ dependencies {
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
     implementation("androidx.core:core-ktx:1.3.0")
     implementation("androidx.appcompat:appcompat:1.1.0")
-    implementation("androidx.camera:camera-camera2:1.0.0-beta06")
     testImplementation("junit:junit:4.12")
     androidTestImplementation("androidx.test.ext:junit:1.1.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
@@ -63,9 +67,20 @@ dependencies {
     // LifeCycle
     implementation( Libs.lifeCycle )
 
-    // Vision
-//    implementation( Libs.vision )
+    //CameraX
+    implementation( Libs.cameraXCamera2 )
+    implementation( Libs.cameraXCameraView)
+    implementation( Libs.cameraXLifecycle )
+    implementation( Libs.cameraXCore )
 
     //ML kit barcode
     implementation( Libs.mlkitBarcode)
+
+    //guava
+    //implementation( Libs.guava )
+
+    //guava conflict - listenablefuture
+    //implementation( Libs.guavaConflict )
+
+
 }
