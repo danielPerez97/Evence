@@ -7,14 +7,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraManager
-import android.hardware.camera2.CameraMetadata
-import android.hardware.camera2.CameraMetadata.LENS_FACING_BACK
-import android.hardware.camera2.CameraMetadata.LENS_FACING_FRONT
-import android.media.Image
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.DisplayMetrics
@@ -23,15 +16,17 @@ import android.util.Size
 import android.view.SurfaceHolder
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.*
+import androidx.camera.core.Camera
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-//import com.google.android.gms.vision.CameraSource
-//import com.google.android.gms.vision.Detector
-//import com.google.android.gms.vision.barcode.Barcode
-//import com.google.android.gms.vision.barcode.BarcodeDetector
+//import com.google.common.util.concurrent.ListenableFuture
 import daniel.perez.core.DialogStarter
 import daniel.perez.core.model.ViewCalendarData
 import daniel.perez.core.model.ViewEvent
@@ -44,18 +39,17 @@ import daniel.perez.qrcameraview.databinding.ActivityQrReaderBinding
 import daniel.perez.qrcameraview.di.QrReaderComponentProvider
 import daniel.perez.qrcameraview.viewmodel.QrReaderViewModel
 import java.io.IOException
+import java.util.concurrent.Executors
 import javax.inject.Inject
 
 class QrReaderActivity : AppCompatActivity()//, SurfaceHolder.Callback, Detector.Processor<Barcode>
 {
     lateinit var binding: ActivityQrReaderBinding
     private lateinit var viewModel : QrReaderViewModel
-//    private lateinit var cameraSource: CameraSource
-//    private var qr = Barcode()
-    private var isScanning = true
-    private var flashOn = false
-    private lateinit var cameraManager: CameraManager
-    private lateinit var cameraId: String
+
+    private val cameraExecutor = Executors.newSingleThreadExecutor()
+    private var cameraProvider: ProcessCameraProvider? = null
+    private var camera: Camera? = null
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var generator: QrBitmapGenerator
@@ -63,7 +57,7 @@ class QrReaderActivity : AppCompatActivity()//, SurfaceHolder.Callback, Detector
     @Inject lateinit var dialogStarter: DialogStarter
 
     companion object {
-        private const val REQUEST_CODE_PERMISSIONS = 10
+        private const val REQUEST_CAMERA_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
 
@@ -75,26 +69,47 @@ class QrReaderActivity : AppCompatActivity()//, SurfaceHolder.Callback, Detector
         setContentView(binding.root)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(QrReaderViewModel::class.java)
 
+        if (allPermissionsGranted()) {
+            binding.cameraView.post { setupCamera() }
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSIONS)
+        }
 
 //        binding.qrTypeCardview.setOnClickListener { clickityClick() }
      //   binding.flashImageview.setOnClickListener { toggleFlash() }
     }
 
     fun setupCamera(){
-        val preview = Preview.Builder()
-                .build()
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        cameraProviderFuture.addListener(Runnable {
+            // CameraProvider
+            cameraProvider = cameraProviderFuture.get()
 
-        val cameraSelector = CameraSelector.Builder()
-                .requireLensFacing(LensFacing.BACK)
-                .build()
+            val displayMetrics = DisplayMetrics()
+            windowManager.defaultDisplay.getMetrics(displayMetrics)
+            val preview = Preview.Builder()
+                    .build()
 
-        val displayMetrics = DisplayMetrics()
-       windowManager.defaultDisplay.getMetrics(displayMetrics)
-        val scanned = ImageAnalysis.Builder()
-                .setTargetResolution(Size(displayMetrics.widthPixels,displayMetrics.heightPixels))
-                .setBackpressureStrategy(ImageAnalysis.BackpressureStrategy.KEEP_ONLY_LATEST)
-                .build()
+            val imageAnalysis = ImageAnalysis.Builder()
+                    .setTargetResolution(Size(displayMetrics.widthPixels,displayMetrics.heightPixels))
+                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                    .build()
+                    .also { it.setAnalyzer(cameraExecutor, QRScanner()) }
 
+            val cameraSelector = CameraSelector.Builder()
+                    .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                    .build()
+
+            val cameraProvider = cameraProvider
+                    ?: throw IllegalStateException("Camera initialization failed.")
+            try{
+                cameraProvider.unbindAll()
+                camera = cameraProvider.bindToLifecycle(this, cameraSelector, imageAnalysis)
+            } catch (e: IllegalStateException) {
+                Log.e("QrReaderAcivity", "failed", e)
+            }
+
+        }, ContextCompat.getMainExecutor(this))
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -103,7 +118,7 @@ class QrReaderActivity : AppCompatActivity()//, SurfaceHolder.Callback, Detector
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+        if (requestCode == REQUEST_CAMERA_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 setupCamera()
             } else {
@@ -115,58 +130,6 @@ class QrReaderActivity : AppCompatActivity()//, SurfaceHolder.Callback, Detector
         }
     }
 
-//    override fun onResume(){
-//        super.onResume()
-//        setupCameraAndReader()
-//    }
-
-//    override fun onPause() {
-//        super.onPause()
-//        cameraSource.release()
-//    }
-//
-//    private fun setupCameraAndReader(){
-//        val barcodeDetector: BarcodeDetector = BarcodeDetector.Builder(this)
-//                .setBarcodeFormats(Barcode.ALL_FORMATS)
-//                .build()
-//
-//        val displayMetrics = DisplayMetrics()
-//        windowManager.defaultDisplay.getMetrics(displayMetrics)
-//
-//        cameraSource = CameraSource.Builder(this, barcodeDetector)
-//                .setRequestedPreviewSize(displayMetrics.heightPixels,displayMetrics.widthPixels)
-//                .setAutoFocusEnabled(true)
-//                .build()
-//        binding.cameraSurfaceView.holder.addCallback(this)
-//        barcodeDetector.setProcessor(this)
-//    }
-//
-//    companion object {
-//        const val CAMERA_REQUEST_CODE = 101
-//    }
-//
-//    override fun surfaceCreated(p0: SurfaceHolder?) {
-//        try {
-//            if(ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-//                cameraSource.start(binding.cameraSurfaceView.holder)
-//            } else {
-//                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
-//            }
-//        } catch (e: IOException) {
-//            e.printStackTrace()
-//        }
-//    }
-//
-//    override fun surfaceChanged(p0: SurfaceHolder?, p1: Int, p2: Int, p3: Int) {
-//    }
-//
-//    override fun surfaceDestroyed(p0: SurfaceHolder?) {
-//        cameraSource.stop()
-//    }
-//
-//    override fun release() {
-//    }
-//
 //    override fun receiveDetections(detections: Detector.Detections<Barcode>?) {
 //        val barcodeArray = detections?.detectedItems
 //

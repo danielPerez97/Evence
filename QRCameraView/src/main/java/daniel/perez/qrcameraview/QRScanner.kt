@@ -11,10 +11,8 @@ import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 
 class QRScanner : ImageAnalysis.Analyzer {
-
-
     @SuppressLint("UnsafeExperimentalUsageError")
-    override fun analyze(imageProxy: ImageProxy, rotationDegrees: Int) {
+    override fun analyze(imageProxy: ImageProxy) {
         val options = BarcodeScannerOptions.Builder()
                 .setBarcodeFormats(
                         Barcode.FORMAT_QR_CODE,
@@ -26,7 +24,7 @@ class QRScanner : ImageAnalysis.Analyzer {
         val barcodeScanner = BarcodeScanning.getClient()
         val mediaImage = imageProxy.image
         if (mediaImage != null) {
-            val image = InputImage.fromMediaImage(mediaImage, rotationDegrees)
+            val image = InputImage.fromMediaImage(mediaImage, 0)
             val result = barcodeScanner.process(image)
                     .addOnSuccessListener { barcodes ->
                         for(barcode in barcodes) {
@@ -38,6 +36,5 @@ class QRScanner : ImageAnalysis.Analyzer {
                         Log.e("QRScanner", "scan failed", it)
                     }
         }
-
     }
 }
