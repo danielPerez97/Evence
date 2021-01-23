@@ -139,7 +139,7 @@ public class GenerateQR extends BaseActivity implements Consumer<QrAttempt>, Dia
                 generator.forceGenerate(event.text())
         );
         ViewCalendarData calendar = new ViewCalendarData(currentEvent.getFileName(), Collections.singletonList(viewEvent));
-        ((DialogStarter) getApplication()).startQrDialog(this, calendar);
+        dialogStarter.startQrDialog(this, calendar);
     }
 
     // Handle the user choosing a place to store the file
