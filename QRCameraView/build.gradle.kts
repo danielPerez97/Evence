@@ -76,6 +76,9 @@ dependencies {
     //ML kit barcode
     implementation( Libs.mlkitBarcode)
 
+    // Timber
+    implementation ( Libs.timber )
+
     //guava
     //implementation( Libs.guava )
 

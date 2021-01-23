@@ -1,66 +1,43 @@
 package daniel.perez.qrcameraview
 
+//import androidx.camera.core.Camera
+//import androidx.camera.core.CameraSelector
+//import androidx.camera.core.ImageAnalysis
+//import androidx.camera.core.Preview
+//import androidx.camera.lifecycle.ProcessCameraProvider
+//import com.google.common.util.concurrent.ListenableFuture
 import android.Manifest
-import android.app.SearchManager
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.hardware.camera2.CameraManager
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.util.DisplayMetrics
-import android.util.Log
-import android.util.Size
-import android.view.SurfaceHolder
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.Camera
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-//import com.google.common.util.concurrent.ListenableFuture
-import daniel.perez.core.DialogStarter
-import daniel.perez.core.model.ViewCalendarData
-import daniel.perez.core.model.ViewEvent
-import daniel.perez.core.service.FileManager
-import daniel.perez.core.service.qr.QrBitmapGenerator
-import daniel.perez.core.toZonedDateTime
-import daniel.perez.ical.EventSpec
-import daniel.perez.ical.ICalSpec
 import daniel.perez.qrcameraview.databinding.ActivityQrReaderBinding
 import daniel.perez.qrcameraview.di.QrReaderComponentProvider
 import daniel.perez.qrcameraview.viewmodel.QrReaderViewModel
-import java.io.IOException
-import java.util.concurrent.Executors
 import javax.inject.Inject
 
 class QrReaderActivity : AppCompatActivity()//, SurfaceHolder.Callback, Detector.Processor<Barcode>
 {
     lateinit var binding: ActivityQrReaderBinding
     private lateinit var viewModel : QrReaderViewModel
-
-    private val cameraExecutor = Executors.newSingleThreadExecutor()
-    private var cameraProvider: ProcessCameraProvider? = null
-    private var camera: Camera? = null
-
+//
+//    private val cameraExecutor = Executors.newSingleThreadExecutor()
+//    private var cameraProvider: ProcessCameraProvider? = null
+//    private var camera: Camera? = null
+//
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    @Inject lateinit var generator: QrBitmapGenerator
-    @Inject lateinit var fileManager: FileManager
-    @Inject lateinit var dialogStarter: DialogStarter
-
-    companion object {
-        private const val REQUEST_CAMERA_PERMISSIONS = 10
+//    @Inject lateinit var generator: QrBitmapGenerator
+//    @Inject lateinit var fileManager: FileManager
+//    @Inject lateinit var dialogStarter: DialogStarter
+//
+//    companion object {
+        private val REQUEST_CAMERA_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-    }
-
+//    }
+//
     override fun onCreate(savedInstanceState: Bundle?)
     {
         (application as QrReaderComponentProvider).getQrReaderComponent().inject(this)
@@ -70,7 +47,7 @@ class QrReaderActivity : AppCompatActivity()//, SurfaceHolder.Callback, Detector
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(QrReaderViewModel::class.java)
 
         if (allPermissionsGranted()) {
-            binding.cameraView.post { setupCamera() }
+//            binding.cameraView.post { setupCamera() }
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSIONS)
         }
@@ -78,57 +55,57 @@ class QrReaderActivity : AppCompatActivity()//, SurfaceHolder.Callback, Detector
 //        binding.qrTypeCardview.setOnClickListener { clickityClick() }
      //   binding.flashImageview.setOnClickListener { toggleFlash() }
     }
-
-    fun setupCamera(){
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-        cameraProviderFuture.addListener(Runnable {
-            // CameraProvider
-            cameraProvider = cameraProviderFuture.get()
-
-            val displayMetrics = DisplayMetrics()
-            windowManager.defaultDisplay.getMetrics(displayMetrics)
-            val preview = Preview.Builder()
-                    .build()
-
-            val imageAnalysis = ImageAnalysis.Builder()
-                    .setTargetResolution(Size(displayMetrics.widthPixels,displayMetrics.heightPixels))
-                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                    .build()
-                    .also { it.setAnalyzer(cameraExecutor, QRScanner()) }
-
-            val cameraSelector = CameraSelector.Builder()
-                    .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                    .build()
-
-            val cameraProvider = cameraProvider
-                    ?: throw IllegalStateException("Camera initialization failed.")
-            try{
-                cameraProvider.unbindAll()
-                camera = cameraProvider.bindToLifecycle(this, cameraSelector, imageAnalysis)
-            } catch (e: IllegalStateException) {
-                Log.e("QrReaderAcivity", "failed", e)
-            }
-
-        }, ContextCompat.getMainExecutor(this))
-    }
-
+//
+//    fun setupCamera(){
+//        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+//        cameraProviderFuture.addListener(Runnable {
+//            // CameraProvider
+//            cameraProvider = cameraProviderFuture.get()
+//
+//            val displayMetrics = DisplayMetrics()
+//            windowManager.defaultDisplay.getMetrics(displayMetrics)
+//            val preview = Preview.Builder()
+//                    .build()
+//
+//            val imageAnalysis = ImageAnalysis.Builder()
+//                    .setTargetResolution(Size(displayMetrics.widthPixels,displayMetrics.heightPixels))
+//                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+//                    .build()
+//                    .also { it.setAnalyzer(cameraExecutor, QRScanner()) }
+//
+//            val cameraSelector = CameraSelector.Builder()
+//                    .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+//                    .build()
+//
+//            val cameraProvider = cameraProvider
+//                    ?: throw IllegalStateException("Camera initialization failed.")
+//            try{
+//                cameraProvider.unbindAll()
+//                camera = cameraProvider.bindToLifecycle(this, cameraSelector, imageAnalysis)
+//            } catch (e: IllegalStateException) {
+//                Log.e("QrReaderAcivity", "failed", e)
+//            }
+//
+//        }, ContextCompat.getMainExecutor(this))
+//    }
+//
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
                 baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == REQUEST_CAMERA_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                setupCamera()
-            } else {
-                Toast.makeText(this,
-                        "Permissions not granted by the user.",
-                        Toast.LENGTH_SHORT).show()
-                finish()
-            }
-        }
-    }
+//
+//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+//        if (requestCode == REQUEST_CAMERA_PERMISSIONS) {
+//            if (allPermissionsGranted()) {
+//                setupCamera()
+//            } else {
+//                Toast.makeText(this,
+//                        "Permissions not granted by the user.",
+//                        Toast.LENGTH_SHORT).show()
+//                finish()
+//            }
+//        }
+//    }
 
 //    override fun receiveDetections(detections: Detector.Detections<Barcode>?) {
 //        val barcodeArray = detections?.detectedItems
