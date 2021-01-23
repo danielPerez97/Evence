@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import projects.csce.evence.R
 import projects.csce.evence.databinding.ActivitySettingsBinding
@@ -25,9 +24,11 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getAppComponent().inject(this)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_settings)
-        binding.view = this
-        binding.lifecycleOwner = this
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+//        binding = DataBindingUtil.setContentView(this, R.layout.activity_settings)
+//        binding.view = this
+//        binding.lifecycleOwner = this
 
         setSavedSetting()
     }

@@ -2,8 +2,6 @@ package projects.csce.evence.view.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
-import projects.csce.evence.R
 import projects.csce.evence.databinding.ActivityShareAppBinding
 
 class ShareAppActivity : AppCompatActivity() {
@@ -11,16 +9,15 @@ class ShareAppActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_share_app)
-        binding.view = this
-        binding.lifecycleOwner = this
+        binding = ActivityShareAppBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
-    fun shareAppQr(){
+    fun shareAppQr() {
         //todo: share qr with playstore link
     }
 
-    fun shareApp(){
+    fun shareApp() {
         //todo: share playstore link directly
     }
 }

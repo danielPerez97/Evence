@@ -1,74 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <data>
-    </data>
 
-    <com.google.android.material.navigation.NavigationView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/navigation_drawer"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:backgroundTint="@color/colorAccent">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            style="@style/Base.TextAppearance.AppCompat.Title"
-            android:text="@string/app_name"
-            android:textAlignment="center"
-            android:layout_margin="42dp"
-            />
+<com.google.android.material.navigation.NavigationView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_drawer"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:backgroundTint="@color/colorAccent">
+
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="42dp"
+        android:text="@string/app_name"
+        android:textAlignment="center"
+        android:textColor="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="14dp"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:orientation="vertical"
-            android:layout_marginBottom="14dp"
-            >
-            <LinearLayout
-                style="@style/NavigationDrawerItem"
-                android:onClick="startSettingsActivity"
-                >
-                <ImageView
-                    style="@style/NavigationDrawerItemImage"
-                    android:src="@drawable/ic_settings_white_24dp"
-                    />
-                <TextView
-                    style="@style/NavigationDrawerItemText"
-                    android:text="@string/settings"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                style="@style/NavigationDrawerItem"
-                android:onClick="startShareAppActivity"
-                >
-                <ImageView
-                    style="@style/NavigationDrawerItemImage"
-                    android:src="@drawable/ic_share_white_24dp"
-                    />
-                <TextView
-                    style="@style/NavigationDrawerItemText"
-                    android:text="@string/share_app"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                style="@style/NavigationDrawerItem"
-                android:onClick="startAboutActivity"
-                >
-                <ImageView
-                    style="@style/NavigationDrawerItemImage"
-                    android:src="@drawable/ic_info_outline_white_24dp"
-                    />
-                <TextView
-                    style="@style/NavigationDrawerItemText"
-                    android:text="@string/about"
-                    />
-            </LinearLayout>
+            style="@style/NavigationDrawerItem"
+            android:onClick="startSettingsActivity">
+
+            <ImageView
+                style="@style/NavigationDrawerItemImage"
+                android:src="@drawable/ic_settings_white_24dp" />
+
+            <TextView
+                style="@style/NavigationDrawerItemText"
+                android:text="@string/settings" />
         </LinearLayout>
 
-    </com.google.android.material.navigation.NavigationView>
-</layout>
+        <LinearLayout
+            style="@style/NavigationDrawerItem"
+            android:onClick="startShareAppActivity">
+
+            <ImageView
+                style="@style/NavigationDrawerItemImage"
+                android:src="@drawable/ic_share_white_24dp" />
+
+            <TextView
+                style="@style/NavigationDrawerItemText"
+                android:text="@string/share_app" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/NavigationDrawerItem"
+            android:onClick="startAboutActivity">
+
+            <ImageView
+                style="@style/NavigationDrawerItemImage"
+                android:src="@drawable/ic_info_outline_white_24dp" />
+
+            <TextView
+                style="@style/NavigationDrawerItemText"
+                android:text="@string/about" />
+        </LinearLayout>
+    </LinearLayout>
+
+</com.google.android.material.navigation.NavigationView>

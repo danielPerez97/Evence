@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -58,9 +57,11 @@ public class MainActivity extends BaseActivity
         setTheme(R.style.AppTheme);
         Utils.getAppComponent(this).inject(this);
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        binding.setView(this);
-        binding.setLifecycleOwner(this);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+//        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+//        binding.setView(this);
+//        binding.setLifecycleOwner(this);
 
         //apply custom toolbar
         setSupportActionBar(binding.toolbarMain);
