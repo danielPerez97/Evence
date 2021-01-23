@@ -32,6 +32,7 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.backBtn.setOnClickListener { onBackClicked() }
         binding.darkModeSwitch.setOnClickListener { onDarkModeSwitchClicked() }
+        binding.qrPreviewSwitch.setOnClickListener { onQrPreviewSwitchClicked() }
 
 
         setSavedSetting()

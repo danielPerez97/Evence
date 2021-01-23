@@ -50,8 +50,8 @@ dependencies {
     implementation( Libs.cardView )
     implementation( Libs.coordinatorLayout )
     implementation( Libs.dagger )
-    coreLibraryDesugaring( Libs.desugar )
     kapt( Libs.daggerCompiler )
+    coreLibraryDesugaring( Libs.desugar )
     implementation( Libs.rxBinding )
     implementation( Libs.timber )
 }

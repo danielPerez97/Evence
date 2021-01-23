@@ -20,6 +20,7 @@ import io.reactivex.functions.Consumer
 import okio.buffer
 import okio.sink
 import timber.log.Timber
+//import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
