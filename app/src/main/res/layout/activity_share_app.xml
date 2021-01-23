@@ -13,8 +13,8 @@
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
-            style="@style/AboutPageCardview"
-            android:onClick="@{()->view.shareAppQr()}">
+            android:id="@+id/aboutPageCardView"
+            style="@style/AboutPageCardview">
 
             <LinearLayout style="@style/CardviewLayout">
 

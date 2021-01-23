@@ -59,9 +59,8 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-//        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-//        binding.setView(this);
-//        binding.setLifecycleOwner(this);
+
+        binding.qrBtn.setOnClickListener( unit -> startQrActivity());
 
         //apply custom toolbar
         setSupportActionBar(binding.toolbarMain);

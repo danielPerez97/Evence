@@ -26,9 +26,10 @@ class SettingsActivity : AppCompatActivity() {
         getAppComponent().inject(this)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        binding = DataBindingUtil.setContentView(this, R.layout.activity_settings)
-//        binding.view = this
-//        binding.lifecycleOwner = this
+
+        binding.backBtn.setOnClickListener { onBackClicked() }
+        binding.darkModeSwitch.setOnClickListener { onDarkModeSwitchClicked() }
+
 
         setSavedSetting()
     }

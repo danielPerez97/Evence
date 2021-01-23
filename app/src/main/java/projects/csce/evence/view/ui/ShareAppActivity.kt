@@ -11,6 +11,8 @@ class ShareAppActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityShareAppBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.aboutPageCardView.setOnClickListener { shareAppQr() }
     }
 
     fun shareAppQr() {
