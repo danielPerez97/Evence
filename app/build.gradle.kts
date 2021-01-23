@@ -10,17 +10,6 @@ plugins {
 }
 
 android {
-    signingConfigs {
-        create("release") {
-            val props = Properties()
-            val propsFile = File(rootDir, "keystore.properties")
-            props.load( propsFile.inputStream() )
-            storeFile = File( propsFile.parentFile, props["storeFile"] as String )
-            storePassword = props["storePassword"] as String
-            keyAlias = props["keyAlias"] as String
-            keyPassword = props["keyPassword"] as String
-        }
-    }
     compileSdkVersion(29)
     buildToolsVersion = "29.0.3"
     defaultConfig {
