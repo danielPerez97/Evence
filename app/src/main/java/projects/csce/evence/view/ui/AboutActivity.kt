@@ -3,8 +3,6 @@ package projects.csce.evence.view.ui
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import projects.csce.evence.R
 import projects.csce.evence.databinding.ActivityAboutBinding
 
 
@@ -12,11 +10,14 @@ class AboutActivity : AppCompatActivity() {
     lateinit var binding: ActivityAboutBinding
     var count : Int = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_about)
-        binding.view = this
-        binding.lifecycleOwner = this
+        binding = ActivityAboutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.cardView.setOnClickListener { shhhh() }
+        binding.cardView2.setOnClickListener { shhhh() }
+
     }
 
     fun sendFeedback(){

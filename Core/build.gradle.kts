@@ -45,7 +45,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
 
-    implementation(project(Project.ical))
+    implementation( project(Project.ical) )
 
     coreLibraryDesugaring( "com.android.tools:desugar_jdk_libs:1.0.5" )
 
