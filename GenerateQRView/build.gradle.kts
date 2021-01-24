@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(Project.sdkVersion)
-    buildToolsVersion = Project.buildToolsVerion
+    compileSdkVersion( Evence.compileSdkVersion )
+    buildToolsVersion = Evence.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(Project.sdkVersion)
+        minSdkVersion( Evence.minSdkVersion )
+        targetSdkVersion( Evence.targetSdkVersion )
         versionCode = 1
         versionName = "1.0"
 
@@ -27,7 +27,6 @@ android {
         }
     }
     compileOptions {
-        coreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }

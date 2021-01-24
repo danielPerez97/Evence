@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(29)
-    buildToolsVersion = Project.buildToolsVerion
+    compileSdkVersion( Evence.compileSdkVersion )
+    buildToolsVersion = Evence.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(Project.sdkVersion)
+        minSdkVersion( Evence.minSdkVersion )
+        targetSdkVersion( Evence.targetSdkVersion )
         versionCode = 1
         versionName = "1.0"
 

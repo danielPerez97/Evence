@@ -1,3 +1,11 @@
+object Evence
+{
+    const val compileSdkVersion = 29
+    const val buildToolsVersion = "29.0.3"
+    const val targetSdkVersion = 29
+    const val minSdkVersion = 24
+}
+
 object Libs
 {
     // ConstraintLayout
