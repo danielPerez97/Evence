@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
-import java.util.*
 
 plugins {
     id("com.android.application")
@@ -9,12 +8,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion( Evence.compileSdkVersion )
     buildToolsVersion = "29.0.3"
     defaultConfig {
         applicationId = "projects.csce.evence"
-        minSdkVersion(21)
-        targetSdkVersion(29)
+        minSdkVersion( Evence.minSdkVersion )
+        targetSdkVersion( Evence.targetSdkVersion )
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -30,7 +29,6 @@ android {
 //        }
     }
     compileOptions {
-        coreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }

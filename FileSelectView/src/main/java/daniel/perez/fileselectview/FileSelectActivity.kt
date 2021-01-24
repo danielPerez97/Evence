@@ -33,7 +33,7 @@ class FileSelectActivity : BaseActivity() {
         adapter = CardsAdapter(this)
         binding!!.fileSelector.adapter = adapter
 
-        disposables += adapter.clicks().subscribe { (fileName) ->
+        disposables.add(adapter.clicks().subscribe { (fileName) ->
             fileUri = fileManager.getFileUri(fileName)
             if (fileUri != null) {
                 // Grant temporary read permission
@@ -48,7 +48,7 @@ class FileSelectActivity : BaseActivity() {
                 resultIntent!!.setDataAndType(null, "")
                 setResult(RESULT_CANCELED, resultIntent)
             }
-        }
+        })
     }
 
     override fun onDestroy() {
