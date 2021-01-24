@@ -17,7 +17,7 @@ object Libs
     const  val coordinatorLayout = "androidx.coordinatorlayout:coordinatorlayout:$coordinatorLayoutVersion"
 
     // Dagger
-    private const val daggerVersion = "2.25.3"
+    private const val daggerVersion = "2.31.2"
     const val dagger = "com.google.dagger:dagger:$daggerVersion"
     const val daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
 
