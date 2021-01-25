@@ -93,6 +93,7 @@ class QRDialog(context: Context, ical: ViewCalendarData) {
 
     fun closeDialog() {
         if (context is DialogClosable) {
+            dialog.dismiss() //fixes window leak
             (context as DialogClosable).close()
         } else dialog.dismiss()
     }
