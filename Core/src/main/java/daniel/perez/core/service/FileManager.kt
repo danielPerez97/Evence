@@ -10,8 +10,8 @@ import okio.buffer
 import okio.sink
 import daniel.perez.ical.ICalSpec
 import daniel.perez.ical.Parser
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 import timber.log.Timber
 import java.io.File
 

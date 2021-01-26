@@ -4,7 +4,9 @@ package daniel.perez.core
 import android.content.Context
 import android.content.res.Resources
 import android.os.Build
+import android.view.View
 import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
@@ -56,6 +58,13 @@ fun getYear(dateString: String) : String{
     return dateFormat.format(initialDateFormat)
 }
 
+//turns "Hmm" format into "hh:mm a" format
+fun getAMPMTimeFormat(timeString: String) : String {
+    val initialTimeFormat = SimpleDateFormat("H mm", Locale.US).parse(timeString)
+    val dateFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+    return dateFormat.format(initialTimeFormat)
+}
+
 fun Array<String>.toInts(): IntArray
 {
     return this.map { it.toInt() }.toIntArray()
@@ -64,4 +73,9 @@ fun Array<String>.toInts(): IntArray
 fun Context.toastShort(message: String)
 {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun Context.snackbarShort(view: View, message: String) {
+    Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+            .show()
 }

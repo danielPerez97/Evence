@@ -11,7 +11,7 @@ import daniel.perez.ical.ICalSpec;
 import daniel.perez.core.service.FileManager;
 import daniel.perez.core.service.qr.QrAttempt;
 import daniel.perez.core.service.qr.QrBitmapGenerator;
-import io.reactivex.Flowable;
+import io.reactivex.rxjava3.core.Flowable;
 
 public class GenerateQrViewModel extends ViewModel
 {

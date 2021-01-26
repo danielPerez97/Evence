@@ -16,11 +16,10 @@ import daniel.perez.generateqrview.di.GenerateQRComponentProvider
 import daniel.perez.ical.EventSpec
 import daniel.perez.ical.ICalSpec
 import daniel.perez.ical.Parser.parse
-import io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.functions.Consumer
 import okio.buffer
 import okio.sink
 import timber.log.Timber
-//import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -35,8 +34,8 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
     private lateinit var currentEvent: ICalSpec
     private var startTime = TimeSetEvent(0, 0, Half.AM)
     private var endTime = TimeSetEvent(0, 0, Half.AM)
-    private var startDate = DateSetEvent(0, 0, 0)
-    private var endDate = DateSetEvent(0, 0, 0)
+    private var startDate = DateSetEvent(1, 31, 1999)
+    private var endDate = DateSetEvent(1, 31, 1999)
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var generator: QrBitmapGenerator
     @Inject lateinit var fileManager: FileManager
@@ -89,6 +88,24 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
         binding.descriptionEditText.setText(event.description)
     }
 
+    private fun areValidFields() : Boolean {
+        if (binding.titleEditText.text.isBlank()) {
+            applicationContext.snackbarShort(binding.titleEditText, getString(R.string.enter_valid_title))
+            return false
+        }
+
+        if (binding.startDateTextView.text.toString().equals(getString(R.string.select_date))) {
+            applicationContext.snackbarShort(binding.startDateTextView, getString(R.string.enter_valid_start_date))
+            return false
+        }
+
+        //if end date is empty, set it to be the same as start date
+        if (binding.endDateTextView.text.toString().equals(getString(R.string.select_date))) {
+            endDate = startDate
+        }
+
+        return true
+    }
     override fun accept(attempt: QrAttempt?)
     {
         if (attempt is QrAttempt.Success)
@@ -105,6 +122,9 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
 
     private fun generateQR()
     {
+        if (!areValidFields()) {
+            return
+        }
         // Handle the hours and minutes
         val event = EventSpec.Builder(0)
                 .title(binding.titleEditText.text.toString())
@@ -195,7 +215,7 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
         disposables.add(dialogStarter.startTimeDialog(this)
                 .subscribe {
                     startTime = it
-                    binding.startTimeTextView.text = "${it.hour}:${it.minute} ${it.half}"
+                    binding.startTimeTextView.text = getAMPMTimeFormat("${it.hour} ${it.minute}")
                 } )
     }
 
@@ -204,7 +224,7 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
         disposables.add(dialogStarter.startTimeDialog(this)
                 .subscribe {
                     endTime = it
-                    binding.endTimeTextView.text = "${it.hour}:${it.minute} ${it.half}"
+                    binding.endTimeTextView.text = getAMPMTimeFormat("${it.hour} ${it.minute}")
                 })
     }
 
