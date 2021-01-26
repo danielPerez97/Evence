@@ -57,8 +57,11 @@ class QRDialog(context: Context, ical: ViewCalendarData) {
         binding.closeDialogBtn.setOnClickListener { view: View? -> closeDialog() }
         binding.shareQrBtn.setOnClickListener { view: View? -> shareQR() }
         binding.importToCalendarBtn.setOnClickListener { view: View? -> importToCalendar() }
-        binding.editBtn.setOnClickListener { view: View? -> startActivity!!.startEditQr(context, ical) }
         binding.saveBtn.setOnClickListener { view: View? -> save() }
+        binding.editBtn.setOnClickListener { view: View? ->
+            startActivity!!.startEditQr(context, ical)
+            closeDialog()
+        }
     }
 
     fun save() {
@@ -101,6 +104,5 @@ class QRDialog(context: Context, ical: ViewCalendarData) {
     companion object {
         private const val TAG = "QRDialog"
     }
-
 
 }
