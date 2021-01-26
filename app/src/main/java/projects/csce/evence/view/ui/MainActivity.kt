@@ -23,8 +23,8 @@ import daniel.perez.core.model.UiPreference
 import daniel.perez.core.model.ViewCalendarData
 import daniel.perez.core.service.FileManager
 import daniel.perez.core.service.qr.QrBitmapGenerator
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.Disposable
 import projects.csce.evence.BaseApplication
 import projects.csce.evence.R
 import projects.csce.evence.databinding.ActivityMainBinding

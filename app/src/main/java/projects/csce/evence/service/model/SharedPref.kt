@@ -5,8 +5,8 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import daniel.perez.core.model.UiPreference
 import daniel.perez.ical.ICalSpec
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 import projects.csce.evence.R
 
 class SharedPref(val context : Context ) {
@@ -45,7 +45,7 @@ class SharedPref(val context : Context ) {
         uiPrefProcessor.onNext(UiPreference(isQrPreviewed))
     }
 
-    fun getUiPref() : Observable<UiPreference>{
+    fun getUiPref() : Observable<UiPreference> {
         return uiPrefProcessor
     }
 
