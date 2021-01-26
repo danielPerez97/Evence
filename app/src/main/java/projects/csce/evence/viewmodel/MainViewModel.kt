@@ -7,7 +7,7 @@ import daniel.perez.core.service.FileManager
 import daniel.perez.core.service.qr.QrBitmapGenerator
 import daniel.perez.ical.EventSpec
 import daniel.perez.ical.ICalSpec
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import java.util.stream.Collectors
 import javax.inject.Inject
 
