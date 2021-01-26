@@ -3,6 +3,6 @@
     <string-array name="dark_mode_options_list">
         <item>Light</item>
         <item>Dark</item>
-        <item>System Default</item>
+        <item>Auto</item>
     </string-array>
 </resources>

@@ -36,7 +36,7 @@
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/darkModeSpinner"
                 style="@style/SettingsEntry"
-                android:layout_width="100dp"
+                android:layout_width="93dp"
                 app:layout_constraintBottom_toTopOf="@+id/qrPreviewSwitch"
                 app:layout_constraintEnd_toEndOf="parent" />
 
