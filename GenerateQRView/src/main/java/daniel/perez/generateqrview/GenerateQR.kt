@@ -16,11 +16,10 @@ import daniel.perez.generateqrview.di.GenerateQRComponentProvider
 import daniel.perez.ical.EventSpec
 import daniel.perez.ical.ICalSpec
 import daniel.perez.ical.Parser.parse
-import io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.functions.Consumer
 import okio.buffer
 import okio.sink
 import timber.log.Timber
-//import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream

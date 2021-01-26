@@ -8,18 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import daniel.perez.core.model.ViewCalendarData
-import io.reactivex.subjects.PublishSubject
 import daniel.perez.core.model.UiPreference
 import daniel.perez.core.model.ViewEvent
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import daniel.perez.core.*
 import daniel.perez.core.databinding.EventsListEntryLayoutBinding
-import io.reactivex.Observable
-import io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
-class CardsAdapter(private val context: Context) : RecyclerView.Adapter<CardsAdapter.ViewHolder>(), Observer<List<ViewCalendarData>>, io.reactivex.functions.Consumer<List<ViewCalendarData>> {
+class CardsAdapter(private val context: Context) : RecyclerView.Adapter<CardsAdapter.ViewHolder>(), Observer<List<ViewCalendarData>>, Consumer<List<ViewCalendarData>> {
     private var dataList: List<ViewCalendarData> = emptyList()
     private val clicks = PublishSubject.create<ViewCalendarData>()
     private var uiPreference: UiPreference? = null

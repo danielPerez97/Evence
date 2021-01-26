@@ -4,12 +4,12 @@ import android.content.Context
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
-import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import daniel.perez.core.service.FileManager
 import daniel.perez.core.service.qr.QrBitmapGenerator
+import io.reactivex.rxjava3.schedulers.Schedulers
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Singleton
@@ -39,7 +39,7 @@ class NetworkModule
 				.baseUrl("https://www.googleapis.com")
 				.addConverterFactory(MoshiConverterFactory.create(moshi))
 				.addConverterFactory(ScalarsConverterFactory.create())
-				.addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+				.addCallAdapterFactory(RxJava3CallAdapterFactory.createWithScheduler(Schedulers.io()))
 				.client(okHttpClient)
 				.build()
 	}
