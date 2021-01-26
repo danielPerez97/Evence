@@ -52,7 +52,7 @@ object Libs
     const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
 
     // Okio
-    private const val okioVersion = "2.6.0"
+    private const val okioVersion = "2.10.0"
     const val okio = "com.squareup.okio:okio:$okioVersion"
 
     // Reactive Streams
