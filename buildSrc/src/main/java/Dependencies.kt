@@ -68,22 +68,22 @@ object Libs
     private const val retrofitVersion = "2.9.0"
     const val retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
     const val retrofitMoshi = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
-    const val retrofitRxJava = "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    const val retrofitRxJava = "com.squareup.retrofit2:adapter-rxjava3:$retrofitVersion"
     const val retrofitScalars = "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
 
     // RxBinding
-    private const val rxBindingVersion = "3.0.0"
-    const val rxBinding = "com.jakewharton.rxbinding3:rxbinding:$rxBindingVersion"
+    private const val rxBindingVersion = "4.0.0"
+    const val rxBinding = "com.jakewharton.rxbinding4:rxbinding:$rxBindingVersion"
 
     // RxJava
-    private const val rxjavaVersion = "2.2.19"
-    private const val rxAndroidVersion = "2.1.1"
-    const val rxJava = "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
-    const val rxAndroid = "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    private const val rxjavaVersion = "3.0.9"
+    private const val rxAndroidVersion = "3.0.0"
+    const val rxJava = "io.reactivex.rxjava3:rxjava:$rxjavaVersion"
+    const val rxAndroid = "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
 
     // RxReplayingShare
-    private const val rxReplayingShareVersion = "2.2.0"
-    const val rxReplayingShare = "com.jakewharton.rx2:replaying-share:$rxReplayingShareVersion"
+    private const val rxReplayingShareVersion = "3.0.0"
+    const val rxReplayingShare = "com.jakewharton.rx3:replaying-share:$rxReplayingShareVersion"
 
     // Timber
     private const val timberVersion = "4.7.1"
