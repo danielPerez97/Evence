@@ -58,6 +58,13 @@ fun getYear(dateString: String) : String{
     return dateFormat.format(initialDateFormat)
 }
 
+//turns "HHmm" format into "hh:mm a" format
+fun getAMPMTimeFormat(timeString: String) : String {
+    val initialTimeFormat = SimpleDateFormat("HHmm", Locale.US).parse(timeString)
+    val dateFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+    return dateFormat.format(initialTimeFormat)
+}
+
 fun Array<String>.toInts(): IntArray
 {
     return this.map { it.toInt() }.toIntArray()
