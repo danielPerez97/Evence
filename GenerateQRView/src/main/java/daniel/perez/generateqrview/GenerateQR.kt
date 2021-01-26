@@ -216,7 +216,7 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
         disposables.add(dialogStarter.startTimeDialog(this)
                 .subscribe {
                     startTime = it
-                    binding.startTimeTextView.text = "${it.hour}:${it.minute} ${it.half}"
+                    binding.startTimeTextView.text = getAMPMTimeFormat("${it.hour}${it.minute}")
                 } )
     }
 
