@@ -37,7 +37,7 @@ object Libs
     const val playApiDrive = "com.google.android.gms:play-services-drive:17.0.0"
 
     // Material
-    private const val materialVersion = "1.1.0"
+    private const val materialVersion = "1.2.1"
     const val material = "com.google.android.material:material:$materialVersion"
 
     // Moshi
