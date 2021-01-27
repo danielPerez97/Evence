@@ -94,7 +94,7 @@ object Libs
     const val lifeCycle = "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
 
     // ZXING
-    private const val zxingVersion = "3.2.1"
+    private const val zxingVersion = "3.4.1"
     const val zxing = "com.google.zxing:core:$zxingVersion"
     const val zxingAndroid = "com.journeyapps:zxing-android-embedded:3.2.0@aar"
 
