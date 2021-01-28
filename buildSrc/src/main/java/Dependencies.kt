@@ -1,8 +1,8 @@
 object Evence
 {
-    const val compileSdkVersion = 29
-    const val buildToolsVersion = "29.0.3"
-    const val targetSdkVersion = 29
+    const val compileSdkVersion = 30
+    const val buildToolsVersion = "30.0.2"
+    const val targetSdkVersion = 30
     const val minSdkVersion = 24
 }
 
