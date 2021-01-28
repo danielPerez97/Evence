@@ -8,7 +8,7 @@ plugins {
 
 android {
     compileSdkVersion( Evence.compileSdkVersion )
-    buildToolsVersion = Project.buildToolsVerion
+    buildToolsVersion = Evence.buildToolsVersion
 
     defaultConfig {
         minSdkVersion( Evence.minSdkVersion )
