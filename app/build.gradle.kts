@@ -9,7 +9,7 @@ plugins {
 
 android {
     compileSdkVersion( Evence.compileSdkVersion )
-    buildToolsVersion = "29.0.3"
+    buildToolsVersion = Evence.buildToolsVersion
     defaultConfig {
         applicationId = "projects.csce.evence"
         minSdkVersion( Evence.minSdkVersion )
