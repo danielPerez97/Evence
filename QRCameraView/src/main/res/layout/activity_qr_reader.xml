@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     tools:context="daniel.perez.qrcameraview.QrReaderActivity">
 
-    <androidx.camera.view.CameraView
-        android:id="@+id/cameraView"
+    <androidx.camera.view.PreviewView
+        android:id="@+id/previewView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -16,10 +16,11 @@
         android:id="@+id/qr_type_cardview"
         style="@style/CircularButtonCardView"
         android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="@+id/cameraSurfaceView"
-        app:layout_constraintEnd_toEndOf="@+id/cameraSurfaceView"
-        app:layout_constraintStart_toStartOf="@+id/cameraSurfaceView"
-        app:layout_constraintTop_toTopOf="@+id/cameraSurfaceView">
+        android:onClick="onQRClick"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/previewView">
 
         <ImageView
             android:id="@+id/qr_type_imageview"
@@ -31,15 +32,18 @@
     <TextView
         android:id="@+id/result"
         style="@style/viewShadow"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="Scanning..."
         android:textAlignment="center"
         android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/qr_type_cardview" />
 
     <ImageView
+        android:onClick="toggleFlash"
         android:id="@+id/flash_imageview"
         style="@style/ButtonCardView"
         android:layout_width="wrap_content"
@@ -52,7 +56,6 @@
         android:src="@drawable/ic_flash_on_white_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/cameraSurfaceView"
         app:layout_constraintTop_toBottomOf="@+id/result"
         app:layout_constraintVertical_bias="0.894" />
 

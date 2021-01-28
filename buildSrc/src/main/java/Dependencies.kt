@@ -103,15 +103,17 @@ object Libs
     const val vision="com.google.android.gms:play-services-vision:$visionVersion"
 
     //CameraX
-    private const val cameraXVersion = "1.0.0-beta06"
-    private const val cameraXCameraViewVersion = "1.0.0-alpha13"
+    private const val cameraXVersion = "1.0.0-rc01"
+    private const val cameraXCameraViewVersion = "1.0.0-alpha10"
+    private const val cameraXExtensionsVersion = "1.0.0-alpha10"
     const val cameraXCamera2 = "androidx.camera:camera-camera2:$cameraXVersion"
+    const val cameraXCore = "androidx.camera:camera-core:$cameraXVersion"
     const val cameraXLifecycle = "androidx.camera:camera-lifecycle:$cameraXVersion"
     const val cameraXCameraView = "androidx.camera:camera-view:$cameraXCameraViewVersion"
-    const val cameraXCore = "androidx.camera:camera-core:$cameraXVersion"
+    const val cameraXExtensions = "androidx.camera:camera-extensions:$cameraXExtensionsVersion"
 
     //Google ML Kit barcode-scanning
-    private const val mlkitBarcodeVersion="16.0.0"
+    private const val mlkitBarcodeVersion="16.1.1"
     const val mlkitBarcode = "com.google.mlkit:barcode-scanning:$mlkitBarcodeVersion"
 
     //guava conflict - listenablefuture
@@ -122,6 +124,13 @@ object Libs
     //guava
     private const val guavaVersion = "29.0-android"
     const val guava ="com.google.guava:guava:$guavaVersion"
+
+    //concurrentFutures - possible solution to the bidge-ass Listenable future problem
+    private const val concurrentFuturesVersion = "1.1.0"
+    const val concurrentFutures ="androidx.concurrent:concurrent-futures:$concurrentFuturesVersion"
+    const val concurrentFuturesKotlin ="androidx.concurrent:concurrent-futures-ktx:$concurrentFuturesVersion"
+
+
 
 }
 
