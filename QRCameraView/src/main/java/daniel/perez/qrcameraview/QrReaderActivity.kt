@@ -145,7 +145,6 @@ class QrReaderActivity : BaseActivity()//, SurfaceHolder.Callback, Detector.Proc
         }
     }
 
-
     private fun receiveQRDetection(barcodes: MutableList<Barcode>) {
         binding.result.post( Runnable {
             if (barcodes.size != 0) {
@@ -275,6 +274,7 @@ class QrReaderActivity : BaseActivity()//, SurfaceHolder.Callback, Detector.Proc
             }
         }
     }
+
     fun openQrEventDialog(qr: Barcode.CalendarEvent) {
         // Handle the dates
         //val startMonthDayYear: IntArray = intArrayOf(qr.start.month, qr.start.day, qr.start.year)
@@ -301,8 +301,8 @@ class QrReaderActivity : BaseActivity()//, SurfaceHolder.Callback, Detector.Proc
         viewModel.saveFile(currentEvent)
         val viewEvent = ViewEvent(event.title,
                 event.description,
-                event.getStartTime(),
                 event.getStartDate(),
+                event.getStartTime(),
                 event.getStartInstantEpoch(),
                 event.getEndEpochMilli(),
                 event.location,
