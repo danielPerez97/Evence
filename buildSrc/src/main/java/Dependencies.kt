@@ -129,6 +129,7 @@ object Project
 {
     const val sdkVersion = 30
     const val buildToolsVerion = "30.0.0"
+    const val kotlinVersion = "1.4.21"
     const val core = ":Core"
     const val ical = ":ICal"
     const val fileSelectView = ":FileSelectView"
