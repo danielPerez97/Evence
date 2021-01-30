@@ -14,7 +14,6 @@ import android.provider.ContactsContract
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
-import android.view.View
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
@@ -69,13 +68,14 @@ class QrReaderActivity : BaseActivity()//, SurfaceHolder.Callback, Detector.Proc
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(QrReaderViewModel::class.java)
 
         if (allPermissionsGranted()) {
-           setupCamera()
+           //setupCamera()
+            CameraSetup(this, this, binding.previewView)
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSIONS)
         }
 
-//        binding.qrTypeCardview.setOnClickListener { clickityClick() }
-        //   binding.flashImageview.setOnClickListener { toggleFlash() }
+        binding.qrTypeCardview.setOnClickListener { onQRClick() }
+        binding.flashImageview.setOnClickListener { toggleFlash() }
     }
 
     //
@@ -85,7 +85,6 @@ class QrReaderActivity : BaseActivity()//, SurfaceHolder.Callback, Detector.Proc
 
         cameraProviderFuture.addListener(Runnable {
             val displayMetrics = DisplayMetrics()
-            windowManager.defaultDisplay.getMetrics(displayMetrics)
 
             //provides CPU-accessible buffers for analysis, such as for machine learning.
             val imageAnalysis = ImageAnalysis.Builder()
@@ -189,7 +188,7 @@ class QrReaderActivity : BaseActivity()//, SurfaceHolder.Callback, Detector.Proc
         })
     }
 
-    fun onQRClick(view : View) {
+    fun onQRClick() {
         //Log.d("QrReaderActivity", "raw value= " + qr.rawValue )
         if (isScanning) {
             //Toast.makeText(this, "No QR code found", Toast.LENGTH_SHORT).show()
@@ -313,6 +312,24 @@ class QrReaderActivity : BaseActivity()//, SurfaceHolder.Callback, Detector.Proc
         dialogStarter.startQrDialog(this, calendar)
     }
 
+    fun toggleFlash(){
+        //todo fix flash
+        if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
+
+            if (!flashOn) {
+                binding.flashImageview.setImageDrawable(getDrawable(R.drawable.ic_flash_off_white_24dp))
+                flashOn = true
+            } else {
+                binding.flashImageview.setImageDrawable(getDrawable(R.drawable.ic_flash_on_white_24dp))
+                flashOn = false
+            }
+            camera.cameraControl.enableTorch(!flashOn)
+            //todo use callback to see if successful or not
+        } else {
+            toastShort("Device torch not found")
+        }
+    }
+
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
                 baseContext, it) == PackageManager.PERMISSION_GRANTED
@@ -330,23 +347,7 @@ class QrReaderActivity : BaseActivity()//, SurfaceHolder.Callback, Detector.Proc
     }
 
 
-    fun toggleFlash(view : View){
-        //todo fix flash
-        if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
 
-            if (!flashOn) {
-                binding.flashImageview.setImageDrawable(getDrawable(R.drawable.ic_flash_off_white_24dp))
-                flashOn = true
-            } else {
-                binding.flashImageview.setImageDrawable(getDrawable(R.drawable.ic_flash_on_white_24dp))
-                flashOn = false
-            }
-            camera.cameraControl.enableTorch(!flashOn)
-            //todo use callback to see if successful or not
-        } else {
-           toastShort("Device torch not found")
-        }
-    }
 
 
 }

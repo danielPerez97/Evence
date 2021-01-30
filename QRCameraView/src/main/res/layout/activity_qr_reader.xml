@@ -16,7 +16,6 @@
         android:id="@+id/qr_type_cardview"
         style="@style/CircularButtonCardView"
         android:gravity="center"
-        android:onClick="onQRClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +42,6 @@
         app:layout_constraintTop_toBottomOf="@+id/qr_type_cardview" />
 
     <ImageView
-        android:onClick="toggleFlash"
         android:id="@+id/flash_imageview"
         style="@style/ButtonCardView"
         android:layout_width="wrap_content"
