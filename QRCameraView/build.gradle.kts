@@ -62,6 +62,12 @@ dependencies {
     // LifeCycle
     implementation( Libs.lifeCycle )
 
+    // RxJava
+    implementation( Libs.rxJava )
+    implementation( Libs.reactiveStreams )
+    implementation( Libs.rxBinding )
+    implementation( Libs.rxReplayingShare )
+
     //CameraX
     implementation( Libs.cameraXCamera2 )
     implementation( Libs.cameraXCameraView)
@@ -76,16 +82,16 @@ dependencies {
     implementation ( Libs.timber )
 
     //guava
-    //implementation( Libs.guava )
-
-    //guava conflict - listenablefuture
-    //implementation( Libs.guavaConflict )
-
-    //Concurrent Futures - for ListenableFuture
-    //implementation( Libs.concurrentFutures )
-    //implementation( Libs.concurrentFuturesKotlin )
-
-    //implementation( "com.google.guava:guava:30.1-jre")
+    //    //implementation( Libs.guava )
+    //
+    //    //guava conflict - listenablefuture
+    //    //implementation( Libs.guavaConflict )
+    //
+    //    //Concurrent Futures - for ListenableFuture
+    //    //implementation( Libs.concurrentFutures )
+    //    //implementation( Libs.concurrentFuturesKotlin )
+    //
+    //    //implementation( "com.google.guava:guava:30.1-jre")
 
 
 

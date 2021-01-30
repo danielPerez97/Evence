@@ -14,13 +14,13 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.Executors
 
-class CameraSetup(
+class CameraHandler(
         private val context: Context,
         private val lifecycleOwner: LifecycleOwner,
         private val previewView: PreviewView
-        //,private val boundingGraphic:
 ) {
     private lateinit var camera: Camera
+    lateinit var imageProxy: ImageProxy
 
     init {
         setupCamera()
@@ -38,7 +38,9 @@ class CameraSetup(
                     .setTargetResolution(Size(displayMetrics.widthPixels, displayMetrics.heightPixels))
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .build()
-            imageAnalysis.setAnalyzer(cameraExecutor, ImageAnalysis.Analyzer { imageProxy -> analyzeImage(imageProxy) })
+            imageAnalysis.setAnalyzer(cameraExecutor, ImageAnalysis.Analyzer {
+                mImageProxy -> imageProxy = mImageProxy
+            })
 
             //sets up surface for displaying the image preview
             val preview = Preview.Builder()
@@ -58,8 +60,15 @@ class CameraSetup(
     }
 
     //analyzes the image and reads the barcode
+     fun analyzeImage(scanType : Int) {
+        when (scanType) {
+            SCAN_TYPE.BARCODE.ordinal -> scanBarcode()
+            SCAN_TYPE.TEXT.ordinal -> scanText()
+        }
+    }
+
     @SuppressLint("UnsafeExperimentalUsageError")
-    private fun analyzeImage(imageProxy: ImageProxy) {
+     private fun scanBarcode() {
         val options = BarcodeScannerOptions.Builder()
                 .setBarcodeFormats(
                         Barcode.FORMAT_QR_CODE,
@@ -69,11 +78,23 @@ class CameraSetup(
                 )
                 .build()
         val mediaImage = imageProxy.image
-
         if (mediaImage != null) {
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-
-            QrHandler(context, imageProxy, image)
+            QrHandler(imageProxy, image)
         }
+    }
+
+     fun scanText() {
+        //future feature
+    }
+
+     fun toggleFlash(flashOn: Boolean) {
+        camera.cameraControl.enableTorch(!flashOn)
+     }
+
+    enum class SCAN_TYPE {
+        BARCODE,
+        TEXT, //possible future use
+        FACE //possible future use
     }
 }
