@@ -1,3 +1,4 @@
+include ':EvenceDb'
 include ':FileSelectView'
 include ':GenerateQRView'
 include ':QRDialogView'

@@ -85,6 +85,10 @@ object Libs
     private const val rxReplayingShareVersion = "3.0.0"
     const val rxReplayingShare = "com.jakewharton.rx3:replaying-share:$rxReplayingShareVersion"
 
+    // SqlDelight
+    const val sqlDelightAndroidDriver = "com.squareup.sqldelight:android-driver:${Project.sqlDelightVersion}"
+    const val sqlDelightInMemoryDriver = "com.squareup.sqldelight:sqlite-driver:${Project.sqlDelightVersion}"
+
     // Timber
     private const val timberVersion = "4.7.1"
     const val timber = "com.jakewharton.timber:timber:$timberVersion"
@@ -130,6 +134,7 @@ object Project
     const val sdkVersion = 30
     const val buildToolsVerion = "30.0.0"
     const val kotlinVersion = "1.4.21"
+    const val sqlDelightVersion = "1.4.3"
     const val core = ":Core"
     const val ical = ":ICal"
     const val fileSelectView = ":FileSelectView"
