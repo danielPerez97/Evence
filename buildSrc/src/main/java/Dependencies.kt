@@ -1,8 +1,8 @@
 object Evence
 {
-    const val compileSdkVersion = 29
-    const val buildToolsVersion = "29.0.3"
-    const val targetSdkVersion = 29
+    const val compileSdkVersion = 30
+    const val buildToolsVersion = "30.0.2"
+    const val targetSdkVersion = 30
     const val minSdkVersion = 24
 }
 
@@ -37,7 +37,7 @@ object Libs
     const val playApiDrive = "com.google.android.gms:play-services-drive:17.0.0"
 
     // Material
-    private const val materialVersion = "1.1.0"
+    private const val materialVersion = "1.2.1"
     const val material = "com.google.android.material:material:$materialVersion"
 
     // Moshi
@@ -94,7 +94,7 @@ object Libs
     const val lifeCycle = "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
 
     // ZXING
-    private const val zxingVersion = "3.2.1"
+    private const val zxingVersion = "3.4.1"
     const val zxing = "com.google.zxing:core:$zxingVersion"
     const val zxingAndroid = "com.journeyapps:zxing-android-embedded:3.2.0@aar"
 
@@ -138,6 +138,7 @@ object Project
 {
     const val sdkVersion = 30
     const val buildToolsVerion = "30.0.0"
+    const val kotlinVersion = "1.4.21"
     const val core = ":Core"
     const val ical = ":ICal"
     const val fileSelectView = ":FileSelectView"

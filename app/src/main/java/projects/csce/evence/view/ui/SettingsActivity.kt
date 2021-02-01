@@ -1,8 +1,9 @@
 package projects.csce.evence.view.ui
 
-import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.Toast
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
@@ -13,7 +14,7 @@ import projects.csce.evence.utils.getAppComponent
 import javax.inject.Inject
 
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     lateinit var binding: ActivitySettingsBinding
     private var isDark: Int = -99
     private var isDayMonthYear = false
@@ -31,22 +32,30 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.backBtn.setOnClickListener { onBackClicked() }
-        binding.darkModeSwitch.setOnClickListener { onDarkModeSwitchClicked() }
+        //binding.darkModeSwitch.setOnClickListener { onDarkModeSwitchClicked() }
         binding.qrPreviewSwitch.setOnClickListener { onQrPreviewSwitchClicked() }
 
+
+        ArrayAdapter.createFromResource(this, R.array.dark_mode_options_list, R.layout.spinner_text)
+                .also { adapter ->
+                    // Specify the layout to use when the list of choices appears
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    // Apply the adapter to the spinner
+                    binding.darkModeSpinner.adapter = adapter}
+        binding.darkModeSpinner.onItemSelectedListener = this
 
         setSavedSetting()
     }
 
-    fun setSavedSetting(){
-        isDark = sharedPref.loadIntValue(getString(R.string.saved_dark_mode_setting), Configuration.UI_MODE_NIGHT_NO)
+    private fun setSavedSetting(){
+        isDark = sharedPref.loadIntValue(getString(R.string.saved_dark_mode_setting), DarkModeOptions.LIGHT.ordinal)
         when (isDark) {
-            Configuration.UI_MODE_NIGHT_YES ->
-                binding.darkModeSwitch.isChecked = true
-            Configuration.UI_MODE_NIGHT_NO ->
-                binding.darkModeSwitch.isChecked = false
+            DarkModeOptions.LIGHT.ordinal ->
+                binding.darkModeSpinner.setSelection(DarkModeOptions.LIGHT.ordinal)
+            DarkModeOptions.DARK.ordinal ->
+                binding.darkModeSpinner.setSelection(DarkModeOptions.DARK.ordinal)
             else ->
-                binding.darkModeSwitch.isChecked = false
+                binding.darkModeSpinner.setSelection(DarkModeOptions.AUTO.ordinal)
         }
 
         isQrDisplayed = sharedPref.loadBooleanValue(getString(R.string.saved_qr_preview_setting), false)
@@ -59,27 +68,34 @@ class SettingsActivity : AppCompatActivity() {
 
     }
 
-    fun onBackClicked(){
+    private fun onBackClicked(){
         finish()
-    }
-
-    fun onDarkModeSwitchClicked(){
-        isDark = sharedPref.loadIntValue(getString(R.string.saved_dark_mode_setting), Configuration.UI_MODE_NIGHT_NO)
-        when (isDark) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                isDark = Configuration.UI_MODE_NIGHT_NO
-            }
-            Configuration.UI_MODE_NIGHT_NO -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                isDark = Configuration.UI_MODE_NIGHT_YES
-            }
-        }
-        sharedPref.saveIntValue(getString(R.string.saved_dark_mode_setting), isDark)
     }
 
     fun onQrPreviewSwitchClicked(){
         sharedPref.saveBooleanValue(getString(R.string.saved_qr_preview_setting), binding.qrPreviewSwitch.isChecked)
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        when (position) {
+            DarkModeOptions.LIGHT.ordinal ->
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            DarkModeOptions.DARK.ordinal ->
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            DarkModeOptions.AUTO.ordinal ->
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        }
+        sharedPref.saveIntValue(getString(R.string.saved_dark_mode_setting), position)
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+
+    }
+
+    enum class DarkModeOptions{
+        LIGHT,
+        DARK,
+        AUTO
     }
 
 }
