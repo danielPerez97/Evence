@@ -14,19 +14,11 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.Executors
 
-class CameraHandler(
-        private val context: Context,
-        private val lifecycleOwner: LifecycleOwner,
-        private val previewView: PreviewView
-) {
+class CameraHandler(private val context: Context, private val qrHandler : QrHandler) {
     private lateinit var camera: Camera
     lateinit var imageProxy: ImageProxy
 
-    init {
-        setupCamera()
-    }
-
-    private fun setupCamera() {
+    fun setupCamera(lifecycleOwner: LifecycleOwner, previewView: PreviewView) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
         val cameraExecutor = Executors.newSingleThreadExecutor()
 
@@ -39,13 +31,16 @@ class CameraHandler(
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .build()
             imageAnalysis.setAnalyzer(cameraExecutor, ImageAnalysis.Analyzer {
-                mImageProxy -> imageProxy = mImageProxy
+                imageProxy = it
+                analyzeImage(SCAN_TYPE.BARCODE)
             })
 
             //sets up surface for displaying the image preview
             val preview = Preview.Builder()
                     .build()
-            preview.setSurfaceProvider(previewView.createSurfaceProvider(null))
+                    .also {
+                        it.setSurfaceProvider(previewView.createSurfaceProvider(null))
+                    }
 
             //chooses a camera
             val cameraSelector = CameraSelector.Builder()
@@ -60,15 +55,15 @@ class CameraHandler(
     }
 
     //analyzes the image and reads the barcode
-     fun analyzeImage(scanType : Int) {
+    fun analyzeImage(scanType : SCAN_TYPE) {
         when (scanType) {
-            SCAN_TYPE.BARCODE.ordinal -> scanBarcode()
-            SCAN_TYPE.TEXT.ordinal -> scanText()
+            SCAN_TYPE.BARCODE -> scanBarcode()
+            SCAN_TYPE.TEXT -> scanText()
         }
     }
 
     @SuppressLint("UnsafeExperimentalUsageError")
-     private fun scanBarcode() {
+    private fun scanBarcode() {
         val options = BarcodeScannerOptions.Builder()
                 .setBarcodeFormats(
                         Barcode.FORMAT_QR_CODE,
@@ -80,17 +75,17 @@ class CameraHandler(
         val mediaImage = imageProxy.image
         if (mediaImage != null) {
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-            QrHandler(imageProxy, image)
+            qrHandler.scanBarcode(imageProxy, image)
         }
     }
 
-     fun scanText() {
+    fun scanText() {
         //future feature
     }
 
-     fun toggleFlash(flashOn: Boolean) {
+    fun toggleFlash(flashOn: Boolean) {
         camera.cameraControl.enableTorch(!flashOn)
-     }
+    }
 
     enum class SCAN_TYPE {
         BARCODE,
