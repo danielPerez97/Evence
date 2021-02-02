@@ -56,8 +56,12 @@ dependencies {
     // CardView
     implementation( Libs.cardView )
 
-    // ConstraintLayout
+    // Layouts
     implementation( Libs.constraintLayout )
+    implementation( Libs.coordinatorLayout )
+
+    //material
+    implementation( Libs.material )
 
     // LifeCycle
     implementation( Libs.lifeCycle )
@@ -80,20 +84,4 @@ dependencies {
 
     // Timber
     implementation ( Libs.timber )
-
-    //guava
-    //    //implementation( Libs.guava )
-    //
-    //    //guava conflict - listenablefuture
-    //    //implementation( Libs.guavaConflict )
-    //
-    //    //Concurrent Futures - for ListenableFuture
-    //    //implementation( Libs.concurrentFutures )
-    //    //implementation( Libs.concurrentFuturesKotlin )
-    //
-    //    //implementation( "com.google.guava:guava:30.1-jre")
-
-
-
-
 }

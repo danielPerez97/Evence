@@ -13,17 +13,6 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout style="@style/CardviewLayout">
 
-            <!-- <Switch
-                android:id="@+id/darkModeSwitch"
-                style="@style/SettingsEntry"
-                android:layout_width="match_parent"
-                android:onClick="@{() -> view.onDarkModeSwitchClicked()}"
-                android:text="@string/dark_theme"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-                -->
-
             <TextView
                 android:id="@+id/darkModeText"
                 style="@style/SettingsEntry"

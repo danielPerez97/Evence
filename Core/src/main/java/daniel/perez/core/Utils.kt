@@ -29,9 +29,9 @@ fun toZonedDateTime(month: Int, dayOfMonth: Int, year: Int, hour: Int, minute: I
 fun setLocaleDateFormat(dateString: String): String {
     val initialDateFormat = SimpleDateFormat("MM-dd-yyyy", Locale.US).parse(dateString)
     val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Resources.getSystem().configuration.locales.get(0);
+        Resources.getSystem().configuration.locales.get(0)
     } else {
-        Resources.getSystem().configuration.locale;
+        Resources.getSystem().configuration.locale
     }
 
     val newDateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale)
@@ -41,9 +41,9 @@ fun setLocaleDateFormat(dateString: String): String {
 fun getLocaleMonth(dateString: String) : String {
     val initialDateFormat = SimpleDateFormat("MM-dd-yyyy", Locale.US).parse(dateString)
     val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Resources.getSystem().configuration.locales.get(0);
+        Resources.getSystem().configuration.locales.get(0)
     } else {
-        Resources.getSystem().configuration.locale;
+        Resources.getSystem().configuration.locale
     }
     val dateFormat = SimpleDateFormat("LLLL", locale)
     return dateFormat.format(initialDateFormat)
@@ -84,8 +84,20 @@ fun Context.snackbarShort(view: View, message: String) {
 }
 
 fun copyToClipboard(context: Context, label: String, copiedString: String) {
-    val clipboard = context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager;
-    val clip = ClipData.newPlainText(label, copiedString);
+    val clipboard = context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+    val clip = ClipData.newPlainText(label, copiedString)
     clipboard.setPrimaryClip(clip)
     context.toastShort("Text copied")
+}
+
+fun getScreenWidthPx(context : Context ) : Int{
+    return context.resources.displayMetrics.widthPixels
+}
+
+fun getScreenHeightPx(context : Context ) : Int{
+    return  context.resources.displayMetrics.heightPixels
+}
+
+fun convertDPtoPX(context : Context, dp : Float) : Int {
+        return (dp * (context.resources.displayMetrics.densityDpi / 160f)).toInt()
 }

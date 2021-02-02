@@ -97,6 +97,8 @@ dependencies {
     implementation( Libs.cardView )
     implementation( Libs.recyclerView )
 
+    //CoordinatorLayout
+    implementation( Libs.coordinatorLayout )
 
     // ViewModel, LiveData
     implementation( Libs.lifeCycle )
