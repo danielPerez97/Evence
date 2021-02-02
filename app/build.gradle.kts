@@ -103,7 +103,12 @@ dependencies {
 
     //Material widgets
     implementation( Libs.material )
+
+    //guavaConflict
+    implementation( Libs.guavaConflict)
+
 }
+
 repositories {
     mavenCentral()
 }
