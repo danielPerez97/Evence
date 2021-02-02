@@ -9,3 +9,14 @@ fun LocalDateTime.toJavaTime(): java.time.LocalDateTime
             year, Month.of(monthNumber), dayOfMonth, hour, minute, second, nanosecond
     )
 }
+
+fun LocalDateTime.before(next: LocalDateTime): Boolean
+{
+
+    return this.toJavaTime().isBefore( next.toJavaTime() )
+}
+
+fun LocalDateTime.after(next: LocalDateTime): Boolean
+{
+    return this.toJavaTime().isAfter( next.toJavaTime() )
+}
