@@ -4,6 +4,9 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -28,6 +31,9 @@ class QrReaderActivity : BaseActivity() {
     private var flashOn = false
     private lateinit var barcodes : MutableList<Barcode>
     private lateinit var intentActions: IntentActions
+    lateinit var overlay : BarcodeOverlay
+    lateinit var flashButton : View
+
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var fileManager: FileManager
     @Inject lateinit var dialogStarter: DialogStarter
@@ -53,36 +59,54 @@ class QrReaderActivity : BaseActivity() {
         } else
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSIONS)
 
+        overlay = BarcodeOverlay(this)
+        binding.parentLayout.addView(overlay)
+
         binding.qrTypeCardview.setOnClickListener { onQRClick() }
-        binding.flashImageview.setOnClickListener { toggleFlash() }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_camera, menu)
+        flashButton = binding.toolbarMain.menu.findItem(R.id.flash_button) as View
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.flash_button) {
+            toggleFlash()
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun updateViews() {
         if (isScanning()) {
-            binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_search_white_24dp))
+            binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_search_white_24dp))
             binding.result.text = "Scanning"
+            overlay.visibility = View.INVISIBLE
         } else {
             val qrData = barcodes[0]
             binding.result.text = qrData.displayValue
 
-            val anim = BarcodeOverlay(this,qrData.boundingBox)
+            overlay.visibility = View.VISIBLE
+            overlay.updateRect(qrData.boundingBox)
 
             when (qrData.valueType) {
-                Barcode.TYPE_CALENDAR_EVENT -> binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_event_white_36dp))
-                Barcode.TYPE_URL -> binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_open_in_new_white_24dp))
-                Barcode.TYPE_CONTACT_INFO -> binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_person_add_white_24dp))
-                Barcode.TYPE_EMAIL -> binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_email_white_24dp))
-                Barcode.TYPE_PHONE -> binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_phone_white_24dp))
-                Barcode.TYPE_SMS -> binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_textsms_black_24dp))
-                Barcode.TYPE_ISBN -> binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_shopping_cart_white_24dp))
+                Barcode.TYPE_CALENDAR_EVENT -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_event_white_36dp))
+                Barcode.TYPE_URL -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_open_in_new_white_24dp))
+                Barcode.TYPE_CONTACT_INFO -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_person_add_white_24dp))
+                Barcode.TYPE_EMAIL -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_email_white_24dp))
+                Barcode.TYPE_PHONE -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_phone_white_24dp))
+                Barcode.TYPE_SMS -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_textsms_black_24dp))
+                Barcode.TYPE_ISBN -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_shopping_cart_white_24dp))
                 Barcode.TYPE_WIFI -> {
-                    binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_wifi_white_24dp))
+                    binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_wifi_white_24dp))
                     binding.result.text = "Network name: ${qrData.wifi.ssid} \n Password: ${qrData.wifi.password}"
                 }
-                Barcode.TYPE_GEO -> binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_place_white_24dp))
-                Barcode.TYPE_DRIVER_LICENSE -> binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_account_box_white_24dp))
-                else -> binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_short_text_white_24dp))
+                Barcode.TYPE_GEO -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_place_white_24dp))
+                Barcode.TYPE_DRIVER_LICENSE -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_account_box_white_24dp))
+                else -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_short_text_white_24dp))
             }
         }
     }
@@ -126,10 +150,10 @@ class QrReaderActivity : BaseActivity() {
     private fun toggleFlash(){
         if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
             if (!flashOn) {
-                binding.flashImageview.setImageDrawable(getDrawable(R.drawable.ic_flash_off_white_24dp))
+                //flashButton.setIcon(getDrawable(R.drawable.ic_flash_off_white_24dp))
                 flashOn = true
             } else {
-                binding.flashImageview.setImageDrawable(getDrawable(R.drawable.ic_flash_on_white_24dp))
+                //flashButton.setImageDrawable(getDrawable(R.drawable.ic_flash_on_white_24dp))
                 flashOn = false
             }
             cameraHandler.toggleFlash(flashOn)

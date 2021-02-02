@@ -6,10 +6,11 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.view.View
-import timber.log.Timber
 
-class BarcodeOverlay(context: Context, private var rect: Rect) : View(context) {
+class BarcodeOverlay(context: Context) : View(context) {
     lateinit var paint: Paint
+    lateinit var rect : Rect
+
     init{
         setup()
     }
@@ -17,19 +18,27 @@ class BarcodeOverlay(context: Context, private var rect: Rect) : View(context) {
     fun setup() {
         paint = Paint()
         paint.color = Color.WHITE
-        paint.strokeWidth = 20f
+        paint.strokeWidth = 10f
         paint.style = Paint.Style.STROKE
+        rect = Rect()
+    }
 
+    fun updateRect(rectangle: Rect) {
+//        rect.set(convertDPtoPX(context, rectangle.left.toFloat()),
+//                convertDPtoPX(context, rectangle.top.toFloat()),
+//                convertDPtoPX(context, rectangle.right.toFloat()),
+//                convertDPtoPX(context, rectangle.bottom.toFloat()))
+
+        rect.set(rectangle.left,
+             rectangle.top,
+            rectangle.right,
+            rectangle.bottom)
+
+        invalidate()
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
-        Timber.i("       " +
-                rect.left.toFloat()+ " " +
-                rect.top.toFloat() + " " +
-                rect.right.toFloat() + " " +
-                rect.bottom.toFloat() )
         canvas.drawRect(rect, paint)
     }
 

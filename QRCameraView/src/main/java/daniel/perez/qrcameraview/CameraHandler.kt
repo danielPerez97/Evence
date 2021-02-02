@@ -2,7 +2,8 @@ package daniel.perez.qrcameraview
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.DisplayMetrics
+import android.content.res.Resources
+import android.graphics.Rect
 import android.util.Size
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -12,6 +13,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.common.InputImage
+import timber.log.Timber
 import java.util.concurrent.Executors
 
 class CameraHandler(private val context: Context, private val qrHandler : QrHandler) {
@@ -23,7 +25,10 @@ class CameraHandler(private val context: Context, private val qrHandler : QrHand
         val cameraExecutor = Executors.newSingleThreadExecutor()
 
         cameraProviderFuture.addListener(Runnable {
-            val displayMetrics = DisplayMetrics()
+           //val displayMetrics = DisplayMetrics()
+            val displayMetrics = Resources.getSystem().displayMetrics
+
+            val rect = Rect()
 
             //provides CPU-accessible buffers for analysis, such as for machine learning.
             val imageAnalysis = ImageAnalysis.Builder()
@@ -37,10 +42,8 @@ class CameraHandler(private val context: Context, private val qrHandler : QrHand
 
             //sets up surface for displaying the image preview
             val preview = Preview.Builder()
+                    .setTargetResolution(Size(displayMetrics.widthPixels, displayMetrics.heightPixels))
                     .build()
-                    .also {
-                        it.setSurfaceProvider(previewView.createSurfaceProvider(null))
-                    }
 
             //chooses a camera
             val cameraSelector = CameraSelector.Builder()
@@ -50,6 +53,12 @@ class CameraHandler(private val context: Context, private val qrHandler : QrHand
                     ?: throw IllegalStateException("Camera initialization failed.")
             cameraProvider.unbindAll()
             camera = cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, imageAnalysis, preview)
+            preview.setSurfaceProvider(previewView.createSurfaceProvider(camera.cameraInfo))
+
+            previewView.scaleType = PreviewView.ScaleType.FIT_START
+
+            Timber.i("************PreviewView=" + previewView.width + " "+ previewView.height)
+            Timber.i("************DeviceView=" + displayMetrics.widthPixels + " "+ displayMetrics.heightPixels)
 
         }, ContextCompat.getMainExecutor(context))
     }
