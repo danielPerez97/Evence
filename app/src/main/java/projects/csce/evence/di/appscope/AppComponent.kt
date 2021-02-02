@@ -13,11 +13,10 @@ import projects.csce.evence.view.ui.SettingsActivity
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class, NetworkModule::class, LoginModule::class, QrModule::class, ViewModelModule::class, SettingsModule::class])
+@Component(modules = [AppModule::class, NetworkModule::class, LoginModule::class, QrModule::class, ViewModelModule::class, SettingsModule::class, QrReaderModule::class])
 interface AppComponent
 {
 	fun inject(application: BaseApplication)
-
 	fun inject(mainActivity: MainActivity)
 	fun inject(activity: SettingsActivity)
 	fun newLoggedInSubComponent(module: LoggedInModule): LoggedInSubComponent

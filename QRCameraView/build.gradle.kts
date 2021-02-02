@@ -33,18 +33,14 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    configurations {
-        all {
-            exclude(group = "com.google.guava", module= "listenablefuture")
-        }
-    }
+
 }
 
 dependencies {
     implementation( fileTree( mapOf( "dir" to "libs", "include" to "*.jar"  ) ) )
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
-    implementation("androidx.core:core-ktx:1.3.0")
-    implementation("androidx.appcompat:appcompat:1.1.0")
+    implementation("androidx.core:core-ktx:1.3.2")
+    implementation("androidx.appcompat:appcompat:1.2.0")
     testImplementation("junit:junit:4.12")
     androidTestImplementation("androidx.test.ext:junit:1.1.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
@@ -66,23 +62,38 @@ dependencies {
     // LifeCycle
     implementation( Libs.lifeCycle )
 
+    // RxJava
+    implementation( Libs.rxJava )
+    implementation( Libs.reactiveStreams )
+    implementation( Libs.rxBinding )
+    implementation( Libs.rxReplayingShare )
+
     //CameraX
     implementation( Libs.cameraXCamera2 )
     implementation( Libs.cameraXCameraView)
     implementation( Libs.cameraXLifecycle )
     implementation( Libs.cameraXCore )
+    implementation( Libs.cameraXExtensions )
 
     //ML kit barcode
-    implementation( Libs.mlkitBarcode)
+    implementation( Libs.mlkitBarcode )
 
     // Timber
     implementation ( Libs.timber )
 
     //guava
-    //implementation( Libs.guava )
+    //    //implementation( Libs.guava )
+    //
+    //    //guava conflict - listenablefuture
+    //    //implementation( Libs.guavaConflict )
+    //
+    //    //Concurrent Futures - for ListenableFuture
+    //    //implementation( Libs.concurrentFutures )
+    //    //implementation( Libs.concurrentFuturesKotlin )
+    //
+    //    //implementation( "com.google.guava:guava:30.1-jre")
 
-    //guava conflict - listenablefuture
-    //implementation( Libs.guavaConflict )
+
 
 
 }

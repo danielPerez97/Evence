@@ -1,11 +1,14 @@
 @file:JvmName("Utils")
 package daniel.perez.core
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.res.Resources
 import android.os.Build
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -78,4 +81,11 @@ fun Context.toastShort(message: String)
 fun Context.snackbarShort(view: View, message: String) {
     Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
             .show()
+}
+
+fun copyToClipboard(context: Context, label: String, copiedString: String) {
+    val clipboard = context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager;
+    val clip = ClipData.newPlainText(label, copiedString);
+    clipboard.setPrimaryClip(clip)
+    context.toastShort("Text copied")
 }
