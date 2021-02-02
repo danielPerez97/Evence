@@ -17,8 +17,9 @@ class QrHandler() {
         val result = barcodeScanner.process(image)
                 .addOnSuccessListener {
                     barcodeSubject.onNext(it)
-                    if (it.size !=0)
+                    if (it.size !=0) {
                         Log.d("QrHandler", "scan successful" + it[0].rawValue.toString())
+                    }
                 }
                 .addOnFailureListener{
                     Log.e("QRScanner", "scan failed", it)

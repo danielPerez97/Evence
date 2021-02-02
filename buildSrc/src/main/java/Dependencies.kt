@@ -117,21 +117,8 @@ object Libs
     const val mlkitBarcode = "com.google.mlkit:barcode-scanning:$mlkitBarcodeVersion"
 
     //guava conflict - listenablefuture
-    //private const val guavaConflictVersion = "1.0"
     private const val guavaConflictVersion = "9999.0-empty-to-avoid-conflict-with-guava"
     const val guavaConflict = "com.google.guava:listenablefuture:$guavaConflictVersion"
-
-    //guava
-    private const val guavaVersion = "29.0-android"
-    const val guava ="com.google.guava:guava:$guavaVersion"
-
-    //concurrentFutures - possible solution to the bidge-ass Listenable future problem
-    private const val concurrentFuturesVersion = "1.1.0"
-    const val concurrentFutures ="androidx.concurrent:concurrent-futures:$concurrentFuturesVersion"
-    const val concurrentFuturesKotlin ="androidx.concurrent:concurrent-futures-ktx:$concurrentFuturesVersion"
-
-
-
 }
 
 object Project

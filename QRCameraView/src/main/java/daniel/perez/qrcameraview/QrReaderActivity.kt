@@ -65,6 +65,9 @@ class QrReaderActivity : BaseActivity() {
         } else {
             val qrData = barcodes[0]
             binding.result.text = qrData.displayValue
+
+            val anim = BarcodeOverlay(this,qrData.boundingBox)
+
             when (qrData.valueType) {
                 Barcode.TYPE_CALENDAR_EVENT -> binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_event_white_36dp))
                 Barcode.TYPE_URL -> binding.qrTypeImageview.setImageDrawable(getDrawable(R.drawable.ic_open_in_new_white_24dp))
@@ -83,6 +86,7 @@ class QrReaderActivity : BaseActivity() {
             }
         }
     }
+
 
     fun onQRClick() {
         if (isScanning()) {
