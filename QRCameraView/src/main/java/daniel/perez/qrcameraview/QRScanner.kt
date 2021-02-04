@@ -14,11 +14,7 @@ class QRScanner() : BaseAnalyzer()
     //private val barcodeScanner : BarcodeScanner = BarcodeScanning.getClient()
     private lateinit var barcodeScanner : BarcodeScanner
 
-    init{
-        initializeBarcodeScan()
-    }
-
-    private fun initializeBarcodeScan() {
+     override  fun initialize() {
         barcodeScanner = BarcodeScanning.getClient()
         val options = BarcodeScannerOptions.Builder()
                 .setBarcodeFormats(
@@ -30,7 +26,6 @@ class QRScanner() : BaseAnalyzer()
     }
 
     override fun scan(){
-        //Gets instance of BarcodeScanner. where the magic happens
         val result = barcodeScanner.process(inputImage)
                 .addOnSuccessListener {
                     barcodeSubject.onNext(it)
@@ -48,5 +43,9 @@ class QRScanner() : BaseAnalyzer()
 
     fun qrScannerResult(): Observable<MutableList<Barcode>> {
         return barcodeSubject
+    }
+
+    override fun close() {
+        barcodeScanner.close()
     }
 }

@@ -4,7 +4,10 @@ package daniel.perez.qrcameraview
 import android.content.Context
 import android.content.res.Resources
 import android.util.Size
-import androidx.camera.core.*
+import androidx.camera.core.Camera
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
@@ -18,10 +21,9 @@ class CameraHandler @Inject constructor(private val context: Context,
                                         private val textScanner: TextScanner) {
 
     private lateinit var camera: Camera
-    lateinit var imageProxy: ImageProxy
     private lateinit var cameraProvider : ProcessCameraProvider
     private lateinit var cameraExecutor : ExecutorService
-    private var currentScanMode : SCAN_TYPE = SCAN_TYPE.BARCODE
+    private lateinit var currentAnalyzer: BaseAnalyzer
     private lateinit var lifecycleOwner: LifecycleOwner
     private lateinit var previewView: PreviewView
 
@@ -31,6 +33,7 @@ class CameraHandler @Inject constructor(private val context: Context,
 
     private fun setup() {
         cameraExecutor = Executors.newSingleThreadExecutor()
+        currentAnalyzer = qrScanner
     }
 
     fun openCamera(lifecycleOwner: LifecycleOwner, previewView: PreviewView) {
@@ -45,7 +48,7 @@ class CameraHandler @Inject constructor(private val context: Context,
                     .setTargetResolution(Size(displayMetrics.widthPixels, displayMetrics.heightPixels))
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .build()
-            imageAnalysis.setAnalyzer(cameraExecutor, selectScanType())
+            imageAnalysis.setAnalyzer(cameraExecutor, currentAnalyzer)
 
             //sets up surface for displaying the image preview
             val preview = Preview.Builder()
@@ -62,16 +65,7 @@ class CameraHandler @Inject constructor(private val context: Context,
             camera = cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, imageAnalysis, preview)
             preview.setSurfaceProvider(previewView.createSurfaceProvider(camera.cameraInfo))
             previewView.scaleType = PreviewView.ScaleType.FIT_START
-
         }, ContextCompat.getMainExecutor(context))
-    }
-
-    fun selectScanType() : ImageAnalysis.Analyzer{
-        when (currentScanMode) {
-            SCAN_TYPE.BARCODE -> return qrScanner
-            SCAN_TYPE.TEXT -> return textScanner
-            else -> return qrScanner
-        }
     }
 
     fun switchScanType(currentMode: SCAN_TYPE) : SCAN_TYPE{
@@ -80,16 +74,27 @@ class CameraHandler @Inject constructor(private val context: Context,
         //switch to other scan type
         when (currentMode) {
             SCAN_TYPE.BARCODE -> {
-                openCamera(lifecycleOwner,previewView)
                 newCurrentMode = SCAN_TYPE.TEXT
+                setTextAnalyzer()
             }
             SCAN_TYPE.TEXT -> {
-                openCamera(lifecycleOwner,previewView)
                 newCurrentMode = SCAN_TYPE.BARCODE
+                setQrAnalyzer()
             }
-            else -> newCurrentMode = SCAN_TYPE.BARCODE
         }
         return newCurrentMode
+    }
+
+    private fun setQrAnalyzer(){
+        currentAnalyzer.close()
+        currentAnalyzer = qrScanner
+        openCamera(lifecycleOwner,previewView)
+    }
+
+    private fun setTextAnalyzer(){
+        currentAnalyzer.close()
+        currentAnalyzer = textScanner
+        openCamera(lifecycleOwner,previewView)
     }
 
     fun toggleFlash(flashOn: Boolean) {
