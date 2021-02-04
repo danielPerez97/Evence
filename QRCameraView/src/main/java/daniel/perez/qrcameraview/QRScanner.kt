@@ -11,10 +11,10 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 class QRScanner() : BaseAnalyzer()
 {
     private val barcodeSubject: PublishSubject<MutableList<Barcode>> = PublishSubject.create()
-    //private val barcodeScanner : BarcodeScanner = BarcodeScanning.getClient()
     private lateinit var barcodeScanner : BarcodeScanner
 
-     override  fun initialize() {
+
+    override fun scan(){
         barcodeScanner = BarcodeScanning.getClient()
         val options = BarcodeScannerOptions.Builder()
                 .setBarcodeFormats(
@@ -23,9 +23,6 @@ class QRScanner() : BaseAnalyzer()
                         Barcode.FORMAT_UPC_A,
                         Barcode.FORMAT_UPC_E)
                 .build()
-    }
-
-    override fun scan(){
         val result = barcodeScanner.process(inputImage)
                 .addOnSuccessListener {
                     barcodeSubject.onNext(it)
@@ -41,11 +38,8 @@ class QRScanner() : BaseAnalyzer()
                 }
     }
 
-    fun qrScannerResult(): Observable<MutableList<Barcode>> {
-        return barcodeSubject
-    }
+    fun qrScannerResult(): Observable<MutableList<Barcode>> = barcodeSubject
 
-    override fun close() {
-        barcodeScanner.close()
-    }
+    override fun close() = barcodeScanner.close()
+
 }
