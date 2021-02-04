@@ -82,6 +82,9 @@ dependencies {
     //ML kit barcode
     implementation( Libs.mlkitBarcode )
 
+    //ml kit text
+    implementation( Libs.mlkitTextRecognition )
+
     // Timber
     implementation ( Libs.timber )
 }

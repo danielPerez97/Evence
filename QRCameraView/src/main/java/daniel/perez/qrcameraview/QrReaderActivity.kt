@@ -4,14 +4,13 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.mlkit.vision.barcode.Barcode
+import com.google.mlkit.vision.text.Text
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.DialogStarter
 import daniel.perez.core.copyToClipboard
@@ -31,14 +30,16 @@ class QrReaderActivity : BaseActivity() {
     private var flashOn = false
     private lateinit var barcodes : MutableList<Barcode>
     private lateinit var intentActions: IntentActions
-    lateinit var overlay : BarcodeOverlay
-    lateinit var flashButton : View
+    private lateinit var overlay : BarcodeOverlay
+    private lateinit var scannedText : Text
+    private var currentScanType: CameraHandler.SCAN_TYPE = CameraHandler.SCAN_TYPE.BARCODE
+
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var fileManager: FileManager
     @Inject lateinit var dialogStarter: DialogStarter
-    @Inject lateinit var qrHandler: QrHandler
     @Inject lateinit var cameraHandler: CameraHandler
+    @Inject lateinit var QRScanner: QRScanner
 
     companion object {
         private const val REQUEST_CAMERA_PERMISSIONS = 10
@@ -52,38 +53,26 @@ class QrReaderActivity : BaseActivity() {
         setContentView(binding.root)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(QrReaderViewModel::class.java)
         intentActions = IntentActions(this)
-        setupSubscriptions()
 
         if (allPermissionsGranted()) {
-            cameraHandler.setupCamera(this, binding.previewView)
+            cameraHandler.openCamera(this, binding.previewView)
+            //cameraHandler.scanBarcode()
         } else
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSIONS)
 
         overlay = BarcodeOverlay(this)
         binding.parentLayout.addView(overlay)
-
         binding.qrTypeCardview.setOnClickListener { onQRClick() }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_camera, menu)
-        flashButton = binding.toolbarMain.menu.findItem(R.id.flash_button) as View
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.flash_button) {
-            toggleFlash()
-
-        }
-        return super.onOptionsItemSelected(item)
+        binding.switchScanButton.setOnClickListener{ toggleScanMode() }
+        binding.flashButton.setOnClickListener{ toggleFlash() }
+        setupSubscriptions()
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun updateViews() {
         if (isScanning()) {
             binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_search_white_24dp))
-            binding.result.text = "Scanning"
+            binding.result.text = "Scanning..."
             overlay.visibility = View.INVISIBLE
         } else {
             val qrData = barcodes[0]
@@ -149,17 +138,32 @@ class QrReaderActivity : BaseActivity() {
 
     private fun toggleFlash(){
         if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
-            if (!flashOn) {
-                //flashButton.setIcon(getDrawable(R.drawable.ic_flash_off_white_24dp))
-                flashOn = true
-            } else {
-                //flashButton.setImageDrawable(getDrawable(R.drawable.ic_flash_on_white_24dp))
-                flashOn = false
-            }
             cameraHandler.toggleFlash(flashOn)
+            flashOn = !flashOn
+            if (!flashOn)
+                binding.flashImage.setImageDrawable(getDrawable(R.drawable.ic_flash_off_white_24dp))
+            else
+                binding.flashImage.setImageDrawable(getDrawable(R.drawable.ic_flash_on_white_24dp))
             //todo use callback to see if successful or not
         } else {
             toastShort("Device torch not found")
+        }
+    }
+
+    private fun toggleScanMode() {
+        //switches scan type
+        currentScanType = cameraHandler.switchScanType(currentScanType)
+        when (currentScanType) {
+            CameraHandler.SCAN_TYPE.BARCODE -> {
+                binding.switchScanImageview.setImageDrawable(getDrawable(R.drawable.ic_baseline_qr_code_scanner_24))
+                toastShort("Scanning for QR codes")
+            }
+            CameraHandler.SCAN_TYPE.TEXT -> {
+                binding.switchScanImageview.setImageDrawable(getDrawable(R.drawable.ic_baseline_scan_text_24))
+                toastShort("Scanning for text")
+            }
+            else ->
+                binding.switchScanImageview.setImageDrawable(getDrawable(R.drawable.ic_baseline_qr_code_scanner_24))
         }
     }
 
@@ -173,7 +177,7 @@ class QrReaderActivity : BaseActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == REQUEST_CAMERA_PERMISSIONS) {
             if (allPermissionsGranted()) {
-                cameraHandler.setupCamera(this, binding.previewView)
+                cameraHandler.openCamera(this, binding.previewView)
             } else {
                 toastShort("Permissions not granted by the user.")
                 finish()
@@ -188,6 +192,11 @@ class QrReaderActivity : BaseActivity() {
                     updateViews()
                 }
         )
+        disposables.add(viewModel.liveTextData()
+                .subscribe{
+                    scannedText = it
+                    binding.result.text = scannedText.text
+                })
     }
 
     override fun onDestroy() {

@@ -28,7 +28,7 @@
     <style name="CircularButtonCardView" parent="ButtonCardView">
         <item name="android:layout_height">46dp</item>
         <item name="android:layout_width">46dp</item>
-        <item name="android:layout_margin">4dp</item>
+        <item name="android:layout_margin">16dp</item>
         <item name="android:backgroundTint">@color/blue1</item>
         <item name="android:gravity">center</item>
         <item name="cardCornerRadius">23dp</item>
@@ -68,6 +68,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="backgroundTint">@color/colorAccent</item>
         <item name="android:transitionName">fabTransition</item>
+        <item name="android:layout_margin">16dp</item>
     </style>
 
     <style name="FormCardView"  parent="ButtonCardView">

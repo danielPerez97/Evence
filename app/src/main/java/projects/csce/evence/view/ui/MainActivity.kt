@@ -54,20 +54,21 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.qrBtn.setOnClickListener { unit: View? -> startQrActivity() }
-
-        //apply custom toolbar
         setSupportActionBar(binding.toolbarMain)
+
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+
         eventsAdapter = CardsAdapter(this)
         handleRecyclerView()
 
-        //binding.loginBtn.setOnClickListener(view -> signIn());
-
         //handle drawer
-        val actionBarDrawerToggle = ActionBarDrawerToggle(this, binding.drawerMain, binding.toolbarMain, R.string.app_name, R.string.app_name)
+        val actionBarDrawerToggle = ActionBarDrawerToggle(this, binding.drawerMain,
+                binding.toolbarMain,
+                R.string.app_name,
+                R.string.app_name)
         binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer)
         binding.drawerMain.addDrawerListener(actionBarDrawerToggle)
+        binding.qrBtn.setOnClickListener { unit: View? -> startQrActivity() }
         actionBarDrawerToggle.syncState()
         setupSubscriptions()
     }
@@ -81,7 +82,9 @@ class MainActivity : BaseActivity() {
                 })
         disposables.add(eventsAdapter.clicks()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { viewCalendarData: ViewCalendarData? -> dialogStarter.startQrDialog(this, viewCalendarData!!) })
+                .subscribe { viewCalendarData: ViewCalendarData? ->
+                    dialogStarter.startQrDialog(this, viewCalendarData!!)
+                })
         disposables.add(sharedPref.getUiPref()
                 .doOnSubscribe { pref: Disposable? -> sharedPref.notifyUiPref() }
                 .subscribe { uiPref: UiPreference? -> eventsAdapter.updateUiFormat(uiPref) })

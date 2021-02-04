@@ -1,20 +1,37 @@
 package daniel.perez.qrcameraview
 
 import android.util.Log
-import androidx.camera.core.ImageProxy
 import com.google.mlkit.vision.barcode.Barcode
+import com.google.mlkit.vision.barcode.BarcodeScanner
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
-import com.google.mlkit.vision.common.InputImage
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
 
-class QrHandler() {
+class QRScanner() : BaseAnalyzer()
+{
     private val barcodeSubject: PublishSubject<MutableList<Barcode>> = PublishSubject.create()
+    //private val barcodeScanner : BarcodeScanner = BarcodeScanning.getClient()
+    private lateinit var barcodeScanner : BarcodeScanner
 
-    fun scanBarcode(imageProxy: ImageProxy, image : InputImage){
+    init{
+        initializeBarcodeScan()
+    }
+
+    private fun initializeBarcodeScan() {
+        barcodeScanner = BarcodeScanning.getClient()
+        val options = BarcodeScannerOptions.Builder()
+                .setBarcodeFormats(
+                        Barcode.FORMAT_QR_CODE,
+                        Barcode.FORMAT_AZTEC,
+                        Barcode.FORMAT_UPC_A,
+                        Barcode.FORMAT_UPC_E)
+                .build()
+    }
+
+    override fun scan(){
         //Gets instance of BarcodeScanner. where the magic happens
-        val barcodeScanner = BarcodeScanning.getClient()
-        val result = barcodeScanner.process(image)
+        val result = barcodeScanner.process(inputImage)
                 .addOnSuccessListener {
                     barcodeSubject.onNext(it)
                     if (it.size !=0) {
@@ -29,7 +46,7 @@ class QrHandler() {
                 }
     }
 
-    fun qrResult(): Observable<MutableList<Barcode>> {
+    fun qrScannerResult(): Observable<MutableList<Barcode>> {
         return barcodeSubject
     }
 }

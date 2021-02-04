@@ -5,7 +5,8 @@ import dagger.Module
 import dagger.Provides
 import daniel.perez.qrcameraview.CameraHandler
 import daniel.perez.qrcameraview.IntentActions
-import daniel.perez.qrcameraview.QrHandler
+import daniel.perez.qrcameraview.QRScanner
+import daniel.perez.qrcameraview.TextScanner
 import javax.inject.Singleton
 
 @Module
@@ -13,14 +14,20 @@ class QrReaderModule {
 
     @Provides
     @Singleton
-    fun provideCameraHandler(context: Context,  qrHandler: QrHandler ) :  CameraHandler {
-        return CameraHandler(context, qrHandler)
+    fun provideCameraHandler(context: Context, QRScanner: QRScanner, textScanner: TextScanner ) :  CameraHandler {
+        return CameraHandler(context, QRScanner, textScanner)
     }
 
     @Provides
     @Singleton
-    fun provideQrHandler() : QrHandler {
-        return QrHandler()
+    fun provideQrHandler() : QRScanner {
+        return QRScanner()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTextScanner() : TextScanner {
+        return TextScanner()
     }
 
     @Provides
