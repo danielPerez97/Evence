@@ -13,22 +13,17 @@ class TextScanner() : BaseAnalyzer() {
     private lateinit var recognizer: TextRecognizer
 
 
-    fun textScannerResult(): Observable<Text> {
-        return scannedTextSubject
-    }
-
-    override fun initialize(){
-        recognizer = TextRecognition.getClient()
-    }
-
     override fun scan() {
+        recognizer = TextRecognition.getClient()
         Timber.i("Scanning text")
         val result = textRecognizer.process(inputImage)
                 .addOnSuccessListener {
                     val text = it.text
+                    scannedTextSubject.onNext(it)
                     Timber.i("Scanned Text: " + text)
                     for (block in it.textBlocks) {
                         val blockText = block.text
+
                         Timber.i("Scanned blockText: " + blockText)
                         for (line in block.lines) {
                             val lineText = line.text
@@ -39,17 +34,17 @@ class TextScanner() : BaseAnalyzer() {
                             }
                         }
                     }
-
                 }
                 .addOnFailureListener {
                     Timber.i("Scanned text failed")
+                    scannedTextSubject.onError(it)
                 }
                 .addOnCompleteListener {
                     imageProxy.close()
                 }
     }
 
-    override fun close() {
-        recognizer.close()
-    }
+    fun textScannerResult(): Observable<Text> = scannedTextSubject
+
+    override fun close() = recognizer.close()
 }

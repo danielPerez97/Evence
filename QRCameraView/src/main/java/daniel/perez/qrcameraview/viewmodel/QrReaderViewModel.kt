@@ -21,6 +21,7 @@ class QrReaderViewModel @Inject constructor(
         private val textScanner: TextScanner): ViewModel() {
 
     fun saveFile(ical: ICalSpec) = fileManager.saveICalFile(ical)
+
     fun liveQRData(): Observable<MutableList<Barcode>> =  QRScanner.qrScannerResult()
     fun liveTextData(): Observable<Text> = textScanner.textScannerResult()
 

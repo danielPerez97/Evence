@@ -62,7 +62,10 @@ class CameraHandler @Inject constructor(private val context: Context,
             cameraProvider = cameraProviderFuture.get()
                     ?: throw IllegalStateException("Camera initialization failed.")
             cameraProvider.unbindAll()
-            camera = cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, imageAnalysis, preview)
+            camera = cameraProvider.bindToLifecycle(lifecycleOwner,
+                    cameraSelector,
+                    imageAnalysis,
+                    preview)
             preview.setSurfaceProvider(previewView.createSurfaceProvider(camera.cameraInfo))
             previewView.scaleType = PreviewView.ScaleType.FIT_START
         }, ContextCompat.getMainExecutor(context))

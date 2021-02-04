@@ -9,10 +9,6 @@ abstract class BaseAnalyzer : ImageAnalysis.Analyzer {
     protected lateinit var  inputImage : InputImage
     protected lateinit var imageProxy: ImageProxy
 
-    init{
-        initialize()
-    }
-
     @SuppressLint("UnsafeExperimentalUsageError")
     override fun analyze(imageProxy: ImageProxy) {
         this.imageProxy = imageProxy
@@ -24,6 +20,5 @@ abstract class BaseAnalyzer : ImageAnalysis.Analyzer {
     }
 
     abstract fun scan()
-    abstract fun initialize()
     abstract fun close()
 }

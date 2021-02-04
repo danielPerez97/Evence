@@ -72,33 +72,49 @@ class QrReaderActivity : BaseActivity() {
     private fun updateViews() {
         if (isScanning()) {
             binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_search_white_24dp))
-            binding.result.text = "Scanning..."
             overlay.visibility = View.INVISIBLE
+            when (currentScanType) {
+                CameraHandler.SCAN_TYPE.BARCODE -> {
+                    binding.result.text = "Scanning for QR codes"
+                }
+                CameraHandler.SCAN_TYPE.TEXT -> {
+                    binding.result.text = "Scanning for texts"
+                }
+            }
         } else {
-            val qrData = barcodes[0]
-            binding.result.text = qrData.displayValue
-
             overlay.visibility = View.VISIBLE
-            overlay.updateRect(qrData.boundingBox)
+            when (currentScanType) {
+                CameraHandler.SCAN_TYPE.BARCODE -> {
+                    val qrData = barcodes[0]
+                    binding.result.text = qrData.displayValue
+                    overlay.updateRect(qrData.boundingBox)
 
-            when (qrData.valueType) {
-                Barcode.TYPE_CALENDAR_EVENT -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_event_white_36dp))
-                Barcode.TYPE_URL -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_open_in_new_white_24dp))
-                Barcode.TYPE_CONTACT_INFO -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_person_add_white_24dp))
-                Barcode.TYPE_EMAIL -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_email_white_24dp))
-                Barcode.TYPE_PHONE -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_phone_white_24dp))
-                Barcode.TYPE_SMS -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_textsms_black_24dp))
-                Barcode.TYPE_ISBN -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_shopping_cart_white_24dp))
-                Barcode.TYPE_WIFI -> {
-                    binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_wifi_white_24dp))
-                    binding.result.text = "Network name: ${qrData.wifi.ssid} \n Password: ${qrData.wifi.password}" }
-                Barcode.TYPE_GEO -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_place_white_24dp))
-                Barcode.TYPE_DRIVER_LICENSE -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_account_box_white_24dp))
-                else -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_short_text_white_24dp))
+                    when (qrData.valueType) {
+                        Barcode.TYPE_CALENDAR_EVENT -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_event_white_36dp))
+                        Barcode.TYPE_URL -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_open_in_new_white_24dp))
+                        Barcode.TYPE_CONTACT_INFO -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_person_add_white_24dp))
+                        Barcode.TYPE_EMAIL -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_email_white_24dp))
+                        Barcode.TYPE_PHONE -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_phone_white_24dp))
+                        Barcode.TYPE_SMS -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_textsms_black_24dp))
+                        Barcode.TYPE_ISBN -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_shopping_cart_white_24dp))
+                        Barcode.TYPE_WIFI -> {
+                            binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_wifi_white_24dp))
+                            binding.result.text = "Network name: ${qrData.wifi.ssid} \n Password: ${qrData.wifi.password}"
+                        }
+                        Barcode.TYPE_GEO -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_place_white_24dp))
+                        Barcode.TYPE_DRIVER_LICENSE -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_account_box_white_24dp))
+                        else -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_short_text_white_24dp))
+                    }
+                }
+
+                CameraHandler.SCAN_TYPE.TEXT -> {
+                    scannedText.textBlocks[0].boundingBox?.let { overlay.updateRect(it) }
+                    binding.result.text = scannedText.textBlocks[0].text
+
+                }
             }
         }
     }
-
 
     fun onQRClick() {
         if (isScanning()) {
@@ -155,18 +171,20 @@ class QrReaderActivity : BaseActivity() {
         when (currentScanType) {
             CameraHandler.SCAN_TYPE.BARCODE -> {
                 binding.switchScanImageview.setImageDrawable(getDrawable(R.drawable.ic_baseline_qr_code_scanner_24))
-                toastShort("Scanning for QR codes")
             }
             CameraHandler.SCAN_TYPE.TEXT -> {
                 binding.switchScanImageview.setImageDrawable(getDrawable(R.drawable.ic_baseline_scan_text_24))
-                toastShort("Scanning for text")
             }
-            else ->
-                binding.switchScanImageview.setImageDrawable(getDrawable(R.drawable.ic_baseline_qr_code_scanner_24))
         }
     }
 
-    private fun isScanning(): Boolean = barcodes.isEmpty()
+    private fun isScanning() : Boolean {
+        when(currentScanType) {
+            CameraHandler.SCAN_TYPE.BARCODE -> return barcodes.isEmpty()
+            CameraHandler.SCAN_TYPE.TEXT -> return scannedText.equals(null)
+            else -> return false
+        }
+    }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
@@ -192,9 +210,10 @@ class QrReaderActivity : BaseActivity() {
                 }
         )
         disposables.add(viewModel.liveTextData()
+                //add onerrorhandler
                 .subscribe{
                     scannedText = it
-                    binding.result.text = scannedText.text
+                    updateViews()
                 })
     }
 
