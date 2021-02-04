@@ -109,6 +109,9 @@ dependencies {
     //guavaConflict
     implementation( Libs.guavaConflict)
 
+    //camerax core.
+    implementation( Libs.cameraXCore )
+
 }
 
 repositories {

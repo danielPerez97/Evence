@@ -112,9 +112,12 @@ object Libs
     const val cameraXCameraView = "androidx.camera:camera-view:$cameraXCameraViewVersion"
     const val cameraXExtensions = "androidx.camera:camera-extensions:$cameraXExtensionsVersion"
 
-    //Google ML Kit barcode-scanning
+    //Google ML Kit
     private const val mlkitBarcodeVersion="16.1.1"
+    private const val mlkitTextVersion="16.1.3"
     const val mlkitBarcode = "com.google.mlkit:barcode-scanning:$mlkitBarcodeVersion"
+    const val mlkitTextRecognition = "com.google.android.gms:play-services-mlkit-text-recognition:$mlkitTextVersion"
+
 
     //guava conflict - listenablefuture
     private const val guavaConflictVersion = "9999.0-empty-to-avoid-conflict-with-guava"

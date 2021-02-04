@@ -1,46 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/parent_layout"
-    android:background="@color/blue1"
+    android:background="@color/black"
     tools:context="daniel.perez.qrcameraview.QrReaderActivity">
-
 
     <androidx.camera.view.PreviewView
         android:id="@+id/previewView"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+        android:layout_marginBottom="53dp"/>
+
+    <View
+        android:id="@+id/gradient"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_marginBottom="53dp"
+        android:background="@drawable/gradient"
+        app:layout_anchor="@+id/previewView"
+        app:layout_anchorGravity="bottom" />
 
     <TextView
         android:id="@+id/result"
         style="@style/viewShadow"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="56dp"
+        android:paddingBottom="35dp"
         android:text="Scanning..."
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:layout_gravity="center"
-        />
+        app:layout_anchor="@+id/gradient"
+        app:layout_anchorGravity="center" />
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/flash_button"
+        style="@style/CircularButtonCardView"
+        android:layout_margin="16dp"
+        android:layout_gravity="bottom|start"
+        android:backgroundTint="@color/grey1"
+        >
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/flash_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_flash_off_white_24dp"
+            />
+    </androidx.cardview.widget.CardView>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/toolbar_main"
-        style="@style/CustomBottomAppBar"
-        app:fabAlignmentMode="center"
-        app:menu="@menu/menu_camera"
-         />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/switch_scan_button"
+        style="@style/CircularButtonCardView"
+        android:layout_margin="16dp"
+        android:layout_gravity="bottom|end"
+        android:backgroundTint="@color/grey1"
+        >
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/switch_scan_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_scan_text_24"
+            />
+    </androidx.cardview.widget.CardView>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/qr_type_cardview"
         style="@style/FAB"
         android:layout_gravity="bottom|center"
-        app:layout_anchor="@+id/toolbar_main" />
+        android:backgroundTint="@color/grey1" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

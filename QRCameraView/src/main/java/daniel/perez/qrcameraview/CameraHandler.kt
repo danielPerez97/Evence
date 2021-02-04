@@ -1,44 +1,51 @@
 package daniel.perez.qrcameraview
 
-import android.annotation.SuppressLint
+
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.Rect
 import android.util.Size
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import com.google.mlkit.vision.barcode.Barcode
-import com.google.mlkit.vision.barcode.BarcodeScannerOptions
-import com.google.mlkit.vision.common.InputImage
-import timber.log.Timber
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import javax.inject.Inject
 
-class CameraHandler(private val context: Context, private val qrHandler : QrHandler) {
+class CameraHandler @Inject constructor(private val context: Context,
+                                        private val qrScanner: QRScanner,
+                                        private val textScanner: TextScanner) {
+
     private lateinit var camera: Camera
     lateinit var imageProxy: ImageProxy
+    private lateinit var cameraProvider : ProcessCameraProvider
+    private lateinit var cameraExecutor : ExecutorService
+    private var currentScanMode : SCAN_TYPE = SCAN_TYPE.BARCODE
+    private lateinit var lifecycleOwner: LifecycleOwner
+    private lateinit var previewView: PreviewView
 
-    fun setupCamera(lifecycleOwner: LifecycleOwner, previewView: PreviewView) {
+    init {
+        setup()
+    }
+
+    private fun setup() {
+        cameraExecutor = Executors.newSingleThreadExecutor()
+    }
+
+    fun openCamera(lifecycleOwner: LifecycleOwner, previewView: PreviewView) {
+        this.lifecycleOwner = lifecycleOwner
+        this.previewView = previewView
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
-        val cameraExecutor = Executors.newSingleThreadExecutor()
-
         cameraProviderFuture.addListener(Runnable {
-           //val displayMetrics = DisplayMetrics()
             val displayMetrics = Resources.getSystem().displayMetrics
-
-            val rect = Rect()
 
             //provides CPU-accessible buffers for analysis, such as for machine learning.
             val imageAnalysis = ImageAnalysis.Builder()
                     .setTargetResolution(Size(displayMetrics.widthPixels, displayMetrics.heightPixels))
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .build()
-            imageAnalysis.setAnalyzer(cameraExecutor, ImageAnalysis.Analyzer {
-                imageProxy = it
-                analyzeImage(SCAN_TYPE.BARCODE)
-            })
+            imageAnalysis.setAnalyzer(cameraExecutor, selectScanType())
 
             //sets up surface for displaying the image preview
             val preview = Preview.Builder()
@@ -49,47 +56,40 @@ class CameraHandler(private val context: Context, private val qrHandler : QrHand
             val cameraSelector = CameraSelector.Builder()
                     .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                     .build()
-            val cameraProvider = cameraProviderFuture.get()
+            cameraProvider = cameraProviderFuture.get()
                     ?: throw IllegalStateException("Camera initialization failed.")
             cameraProvider.unbindAll()
             camera = cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, imageAnalysis, preview)
             preview.setSurfaceProvider(previewView.createSurfaceProvider(camera.cameraInfo))
-
             previewView.scaleType = PreviewView.ScaleType.FIT_START
-
-            Timber.i("************PreviewView=" + previewView.width + " "+ previewView.height)
-            Timber.i("************DeviceView=" + displayMetrics.widthPixels + " "+ displayMetrics.heightPixels)
 
         }, ContextCompat.getMainExecutor(context))
     }
 
-    //analyzes the image and reads the barcode
-    fun analyzeImage(scanType : SCAN_TYPE) {
-        when (scanType) {
-            SCAN_TYPE.BARCODE -> scanBarcode()
-            SCAN_TYPE.TEXT -> scanText()
+    fun selectScanType() : ImageAnalysis.Analyzer{
+        when (currentScanMode) {
+            SCAN_TYPE.BARCODE -> return qrScanner
+            SCAN_TYPE.TEXT -> return textScanner
+            else -> return qrScanner
         }
     }
 
-    @SuppressLint("UnsafeExperimentalUsageError")
-    private fun scanBarcode() {
-        val options = BarcodeScannerOptions.Builder()
-                .setBarcodeFormats(
-                        Barcode.FORMAT_QR_CODE,
-                        Barcode.FORMAT_AZTEC,
-                        Barcode.FORMAT_UPC_A,
-                        Barcode.FORMAT_UPC_E
-                )
-                .build()
-        val mediaImage = imageProxy.image
-        if (mediaImage != null) {
-            val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-            qrHandler.scanBarcode(imageProxy, image)
+    fun switchScanType(currentMode: SCAN_TYPE) : SCAN_TYPE{
+        cameraProvider.unbindAll()
+        lateinit var newCurrentMode : SCAN_TYPE
+        //switch to other scan type
+        when (currentMode) {
+            SCAN_TYPE.BARCODE -> {
+                openCamera(lifecycleOwner,previewView)
+                newCurrentMode = SCAN_TYPE.TEXT
+            }
+            SCAN_TYPE.TEXT -> {
+                openCamera(lifecycleOwner,previewView)
+                newCurrentMode = SCAN_TYPE.BARCODE
+            }
+            else -> newCurrentMode = SCAN_TYPE.BARCODE
         }
-    }
-
-    fun scanText() {
-        //future feature
+        return newCurrentMode
     }
 
     fun toggleFlash(flashOn: Boolean) {
