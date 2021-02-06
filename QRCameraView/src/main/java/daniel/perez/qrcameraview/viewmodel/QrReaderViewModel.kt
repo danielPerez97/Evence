@@ -1,5 +1,6 @@
 package daniel.perez.qrcameraview.viewmodel
 
+import android.graphics.Rect
 import androidx.lifecycle.ViewModel
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.text.Text
@@ -9,8 +10,8 @@ import daniel.perez.core.service.qr.QrBitmapGenerator
 import daniel.perez.core.toZonedDateTime
 import daniel.perez.ical.EventSpec
 import daniel.perez.ical.ICalSpec
-import daniel.perez.qrcameraview.QRScanner
-import daniel.perez.qrcameraview.TextScanner
+import daniel.perez.qrcameraview.Scanner.QRScanner
+import daniel.perez.qrcameraview.Scanner.TextScanner
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
 
@@ -24,6 +25,8 @@ class QrReaderViewModel @Inject constructor(
 
     fun liveQRData(): Observable<MutableList<Barcode>> =  QRScanner.qrScannerResult()
     fun liveTextData(): Observable<Text> = textScanner.textScannerResult()
+    fun liveQRBoundingBoxes() : Observable<List<Rect>> = QRScanner.qrBoundingBoxes()
+    fun liveTextBoundingBoxes() : Observable<List<Rect?>> = textScanner.textBoundingBoxes()
 
     fun toViewEvent(event : EventSpec) : ViewEvent{
         val viewEvent = ViewEvent(event.title,

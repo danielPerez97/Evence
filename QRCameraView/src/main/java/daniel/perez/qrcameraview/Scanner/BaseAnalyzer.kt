@@ -1,4 +1,4 @@
-package daniel.perez.qrcameraview
+package daniel.perez.qrcameraview.Scanner
 
 import android.annotation.SuppressLint
 import androidx.camera.core.ImageAnalysis

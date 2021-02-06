@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context="daniel.perez.qrcameraview.QrReaderActivity">
+    tools:context="daniel.perez.qrcameraview.ui.QrReaderActivity">
 
     <androidx.camera.view.PreviewView
         android:id="@+id/previewView"

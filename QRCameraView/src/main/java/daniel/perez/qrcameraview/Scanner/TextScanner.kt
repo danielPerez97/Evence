@@ -1,5 +1,6 @@
-package daniel.perez.qrcameraview
+package daniel.perez.qrcameraview.Scanner
 
+import android.graphics.Rect
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
@@ -9,9 +10,9 @@ import timber.log.Timber
 
 class TextScanner() : BaseAnalyzer() {
     private val scannedTextSubject: PublishSubject<Text> = PublishSubject.create()
+    private val boundingBoxesSubject: PublishSubject<List<Rect?>> = PublishSubject.create()
     private val textRecognizer = TextRecognition.getClient()
     private lateinit var recognizer: TextRecognizer
-
 
     override fun scan() {
         recognizer = TextRecognition.getClient()
@@ -20,20 +21,8 @@ class TextScanner() : BaseAnalyzer() {
                 .addOnSuccessListener {
                     val text = it.text
                     scannedTextSubject.onNext(it)
-                    Timber.i("Scanned Text: " + text)
-                    for (block in it.textBlocks) {
-                        val blockText = block.text
-
-                        Timber.i("Scanned blockText: " + blockText)
-                        for (line in block.lines) {
-                            val lineText = line.text
-                            Timber.i("Scanned LineText: " + lineText)
-                            for (element in line.elements) {
-                                val elementText = element.text
-                                Timber.i("Scanned elementText: " + elementText)
-                            }
-                        }
-                    }
+                    boundingBoxesSubject.onNext(getTextBoundingBoxes(it.textBlocks))
+                    //Timber.i("Scanned Text: " + text)
                 }
                 .addOnFailureListener {
                     Timber.i("Scanned text failed")
@@ -44,7 +33,18 @@ class TextScanner() : BaseAnalyzer() {
                 }
     }
 
+    fun getTextBoundingBoxes(textBlocks: List<Text.TextBlock>) : List<Rect?> {
+        val boundingBoxes : MutableList<Rect?> = mutableListOf()
+        for (block in textBlocks) {
+            Timber.i("left======" + (block.boundingBox?.left ?: "NULLLLLLL"))
+            boundingBoxes.add(block.boundingBox)
+
+        }
+        return boundingBoxes
+    }
+
     fun textScannerResult(): Observable<Text> = scannedTextSubject
+    fun textBoundingBoxes(): Observable<List<Rect?>>  = boundingBoxesSubject
 
     override fun close() = recognizer.close()
 }
