@@ -6,7 +6,7 @@ import daniel.perez.core.StartActivity
 import daniel.perez.core.model.ViewCalendarData
 import daniel.perez.core.service.FileManager
 import daniel.perez.generateqrview.GenerateQR
-import daniel.perez.qrcameraview.QrReaderActivity
+import daniel.perez.qrcameraview.ui.QrReaderActivity
 import projects.csce.evence.view.ui.AboutActivity
 import projects.csce.evence.view.ui.SecondActivity
 import projects.csce.evence.view.ui.SettingsActivity

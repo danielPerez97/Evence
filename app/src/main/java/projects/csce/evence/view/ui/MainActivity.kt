@@ -120,7 +120,10 @@ class MainActivity : BaseActivity() {
         disposables.add(viewModel.liveFiles().subscribe { events: List<ViewCalendarData> ->
             Timber.i(Integer.toString(events.size))
             eventsAdapter.onChanged(events)
-            if (events.isEmpty()) binding.emptyTextview.visibility = View.VISIBLE else binding.emptyTextview.visibility = View.GONE
+            if (events.isEmpty())
+                binding.emptyTextview.visibility = View.VISIBLE
+            else
+                binding.emptyTextview.visibility = View.GONE
         })
     }
 

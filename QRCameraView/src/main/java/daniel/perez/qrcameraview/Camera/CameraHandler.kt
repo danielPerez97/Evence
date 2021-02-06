@@ -1,4 +1,4 @@
-package daniel.perez.qrcameraview
+package daniel.perez.qrcameraview.Camera
 
 
 import android.content.Context
@@ -12,6 +12,9 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import daniel.perez.qrcameraview.Scanner.BaseAnalyzer
+import daniel.perez.qrcameraview.Scanner.QRScanner
+import daniel.perez.qrcameraview.Scanner.TextScanner
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import javax.inject.Inject
@@ -71,7 +74,7 @@ class CameraHandler @Inject constructor(private val context: Context,
         }, ContextCompat.getMainExecutor(context))
     }
 
-    fun switchScanType(currentMode: SCAN_TYPE) : SCAN_TYPE{
+    fun switchScanType(currentMode: SCAN_TYPE) : SCAN_TYPE {
         cameraProvider.unbindAll()
         lateinit var newCurrentMode : SCAN_TYPE
         //switch to other scan type

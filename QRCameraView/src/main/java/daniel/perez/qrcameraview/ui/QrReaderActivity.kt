@@ -1,10 +1,10 @@
-package daniel.perez.qrcameraview
+package daniel.perez.qrcameraview.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.Rect
 import android.os.Bundle
-import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +18,10 @@ import daniel.perez.core.model.ViewCalendarData
 import daniel.perez.core.service.FileManager
 import daniel.perez.core.toastShort
 import daniel.perez.ical.ICalSpec
+import daniel.perez.qrcameraview.Camera.CameraHandler
+import daniel.perez.qrcameraview.IntentActions
+import daniel.perez.qrcameraview.R
+import daniel.perez.qrcameraview.Scanner.QRScanner
 import daniel.perez.qrcameraview.databinding.ActivityQrReaderBinding
 import daniel.perez.qrcameraview.di.QrReaderComponentProvider
 import daniel.perez.qrcameraview.viewmodel.QrReaderViewModel
@@ -28,12 +32,14 @@ class QrReaderActivity : BaseActivity() {
     private lateinit var binding: ActivityQrReaderBinding
     private lateinit var viewModel: QrReaderViewModel
     private var flashOn = false
-    private lateinit var barcodes : MutableList<Barcode>
+    private lateinit var barcodes: MutableList<Barcode>
+    private lateinit var scannedText: Text
+    private lateinit var qrBoundingBoxes: List<Rect>
+    private lateinit var textBoundingBoxes: List<Rect?>
     private lateinit var intentActions: IntentActions
-    private lateinit var overlay : BarcodeOverlay
-    private lateinit var scannedText : Text
-    private var currentScanType: CameraHandler.SCAN_TYPE = CameraHandler.SCAN_TYPE.BARCODE
+    private lateinit var overlay: Overlay
 
+    private var currentScanType: CameraHandler.SCAN_TYPE = CameraHandler.SCAN_TYPE.BARCODE
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var fileManager: FileManager
@@ -60,11 +66,11 @@ class QrReaderActivity : BaseActivity() {
         } else
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSIONS)
 
-        overlay = BarcodeOverlay(this)
+        overlay = Overlay(this)
         binding.parentLayout.addView(overlay)
         binding.qrTypeCardview.setOnClickListener { onQRClick() }
-        binding.switchScanButton.setOnClickListener{ toggleScanMode() }
-        binding.flashButton.setOnClickListener{ toggleFlash() }
+        binding.switchScanButton.setOnClickListener { toggleScanMode() }
+        binding.flashButton.setOnClickListener { toggleFlash() }
         setupSubscriptions()
     }
 
@@ -72,7 +78,7 @@ class QrReaderActivity : BaseActivity() {
     private fun updateViews() {
         if (isScanning()) {
             binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_search_white_24dp))
-            overlay.visibility = View.INVISIBLE
+            overlay.clearOverlays()
             when (currentScanType) {
                 CameraHandler.SCAN_TYPE.BARCODE -> {
                     binding.result.text = "Scanning for QR codes"
@@ -82,12 +88,12 @@ class QrReaderActivity : BaseActivity() {
                 }
             }
         } else {
-            overlay.visibility = View.VISIBLE
+
             when (currentScanType) {
                 CameraHandler.SCAN_TYPE.BARCODE -> {
                     val qrData = barcodes[0]
                     binding.result.text = qrData.displayValue
-                    overlay.updateRect(qrData.boundingBox)
+                    overlay.addOverlay(qrBoundingBoxes)
 
                     when (qrData.valueType) {
                         Barcode.TYPE_CALENDAR_EVENT -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_event_white_36dp))
@@ -108,9 +114,8 @@ class QrReaderActivity : BaseActivity() {
                 }
 
                 CameraHandler.SCAN_TYPE.TEXT -> {
-                    scannedText.textBlocks[0].boundingBox?.let { overlay.updateRect(it) }
                     binding.result.text = scannedText.textBlocks[0].text
-
+                    overlay.addOverlay(textBoundingBoxes)
                 }
             }
         }
@@ -123,21 +128,21 @@ class QrReaderActivity : BaseActivity() {
             val qrData = barcodes[0]
             Timber.i(qrData.valueType.toString())
             when (qrData.valueType) {
-                Barcode.TYPE_CALENDAR_EVENT ->  handleQrEvent()
-                Barcode.TYPE_URL ->   intentActions.openWebpage(qrData.url)
+                Barcode.TYPE_CALENDAR_EVENT -> handleQrEvent()
+                Barcode.TYPE_URL -> intentActions.openWebpage(qrData.url)
                 Barcode.TYPE_CONTACT_INFO -> intentActions.saveContact(qrData.contactInfo)
                 Barcode.TYPE_EMAIL -> intentActions.sendEmail(qrData.email)
                 Barcode.TYPE_PHONE -> intentActions.performCall(qrData.phone)
                 Barcode.TYPE_SMS -> intentActions.sendSMS(qrData.sms)
                 Barcode.TYPE_ISBN -> intentActions.searchWeb(qrData)
-                Barcode.TYPE_WIFI -> copyToClipboard(this,"wifi password", qrData.wifi.password)
+                Barcode.TYPE_WIFI -> copyToClipboard(this, "wifi password", qrData.wifi.password)
                 Barcode.TYPE_GEO -> intentActions.searchGeo(qrData.geoPoint)
-                else -> copyToClipboard(this,"Copy text", qrData.displayValue)
+                else -> copyToClipboard(this, "Copy text", qrData.displayValue)
             }
         }
     }
 
-    private fun handleQrEvent(){
+    private fun handleQrEvent() {
         val qrData = barcodes[0]
         val currentEvent = ICalSpec.Builder()
                 .fileName(qrData.calendarEvent.summary)
@@ -151,7 +156,7 @@ class QrReaderActivity : BaseActivity() {
         dialogStarter.startQrDialog(this, calendar)
     }
 
-    private fun toggleFlash(){
+    private fun toggleFlash() {
         if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
             cameraHandler.toggleFlash(flashOn)
             flashOn = !flashOn
@@ -178,10 +183,10 @@ class QrReaderActivity : BaseActivity() {
         }
     }
 
-    private fun isScanning() : Boolean {
-        when(currentScanType) {
+    private fun isScanning(): Boolean {
+        when (currentScanType) {
             CameraHandler.SCAN_TYPE.BARCODE -> return barcodes.isEmpty()
-            CameraHandler.SCAN_TYPE.TEXT -> return scannedText.equals(null)
+            CameraHandler.SCAN_TYPE.TEXT -> return scannedText.textBlocks.isEmpty()
             else -> return false
         }
     }
@@ -204,16 +209,24 @@ class QrReaderActivity : BaseActivity() {
 
     private fun setupSubscriptions() {
         disposables.add(viewModel.liveQRData()
-                .subscribe{
+
+                .subscribe {
                     barcodes = it
                     updateViews()
-                }
-        )
+                })
+        disposables.add(viewModel.liveQRBoundingBoxes()
+                .subscribe {
+                    qrBoundingBoxes = it
+                })
         disposables.add(viewModel.liveTextData()
                 //add onerrorhandler
-                .subscribe{
+                .subscribe {
                     scannedText = it
                     updateViews()
+                })
+        disposables.add(viewModel.liveTextBoundingBoxes()
+                .subscribe {
+                    textBoundingBoxes = it
                 })
     }
 
