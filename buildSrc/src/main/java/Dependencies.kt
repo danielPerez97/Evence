@@ -141,4 +141,5 @@ object Project
     const val generateQrView = ":GenerateQRView"
     const val qrCameraView = ":QRCameraView"
     const val qrDialogView = ":QRDialogView"
+    const val evenceDatabase = ":EvenceDb"
 }
