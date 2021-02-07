@@ -2,12 +2,12 @@ package daniel.perez.evencedb
 
 import com.squareup.sqldelight.sqlite.driver.JdbcSqliteDriver
 import daniel.perez.evencedb.data.Db
-import daniel.perez.evencedb.data.Schema
+import daniel.perez.evencedb.data.EvenceSchema
 
 actual fun createDriver()
 {
     val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
-    Schema.create(driver)
+    EvenceSchema.create(driver)
     Db.dbSetup(driver)
 }
 

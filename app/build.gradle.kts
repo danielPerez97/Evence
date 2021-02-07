@@ -48,9 +48,10 @@ dependencies {
     coreLibraryDesugaring( "com.android.tools:desugar_jdk_libs:1.0.5" )
 
     implementation( project( Project.core ) )
-    implementation( project( Project.ical ) )
+    implementation( project( Project.evenceDatabase ) )
     implementation( project( Project.fileSelectView ) )
     implementation( project( Project.generateQrView ) )
+    implementation( project( Project.ical ) )
     implementation( project( Project.qrCameraView ) )
     implementation( project( Project.qrDialogView ) )
 
@@ -79,6 +80,9 @@ dependencies {
     implementation( Libs.retrofitMoshi )
     implementation( Libs.retrofitScalars )
     implementation( Libs.retrofitRxJava )
+
+    // SQLDelight
+    implementation( Libs.sqlDelightAndroidDriver )
 
     // ICal4j
     implementation( Libs.ical4j )
@@ -111,4 +115,8 @@ dependencies {
 
 repositories {
     mavenCentral()
+
+    // Needed for kotlinx-datetime
+    // TODO("Keep up with what JetBrains does with this, bintray is getting shut down in May this is going to break our build")
+    maven(url = "https://kotlin.bintray.com/kotlinx/")
 }
