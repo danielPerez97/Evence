@@ -3,7 +3,7 @@ object Evence
     const val compileSdkVersion = 30
     const val buildToolsVersion = "30.0.2"
     const val targetSdkVersion = 30
-    const val minSdkVersion = 24
+    const val minSdkVersion = 26
 }
 
 object Libs
@@ -23,7 +23,7 @@ object Libs
 
     // Desugar
     private const val desugarVersion = "1.0.9"
-    const val desugar = "com.android.tools:desugar_jdk_libs:1.0.9"
+    const val desugar = "com.android.tools:desugar_jdk_libs:$desugarVersion"
 
 
     // ICal4J

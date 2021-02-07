@@ -37,8 +37,6 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
     private var startDate = DateSetEvent(1, 31, 1999)
     private var endDate = DateSetEvent(1, 31, 1999)
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    @Inject lateinit var generator: QrBitmapGenerator
-    @Inject lateinit var fileManager: FileManager
     @Inject lateinit var dialogStarter: DialogStarter
 
     @SuppressLint("CheckResult")
@@ -122,37 +120,33 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
 
     private fun generateQR()
     {
+        val viewEvent: ViewEvent = extractEventFromUi()
+
+        dialogStarter.startQrDialog(this, viewEvent)
+    }
+
+    private fun extractEventFromUi(): ViewEvent
+    {
         if (!areValidFields()) {
-            return
+            throw Exception("UI did not provide all data")
         }
-        // Handle the hours and minutes
-        val event = EventSpec.Builder(0)
-                .title(binding.titleEditText.text.toString())
-                .description(binding.descriptionEditText.text.toString())
-                .location(binding.locationEditText.text.toString())
-                .start(toZonedDateTime(startDate.month, startDate.dayOfMonth, startDate.year, startTime.hour, startTime.minute))
-                .end(toZonedDateTime(endDate.month, endDate.dayOfMonth, endDate.year, endTime.hour, endTime.minute))
-                .build()
 
-        currentEvent = ICalSpec.Builder()
-                .fileName(binding.titleEditText.text.toString())
-                .addEvent(event)
-                .build()
+        val viewEvent: ViewEvent
+        with(binding)
+        {
+            viewEvent = ViewEvent(
+                    1L,
+                    titleEditText.text.toString(),
+                    descriptionEditText.text.toString(),
+                    startDate.toString(),
+                    startTime.toString(),
+                    endDate.toString(),
+                    endTime.toString(),
+                    locationEditText.text.toString()
+            )
+        }
 
-        // Write the file to the file system
-        viewModel.saveFile(currentEvent)
-        val viewEvent = ViewEvent(event.title,
-                event.description,
-                event.getStartDate(),
-                event.getStartTime(),
-                event.getStartInstantEpoch(),
-                event.getEndEpochMilli(),
-                event.location,
-                event.text(),
-                generator.forceGenerate(event.text())
-        )
-        val calendar = ViewCalendarData(currentEvent.fileName, listOf(viewEvent))
-        dialogStarter.startQrDialog(this, calendar)
+        return viewEvent
     }
 
     // Handle the user choosing a place to store the file
