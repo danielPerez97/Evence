@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import daniel.perez.core.StartActivity
 import daniel.perez.core.model.ViewCalendarData
+import daniel.perez.core.model.ViewEvent
 import daniel.perez.core.service.FileManager
 import daniel.perez.generateqrview.GenerateQR
 import daniel.perez.qrcameraview.QrReaderActivity
@@ -21,10 +22,10 @@ class StartActivityImpl @Inject constructor(private val fileManager: FileManager
         activity.startActivity(generateQRActivity)
     }
 
-    override fun startEditQr(activity: Context, ical: ViewCalendarData)
+    override fun startEditQr(activity: Context, ical: ViewEvent)
     {
         val intent = Intent(activity, GenerateQR::class.java)
-        intent.putExtra("FILE_PATH", fileManager.getFilePath(ical.fileName))
+//        intent.putExtra("FILE_PATH", fileManager.getFilePath(ical.fileName))
         activity.startActivity(intent)
     }
 

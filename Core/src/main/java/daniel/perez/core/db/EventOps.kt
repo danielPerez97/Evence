@@ -1,5 +1,6 @@
 package daniel.perez.core.db
 
+import io.reactivex.rxjava3.core.Observable
 import java.time.LocalDateTime
 
 interface EventOps
@@ -8,13 +9,13 @@ interface EventOps
 
     fun insertEventWithRecurrence(title: String, description: String, location: String, startTime: LocalDateTime, endTime: LocalDateTime, recurrenceRule: String)
 
-    fun selectAll(): List<Event>
+    fun selectAll(): Observable<List<Event>>
 
-    fun selectByTitle(title: String): Event
+    fun selectByTitle(title: String): Observable<Event>
 
-    fun getEventById(id: Long): Event
+    fun getEventById(id: Long): Observable<Event>
 
-    fun getEventsSortedSoonest(): List<Event>
+    fun getEventsSortedSoonest(): Observable<List<Event>>
 
-    fun getEventsSortedLatest(): List<Event>
+    fun getEventsSortedLatest(): Observable<List<Event>>
 }

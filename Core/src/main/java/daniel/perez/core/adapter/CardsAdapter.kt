@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import daniel.perez.core.model.ViewCalendarData
 import daniel.perez.core.model.UiPreference
 import daniel.perez.core.model.ViewEvent
 import androidx.core.content.ContextCompat
@@ -19,9 +18,9 @@ import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
-class CardsAdapter(private val context: Context) : RecyclerView.Adapter<CardsAdapter.ViewHolder>(), Observer<List<ViewCalendarData>>, Consumer<List<ViewCalendarData>> {
-    private var dataList: List<ViewCalendarData> = emptyList()
-    private val clicks = PublishSubject.create<ViewCalendarData>()
+class CardsAdapter(private val context: Context) : RecyclerView.Adapter<CardsAdapter.ViewHolder>(), Observer<List<ViewEvent>>, Consumer<List<ViewEvent>> {
+    private var dataList: List<ViewEvent> = emptyList()
+    private val clicks = PublishSubject.create<ViewEvent>()
     private var uiPreference: UiPreference? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -37,12 +36,12 @@ class CardsAdapter(private val context: Context) : RecyclerView.Adapter<CardsAda
         return dataList.size
     }
 
-    override fun onChanged(newData: List<ViewCalendarData>) {
+    override fun onChanged(newData: List<ViewEvent>) {
         dataList = newData
         notifyDataSetChanged()
     }
 
-    fun clicks(): Observable<ViewCalendarData> {
+    fun clicks(): Observable<ViewEvent> {
         return clicks.debounce(300, TimeUnit.MILLISECONDS)
     }
 
@@ -50,19 +49,19 @@ class CardsAdapter(private val context: Context) : RecyclerView.Adapter<CardsAda
         uiPreference = uiPref
     }
 
-    fun setData(newData: List<ViewCalendarData>) {
+    fun setData(newData: List<ViewEvent>) {
         dataList = newData
         notifyDataSetChanged()
     }
 
-    override fun accept(viewCalendarData: List<ViewCalendarData>) {
+    override fun accept(viewCalendarData: List<ViewEvent>) {
         setData(viewCalendarData)
     }
 
     inner class ViewHolder(var binding: EventsListEntryLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindData(ical: ViewCalendarData) {
-            ical.events.forEach{ event: ViewEvent -> bind(event) }
-            binding.listEntryCardview.setOnClickListener { view: View? -> clicks.onNext(ical) }
+        fun bindData(event: ViewEvent) {
+            bind(event)
+            binding.listEntryCardview.setOnClickListener { view: View? -> clicks.onNext(event) }
         }
 
         private fun bind(event: ViewEvent) {
@@ -74,7 +73,7 @@ class CardsAdapter(private val context: Context) : RecyclerView.Adapter<CardsAda
             binding.listEntryTimeTextview.text = event.startTime
             val isDark = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             if (isDark == Configuration.UI_MODE_NIGHT_YES) binding.qrImageView.setColorFilter(ContextCompat.getColor(context, R.color.qr_dark_tint), PorterDuff.Mode.MULTIPLY) else if (isDark == Configuration.UI_MODE_NIGHT_NO) binding.qrImageView.clearColorFilter()
-            binding.qrImageView.setImageBitmap(event.image)
+//            binding.qrImageView.setImageBitmap(event.image)
             if (uiPreference!!.isQrPreviewed) {
                 binding.qrImageView.visibility = View.VISIBLE
                 binding.datePreview.visibility = View.GONE

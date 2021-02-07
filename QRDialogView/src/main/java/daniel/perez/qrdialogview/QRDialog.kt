@@ -19,11 +19,9 @@ import daniel.perez.qrdialogview.databinding.DialogBoxQrBinding
 import daniel.perez.qrdialogview.di.QRDialogComponentProvider
 import javax.inject.Inject
 
-class QRDialog(context: Context, ical: ViewCalendarData) {
+class QRDialog(context: Context, var event: ViewEvent) {
     private val context: Context
     private val dialog: Dialog
-    private val ical: ViewCalendarData
-    private val currentEvent: ViewEvent
     private val binding: DialogBoxQrBinding
 
     init {
@@ -31,14 +29,12 @@ class QRDialog(context: Context, ical: ViewCalendarData) {
                 .provideQrDialogComponent()
                 .inject(this)
         this.context = context
-        this.ical = ical
-        currentEvent = ical.events[0]
         binding = DialogBoxQrBinding.inflate(LayoutInflater.from(context))
-        binding.qrDialogEventTitleTextview.text = currentEvent.title
-        binding.qrDialogEventStartDateTextview.text = setLocaleDateFormat(currentEvent.startDate)
-        binding.qrDialogEventStartTimeTextview.text = currentEvent.startTime
-        binding.qrDialogEventLocationTextview.text = currentEvent.location
-        binding.qrDialogQrImageview.setImageBitmap(currentEvent.image)
+        binding.qrDialogEventTitleTextview.text = event.title
+        binding.qrDialogEventStartDateTextview.text = setLocaleDateFormat(event.startDate)
+        binding.qrDialogEventStartTimeTextview.text = event.startTime
+        binding.qrDialogEventLocationTextview.text = event.location
+//        binding.qrDialogQrImageview.setImageBitmap(event.image)
         dialog = Dialog(context)
         dialog.setContentView(binding.root)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -54,12 +50,12 @@ class QRDialog(context: Context, ical: ViewCalendarData) {
     @Inject
     lateinit var startActivity: StartActivity
     fun setupClicks() {
-        binding.closeDialogBtn.setOnClickListener { view: View? -> closeDialog() }
-        binding.shareQrBtn.setOnClickListener { view: View? -> shareQR() }
-        binding.importToCalendarBtn.setOnClickListener { view: View? -> importToCalendar() }
-        binding.saveBtn.setOnClickListener { view: View? -> save() }
-        binding.editBtn.setOnClickListener { view: View? ->
-            startActivity!!.startEditQr(context, ical)
+        binding.closeDialogBtn.setOnClickListener { closeDialog() }
+        binding.shareQrBtn.setOnClickListener {  shareQR() }
+        binding.importToCalendarBtn.setOnClickListener {  importToCalendar() }
+        binding.saveBtn.setOnClickListener {  save() }
+        binding.editBtn.setOnClickListener {
+            startActivity.startEditQr(context, event)
             closeDialog()
         }
     }
@@ -69,7 +65,7 @@ class QRDialog(context: Context, ical: ViewCalendarData) {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = "application/*"
-        intent.putExtra(Intent.EXTRA_TITLE, currentEvent.title + ".ics")
+        intent.putExtra(Intent.EXTRA_TITLE, event.title + ".ics")
         if (context is BaseActivity) {
             context.startActivityForResult(intent, 1)
         }
@@ -78,7 +74,7 @@ class QRDialog(context: Context, ical: ViewCalendarData) {
     fun shareQR() {
         val shareIntent = Intent()
         shareIntent.action = Intent.ACTION_SEND
-        shareIntent.putExtra(Intent.EXTRA_STREAM, fileManager!!.getFileUri("image_" + ical.fileName))
+        shareIntent.putExtra(Intent.EXTRA_STREAM, fileManager.getFileUri("image_" + event.id))
         shareIntent.type = "image/*"
         context.startActivity(Intent.createChooser(shareIntent, "Share images to.."))
     }
@@ -86,11 +82,11 @@ class QRDialog(context: Context, ical: ViewCalendarData) {
     fun importToCalendar() {
         val toCalendar = Intent(Intent.ACTION_INSERT)
         toCalendar.data = CalendarContract.Events.CONTENT_URI
-        toCalendar.putExtra(CalendarContract.Events.TITLE, currentEvent.title)
-        toCalendar.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, currentEvent.startInstantEpoch)
-        toCalendar.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, currentEvent.endEpochMilli)
-        toCalendar.putExtra(CalendarContract.Events.EVENT_LOCATION, currentEvent.location)
-        toCalendar.putExtra(CalendarContract.Events.DESCRIPTION, currentEvent.description)
+        toCalendar.putExtra(CalendarContract.Events.TITLE, event.title)
+        toCalendar.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, event.startEpochMilli())
+        toCalendar.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, event.endEpochMilli())
+        toCalendar.putExtra(CalendarContract.Events.EVENT_LOCATION, event.location)
+        toCalendar.putExtra(CalendarContract.Events.DESCRIPTION, event.description)
         context.startActivity(toCalendar)
     }
 
