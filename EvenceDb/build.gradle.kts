@@ -1,6 +1,7 @@
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    kotlin("multiplatform")
+    id("com.android.library")
     id("com.squareup.sqldelight")
 }
 
@@ -11,15 +12,17 @@ sqldelight {
 }
 
 repositories {
+    // Needed for kotlinx-datetime
     maven(url = "https://kotlin.bintray.com/kotlinx/")
 }
 
 kotlin {
+    android()
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib")
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
             }
         }
 
@@ -29,10 +32,8 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
             }
         }
-    }
 
-    jvm()
-    sourceSets {
+        jvm()
         val jvmTest by getting {
             dependencies {
                 implementation("org.junit.jupiter:junit-jupiter:5.6.0")
@@ -41,6 +42,21 @@ kotlin {
                 implementation("com.squareup.sqldelight:sqlite-driver:${Project.sqlDelightVersion}")
             }
         }
+
+        val androidMain by getting {
+            dependencies {
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
+            }
+        }
+    }
+}
+
+android {
+    compileSdkVersion( Evence.compileSdkVersion )
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    defaultConfig {
+        minSdkVersion( Evence.minSdkVersion )
+        targetSdkVersion( Evence.targetSdkVersion )
     }
 }
 

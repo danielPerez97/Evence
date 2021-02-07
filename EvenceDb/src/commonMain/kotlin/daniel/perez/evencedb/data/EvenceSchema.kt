@@ -11,13 +11,13 @@ fun createQueryWrapper(driver: SqlDriver): EvenceDatabase
     return EvenceDatabase(
             driver = driver,
             EventAdapter = Event.Adapter(
-                    Schema.LocalDateTimeAdapter,
-                    Schema.LocalDateTimeAdapter
+                    EvenceSchema.LocalDateTimeAdapter,
+                    EvenceSchema.LocalDateTimeAdapter
             )
     )
 }
 
-object Schema: SqlDriver.Schema by EvenceDatabase.Schema
+object EvenceSchema: SqlDriver.Schema by EvenceDatabase.Schema
 {
     override fun create(driver: SqlDriver) {
         // Create the database
