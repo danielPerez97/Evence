@@ -6,11 +6,15 @@ CREATE TABLE Event (
     description TEXT NOT NULL,
     location TEXT NOT NULL,
     start_time TEXT AS LocalDateTime NOT NULL,
-    end_time TEXT AS LocalDateTime NOT NULL
+    end_time TEXT AS LocalDateTime NOT NULL,
+    recurrence_rule TEXT
 );
 
 insertEvent:
 INSERT INTO Event(title, description, location, start_time, end_time) VALUES(?, ?, ?, ?, ?);
+
+insertEventWithRecurrence:
+INSERT INTO Event(title, description, location, start_time, end_time, recurrence_rule) VALUES(?, ?, ?, ?, ?, ?);
 
 selectAll:
 SELECT * FROM Event;
