@@ -7,9 +7,12 @@ import android.os.Build
 import android.view.View
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 fun toZonedDateTime(month: Int, dayOfMonth: Int, year: Int, hour: Int, minute: Int): ZonedDateTime
@@ -20,6 +23,16 @@ fun toZonedDateTime(month: Int, dayOfMonth: Int, year: Int, hour: Int, minute: I
             .withMonth( month )
             .withDayOfMonth( dayOfMonth )
             .withYear( year )
+}
+
+fun ZonedDateTime.dateString(): String
+{
+    return this.format(DateTimeFormatter.ofPattern("MM-dd-yyyy"))
+}
+
+fun ZonedDateTime.timeString(): String
+{
+    return this.format(DateTimeFormatter.ofPattern("hh:mm a"))
 }
 
 //auto set date format according to devices locale
@@ -78,4 +91,9 @@ fun Context.toastShort(message: String)
 fun Context.snackbarShort(view: View, message: String) {
     Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
             .show()
+}
+
+operator fun CompositeDisposable.plusAssign(disposable: Disposable)
+{
+    this.add(disposable)
 }

@@ -33,22 +33,22 @@ class FileSelectActivity : BaseActivity() {
         adapter = CardsAdapter(this)
         binding!!.fileSelector.adapter = adapter
 
-        disposables.add(adapter.clicks().subscribe { (fileName) ->
-            fileUri = fileManager.getFileUri(fileName)
-            if (fileUri != null) {
-                // Grant temporary read permission
-                resultIntent!!.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-
-                // Pur the Uri and MIME type in the result Intent
-                resultIntent!!.setDataAndType(fileUri, contentResolver.getType(fileUri!!))
-
-                // Set the result
-                setResult(RESULT_OK, resultIntent)
-            } else {
-                resultIntent!!.setDataAndType(null, "")
-                setResult(RESULT_CANCELED, resultIntent)
-            }
-        })
+//        disposables.add(adapter.clicks().subscribe { (fileName) ->
+//            fileUri = fileManager.getFileUri(fileName)
+//            if (fileUri != null) {
+//                // Grant temporary read permission
+//                resultIntent!!.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//
+//                // Pur the Uri and MIME type in the result Intent
+//                resultIntent!!.setDataAndType(fileUri, contentResolver.getType(fileUri!!))
+//
+//                // Set the result
+//                setResult(RESULT_OK, resultIntent)
+//            } else {
+//                resultIntent!!.setDataAndType(null, "")
+//                setResult(RESULT_CANCELED, resultIntent)
+//            }
+//        })
     }
 
     override fun onDestroy() {

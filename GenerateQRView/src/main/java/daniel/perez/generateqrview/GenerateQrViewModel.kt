@@ -1,46 +1,40 @@
-package daniel.perez.generateqrview;
+package daniel.perez.generateqrview
 
-import android.content.Context;
+import androidx.lifecycle.ViewModel
+import daniel.perez.core.db.EventOps
+import daniel.perez.core.service.FileManager
+import daniel.perez.core.service.qr.QrAttempt
+import daniel.perez.core.service.qr.QrBitmapGenerator
+import daniel.perez.ical.EventSpec
+import daniel.perez.ical.ICalSpec
+import io.reactivex.rxjava3.core.Flowable
+import javax.inject.Inject
 
-import androidx.lifecycle.ViewModel;
-
-import javax.inject.Inject;
-
-import daniel.perez.ical.EventSpec;
-import daniel.perez.ical.ICalSpec;
-import daniel.perez.core.service.FileManager;
-import daniel.perez.core.service.qr.QrAttempt;
-import daniel.perez.core.service.qr.QrBitmapGenerator;
-import io.reactivex.rxjava3.core.Flowable;
-
-public class GenerateQrViewModel extends ViewModel
+class GenerateQrViewModel @Inject internal constructor(
+        private val generator: QrBitmapGenerator,
+        private val eventOps: EventOps,
+        private val fileManager: FileManager) : ViewModel()
 {
-    private QrBitmapGenerator generator;
-    private Context context;
-    private FileManager fileManager;
-
-    @Inject
-    GenerateQrViewModel(QrBitmapGenerator generator, Context context, FileManager fileManager)
-    {
-        this.generator = generator;
-        this.context = context;
-        this.fileManager = fileManager;
+    fun generateQrBitmap(event: EventSpec?) {
+        generator.generate(event!!)
     }
 
-
-    public void generateQrBitmap(EventSpec event)
-    {
-        generator.generate(event);
+    fun qrImages(): Flowable<QrAttempt> {
+        return generator.generations()
     }
 
-    public Flowable<QrAttempt> qrImages()
+    fun saveEvent(event: EventSpec)
     {
-
-        return generator.generations();
+        eventOps.insertEvent(
+                event.title,
+                event.description,
+                event.location,
+                event.start.toLocalDateTime(),
+                event.end.toLocalDateTime()
+        )
     }
 
-    public void saveFile(ICalSpec ical)
-    {
-        fileManager.saveICalFile(ical);
+    fun saveFile(ical: ICalSpec?) {
+        fileManager.saveICalFile(ical!!)
     }
 }

@@ -11,6 +11,7 @@ import daniel.perez.qrdialogview.di.QRDialogComponent
 import daniel.perez.qrdialogview.di.QRDialogComponentProvider
 import projects.csce.evence.di.appscope.AppComponent
 import projects.csce.evence.di.appscope.DaggerAppComponent
+import projects.csce.evence.di.appscope.DatabaseModule
 import projects.csce.evence.di.appscope.LoginModule
 import projects.csce.evence.service.model.SharedPref
 import timber.log.Timber
@@ -33,6 +34,7 @@ class BaseApplication : Application(), QrReaderComponentProvider, GenerateQRComp
         }
         injector = DaggerAppComponent.builder()
                 .loginModule(LoginModule(applicationContext))
+                .databaseModule( DatabaseModule(applicationContext) )
                 .build()
         injector.inject(this)
         SharedPref(applicationContext).setSavedPreferences()
