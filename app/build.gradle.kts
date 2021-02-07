@@ -59,6 +59,9 @@ dependencies {
     implementation( Libs.dagger )
     kapt( Libs.daggerCompiler )
 
+    // Kotlin Date-Time
+    api("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
+
     // Timber
     implementation( Libs.timber )
 

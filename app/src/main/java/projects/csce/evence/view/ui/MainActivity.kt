@@ -14,6 +14,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import daniel.perez.core.plusAssign
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.DialogStarter
 import daniel.perez.core.StartActivity
@@ -21,6 +22,7 @@ import daniel.perez.core.adapter.CardsAdapter
 import daniel.perez.core.di.ViewModelFactory
 import daniel.perez.core.model.UiPreference
 import daniel.perez.core.model.ViewCalendarData
+import daniel.perez.core.model.ViewEvent
 import daniel.perez.core.service.FileManager
 import daniel.perez.core.service.qr.QrBitmapGenerator
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -72,19 +74,27 @@ class MainActivity : BaseActivity() {
         setupSubscriptions()
     }
 
-    private fun setupSubscriptions() {
-        disposables.add(viewModel.liveFiles()
-                .doOnSubscribe { event: Disposable? -> fileManager.notifyIcals() }
-                .subscribe { files: List<ViewCalendarData> ->
-                    Timber.i("Received Files")
-                    eventsAdapter.setData(files)
-                })
-        disposables.add(eventsAdapter.clicks()
+    private fun setupSubscriptions()
+    {
+        disposables += viewModel.liveFiles()
+                .subscribe { events: List<ViewEvent> ->
+                    Timber.i("Received Events")
+                    eventsAdapter.setData(events)
+                }
+
+
+        disposables += eventsAdapter.clicks()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { viewCalendarData: ViewCalendarData? -> dialogStarter.startQrDialog(this, viewCalendarData!!) })
-        disposables.add(sharedPref.getUiPref()
+                .subscribe {
+                    dialogStarter.startQrDialog(this, it)
+                }
+
+        disposables += sharedPref.getUiPref()
                 .doOnSubscribe { pref: Disposable? -> sharedPref.notifyUiPref() }
-                .subscribe { uiPref: UiPreference? -> eventsAdapter.updateUiFormat(uiPref) })
+                .subscribe {
+                    eventsAdapter.updateUiFormat(it)
+                }
+
         Timber.i("Set up subscriptions")
     }
 
@@ -114,11 +124,13 @@ class MainActivity : BaseActivity() {
     private fun handleRecyclerView() {
         binding.eventsRecyclerView.adapter = eventsAdapter
         binding.eventsRecyclerView.layoutManager = LinearLayoutManager(baseContext)
-        disposables.add(viewModel.liveFiles().subscribe { events: List<ViewCalendarData> ->
-            Timber.i(Integer.toString(events.size))
-            eventsAdapter.onChanged(events)
-            if (events.isEmpty()) binding.emptyTextview.visibility = View.VISIBLE else binding.emptyTextview.visibility = View.GONE
-        })
+
+        disposables += viewModel.liveFiles()
+                .subscribe { events ->
+                    Timber.i( "handleRecyclerView() Size: ${Integer.toString(events.size)}" )
+                    eventsAdapter.onChanged( events )
+                    if (events.isEmpty()) binding.emptyTextview.visibility = View.VISIBLE else binding.emptyTextview.visibility = View.GONE
+        }
     }
 
     fun startQrReaderActivity() {

@@ -46,6 +46,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
+                api("com.squareup.sqldelight:rxjava3-extensions:${Project.sqlDelightVersion}")
             }
         }
     }
