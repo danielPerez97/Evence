@@ -7,13 +7,13 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import daniel.perez.core.*
-import daniel.perez.core.model.*
-import daniel.perez.core.service.FileManager
+import daniel.perez.core.model.DateSetEvent
+import daniel.perez.core.model.Half
+import daniel.perez.core.model.TimeSetEvent
+import daniel.perez.core.model.ViewEvent
 import daniel.perez.core.service.qr.QrAttempt
-import daniel.perez.core.service.qr.QrBitmapGenerator
 import daniel.perez.generateqrview.databinding.ActivityGenerateQrBinding
 import daniel.perez.generateqrview.di.GenerateQRComponentProvider
-import daniel.perez.ical.EventSpec
 import daniel.perez.ical.ICalSpec
 import daniel.perez.ical.Parser.parse
 import io.reactivex.rxjava3.functions.Consumer
@@ -120,17 +120,22 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
 
     private fun generateQR()
     {
+        if (!areValidFields()) {
+            return
+        }
         val viewEvent: ViewEvent = extractEventFromUi()
+        viewModel.saveEvent(viewEvent)
 
         dialogStarter.startQrDialog(this, viewEvent)
     }
 
     private fun extractEventFromUi(): ViewEvent
     {
-        if (!areValidFields()) {
-            throw Exception("UI did not provide all data")
-        }
 
+        Timber.i("Start_Date: $startDate")
+        Timber.i("Start_Time: $startTime")
+        Timber.i("End_Date: $endDate")
+        Timber.i("End_Time: $endTime")
         val viewEvent: ViewEvent
         with(binding)
         {
@@ -138,10 +143,10 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
                     1L,
                     titleEditText.text.toString(),
                     descriptionEditText.text.toString(),
-                    startDate.toString(),
-                    startTime.toString(),
-                    endDate.toString(),
-                    endTime.toString(),
+                    startDate.string(),
+                    startTime.string(),
+                    endDate.string(),
+                    endTime.string(),
                     locationEditText.text.toString()
             )
         }

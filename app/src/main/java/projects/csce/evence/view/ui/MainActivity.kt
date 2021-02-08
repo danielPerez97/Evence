@@ -77,6 +77,7 @@ class MainActivity : BaseActivity() {
     private fun setupSubscriptions()
     {
         disposables += viewModel.liveFiles()
+                .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe { events: List<ViewEvent> ->
                     Timber.i("Received Events")
                     eventsAdapter.setData(events)
@@ -126,8 +127,9 @@ class MainActivity : BaseActivity() {
         binding.eventsRecyclerView.layoutManager = LinearLayoutManager(baseContext)
 
         disposables += viewModel.liveFiles()
+                .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe { events ->
-                    Timber.i( "handleRecyclerView() Size: ${Integer.toString(events.size)}" )
+                    Timber.i( "handleRecyclerView() Size: ${events.size}" )
                     eventsAdapter.onChanged( events )
                     if (events.isEmpty()) binding.emptyTextview.visibility = View.VISIBLE else binding.emptyTextview.visibility = View.GONE
         }
