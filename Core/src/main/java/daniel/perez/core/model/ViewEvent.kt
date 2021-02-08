@@ -7,6 +7,10 @@ import daniel.perez.core.getYear
 import daniel.perez.core.toZonedDateTime
 import daniel.perez.ical.EventSpec
 import daniel.perez.ical.ICalSpec
+import timber.log.Timber
+import java.time.LocalDate
+import java.time.Month
+import java.util.*
 
 data class ViewEvent(
         val id: Long,
@@ -39,9 +43,63 @@ data class ViewEvent(
         return ical.text()
     }
 
+    fun startYear(): Int
+    {
+        return getYear(startDate).toInt()
+    }
+
+    fun startMonth(): Int
+    {
+        return month(startDate)
+    }
+
+    fun startDayOfMonth(): Int
+    {
+        return getDay(startDate).toInt()
+    }
+
+    fun startHour(): Int
+    {
+        val time = Time(startDate, startTime)
+        return time.hour
+    }
+
+    fun startMinute(): Int
+    {
+        val time = Time(startDate, startTime)
+        return time.minute
+    }
+
     fun startEpochMilli(): Long
     {
         return 0
+    }
+
+    fun endYear(): Int
+    {
+        return getYear(endDate).toInt()
+    }
+
+    fun endMonth(): Int
+    {
+        return month(endDate)
+    }
+
+    fun endDayOfMonth(): Int
+    {
+        return getDay(endDate).toInt()
+    }
+
+    fun endHour(): Int
+    {
+        val time = Time(endDate, endTime)
+        return time.hour
+    }
+
+    fun endMinute(): Int
+    {
+        val time = Time(endDate, endTime)
+        return time.minute
     }
 
     fun endEpochMilli(): Long
@@ -49,9 +107,14 @@ data class ViewEvent(
         return 0
     }
 
+    private fun month(date: String): Int
+    {
+        return Month.valueOf( getLocaleMonth( date ).toUpperCase(Locale.ROOT) ).value
+    }
+
     private class Time(date: String, time: String)
     {
-        val month: Int = getLocaleMonth(date).toInt()
+        val month: Int = Month.valueOf( getLocaleMonth(date).toUpperCase(Locale.ROOT) ).value
         val dayOfMonth: Int = getDay(date).toInt()
         val year: Int = getYear(date).toInt()
         val hour: Int = time.split(":")[0].toInt()
