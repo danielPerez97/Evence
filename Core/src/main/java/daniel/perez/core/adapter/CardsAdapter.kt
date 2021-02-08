@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import daniel.perez.core.*
 import daniel.perez.core.databinding.EventsListEntryLayoutBinding
+import daniel.perez.core.db.timeString
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -66,11 +67,11 @@ class CardsAdapter(private val context: Context) : RecyclerView.Adapter<CardsAda
 
         private fun bind(event: ViewEvent) {
             binding.listEntryTitleTextview.text = event.title
-            binding.listEntryDateTextview.text = setLocaleDateFormat(event.startDate)
-            binding.listEntryPreviewDay.text = getDay(event.startDate)
-            binding.listEntryPreviewMonth.text = getLocaleMonth(event.startDate)
-            binding.listEntryPreviewYear.text = getYear(event.startDate)
-            binding.listEntryTimeTextview.text = event.startTime
+            binding.listEntryDateTextview.text = event.startDatePretty()
+            binding.listEntryPreviewDay.text = event.startDateTime.dayOfMonth.toString()
+            binding.listEntryPreviewMonth.text = event.startDateTime.monthValue.toString()
+            binding.listEntryPreviewYear.text = event.startDateTime.year.toString()
+            binding.listEntryTimeTextview.text = event.startDateTime.timeString()
             val isDark = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             if (isDark == Configuration.UI_MODE_NIGHT_YES) binding.qrImageView.setColorFilter(ContextCompat.getColor(context, R.color.qr_dark_tint), PorterDuff.Mode.MULTIPLY) else if (isDark == Configuration.UI_MODE_NIGHT_NO) binding.qrImageView.clearColorFilter()
 //            binding.qrImageView.setImageBitmap(event.image)

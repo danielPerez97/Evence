@@ -46,7 +46,7 @@ class FileManager(val context: Context, val qrBitmapGenerator: QrBitmapGenerator
 
 	private fun saveICalImage(ical: ICalSpec)
 	{
-		val bitmap: Bitmap = qrBitmapGenerator.forceGenerate(ical.text())
+		val bitmap: Bitmap = qrBitmapGenerator.generate(ical.text())
 
 		// Create the image file
 		val newFile = File("${icalDir}/image_${ical.fileName}.png")

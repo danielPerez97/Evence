@@ -10,6 +10,8 @@ import daniel.perez.core.service.FileManager
 import daniel.perez.core.service.qr.QrBitmapGenerator
 import daniel.perez.ical.EventSpec
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toJavaLocalDateTime
 import java.time.ZoneOffset
 import java.util.stream.Collectors
 import javax.inject.Inject
@@ -32,10 +34,8 @@ class MainViewModel @Inject internal constructor(
                     it.id,
                     it.title,
                     it.description,
-                    it.startTime.dateString(),
-                    it.startTime.timeString(),
-                    it.endTime.dateString(),
-                    it.endTime.timeString(),
+                    it.startTime,
+                    it.endTime,
                     it.location
             )
         }

@@ -17,13 +17,6 @@ class GenerateQrViewModel @Inject internal constructor(
         private val eventOps: EventOps,
         private val fileManager: FileManager) : ViewModel()
 {
-    fun generateQrBitmap(event: EventSpec?) {
-        generator.generate(event!!)
-    }
-
-    fun qrImages(): Flowable<QrAttempt> {
-        return generator.generations()
-    }
 
     fun saveEvent(event: ViewEvent)
     {
