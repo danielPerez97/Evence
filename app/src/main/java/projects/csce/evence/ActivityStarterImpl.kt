@@ -2,8 +2,7 @@ package projects.csce.evence
 
 import android.content.Context
 import android.content.Intent
-import daniel.perez.core.StartActivity
-import daniel.perez.core.model.ViewCalendarData
+import daniel.perez.core.ActivityStarter
 import daniel.perez.core.model.ViewEvent
 import daniel.perez.core.service.FileManager
 import daniel.perez.generateqrview.GenerateQR
@@ -14,7 +13,7 @@ import projects.csce.evence.view.ui.SettingsActivity
 import projects.csce.evence.view.ui.ShareAppActivity
 import javax.inject.Inject
 
-class StartActivityImpl @Inject constructor(private val fileManager: FileManager): StartActivity
+class ActivityStarterImpl @Inject constructor(private val fileManager: FileManager): ActivityStarter
 {
     override fun startGenerateQr(activity: Context)
     {

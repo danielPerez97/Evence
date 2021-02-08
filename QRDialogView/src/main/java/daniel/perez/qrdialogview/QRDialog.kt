@@ -7,14 +7,12 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.provider.CalendarContract
 import android.view.LayoutInflater
-import android.view.View
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.DialogClosable
-import daniel.perez.core.StartActivity
-import daniel.perez.core.model.ViewCalendarData
+import daniel.perez.core.ActivityStarter
+import daniel.perez.core.db.dateString
 import daniel.perez.core.model.ViewEvent
 import daniel.perez.core.service.FileManager
-import daniel.perez.core.setLocaleDateFormat
 import daniel.perez.qrdialogview.databinding.DialogBoxQrBinding
 import daniel.perez.qrdialogview.di.QRDialogComponentProvider
 import javax.inject.Inject
@@ -23,6 +21,8 @@ class QRDialog(context: Context, var event: ViewEvent) {
     private val context: Context
     private val dialog: Dialog
     private val binding: DialogBoxQrBinding
+    @Inject lateinit var fileManager: FileManager
+    @Inject lateinit var activityStarter: ActivityStarter
 
     init {
         (context.applicationContext as QRDialogComponentProvider)
@@ -31,8 +31,8 @@ class QRDialog(context: Context, var event: ViewEvent) {
         this.context = context
         binding = DialogBoxQrBinding.inflate(LayoutInflater.from(context))
         binding.qrDialogEventTitleTextview.text = event.title
-        binding.qrDialogEventStartDateTextview.text = setLocaleDateFormat(event.startDate)
-        binding.qrDialogEventStartTimeTextview.text = event.startTime
+        binding.qrDialogEventStartDateTextview.text = event.startDatePretty()
+        binding.qrDialogEventStartTimeTextview.text = event.startDateTime.toLocalTime().toString()
         binding.qrDialogEventLocationTextview.text = event.location
 //        binding.qrDialogQrImageview.setImageBitmap(event.image)
         dialog = Dialog(context)
@@ -44,23 +44,18 @@ class QRDialog(context: Context, var event: ViewEvent) {
         setupClicks()
     }
 
-    @Inject
-    lateinit var fileManager: FileManager
-
-    @Inject
-    lateinit var startActivity: StartActivity
-    fun setupClicks() {
+    private fun setupClicks() {
         binding.closeDialogBtn.setOnClickListener { closeDialog() }
         binding.shareQrBtn.setOnClickListener {  shareQR() }
         binding.importToCalendarBtn.setOnClickListener {  importToCalendar() }
         binding.saveBtn.setOnClickListener {  save() }
         binding.editBtn.setOnClickListener {
-            startActivity.startEditQr(context, event)
+            activityStarter.startEditQr(context, event)
             closeDialog()
         }
     }
 
-    fun save() {
+    private fun save() {
         // Bug the user about storing it
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
@@ -71,7 +66,7 @@ class QRDialog(context: Context, var event: ViewEvent) {
         }
     }
 
-    fun shareQR() {
+    private fun shareQR() {
         val shareIntent = Intent()
         shareIntent.action = Intent.ACTION_SEND
         shareIntent.putExtra(Intent.EXTRA_STREAM, fileManager.getFileUri("image_" + event.id))
@@ -79,7 +74,7 @@ class QRDialog(context: Context, var event: ViewEvent) {
         context.startActivity(Intent.createChooser(shareIntent, "Share images to.."))
     }
 
-    fun importToCalendar() {
+    private fun importToCalendar() {
         val toCalendar = Intent(Intent.ACTION_INSERT)
         toCalendar.data = CalendarContract.Events.CONTENT_URI
         toCalendar.putExtra(CalendarContract.Events.TITLE, event.title)
@@ -90,7 +85,7 @@ class QRDialog(context: Context, var event: ViewEvent) {
         context.startActivity(toCalendar)
     }
 
-    fun closeDialog() {
+    private fun closeDialog() {
         if (context is DialogClosable) {
             dialog.dismiss() //fixes window leak
             (context as DialogClosable).close()

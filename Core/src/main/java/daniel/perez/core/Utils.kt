@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
+import timber.log.Timber
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
@@ -36,7 +37,7 @@ fun ZonedDateTime.timeString(): String
 }
 
 //auto set date format according to devices locale
-fun setLocaleDateFormat(dateString: String): String {
+fun formatLocaleDate(dateString: String): String {
     val initialDateFormat = SimpleDateFormat("MM-dd-yyyy", Locale.US).parse(dateString)
     val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         Resources.getSystem().configuration.locales.get(0);
@@ -45,6 +46,8 @@ fun setLocaleDateFormat(dateString: String): String {
     }
 
     val newDateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale)
+    Timber.i("Before: $dateString")
+    Timber.i("After ${newDateFormat.format(initialDateFormat)}")
     return newDateFormat.format(initialDateFormat)
 }
 
@@ -59,13 +62,15 @@ fun getLocaleMonth(dateString: String) : String {
     return dateFormat.format(initialDateFormat)
 }
 
-fun getDay(dateString: String) : String{
+fun getDay(dateString: String) : String
+{
     val initialDateFormat = SimpleDateFormat("MM-dd-yyyy", Locale.US).parse(dateString)
     val dateFormat = SimpleDateFormat("dd", Locale.getDefault())
     return dateFormat.format(initialDateFormat)
 }
 
-fun getYear(dateString: String) : String{
+fun getYear(dateString: String) : String
+{
     val initialDateFormat = SimpleDateFormat("MM-dd-yyyy", Locale.US).parse(dateString)
     val dateFormat = SimpleDateFormat("yyyy", Locale.getDefault())
     return dateFormat.format(initialDateFormat)

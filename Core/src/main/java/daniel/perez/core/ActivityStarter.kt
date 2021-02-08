@@ -4,7 +4,7 @@ import android.content.Context
 import daniel.perez.core.model.ViewCalendarData
 import daniel.perez.core.model.ViewEvent
 
-interface StartActivity
+interface ActivityStarter
 {
     fun startGenerateQr(activity: Context)
 
