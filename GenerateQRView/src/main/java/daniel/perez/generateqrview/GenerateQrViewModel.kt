@@ -2,12 +2,14 @@ package daniel.perez.generateqrview
 
 import androidx.lifecycle.ViewModel
 import daniel.perez.core.db.EventOps
+import daniel.perez.core.model.ViewEvent
 import daniel.perez.core.service.FileManager
 import daniel.perez.core.service.qr.QrAttempt
 import daniel.perez.core.service.qr.QrBitmapGenerator
 import daniel.perez.ical.EventSpec
 import daniel.perez.ical.ICalSpec
 import io.reactivex.rxjava3.core.Flowable
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class GenerateQrViewModel @Inject internal constructor(
@@ -23,14 +25,14 @@ class GenerateQrViewModel @Inject internal constructor(
         return generator.generations()
     }
 
-    fun saveEvent(event: EventSpec)
+    fun saveEvent(event: ViewEvent)
     {
         eventOps.insertEvent(
                 event.title,
                 event.description,
                 event.location,
-                event.start.toLocalDateTime(),
-                event.end.toLocalDateTime()
+                LocalDateTime.of(event.startYear(), event.startMonth(), event.startDayOfMonth(), event.startHour(), event.startMinute()),
+                LocalDateTime.of(event.endYear(), event.endMonth(), event.endDayOfMonth(), event.endHour(), event.endMinute())
         )
     }
 
