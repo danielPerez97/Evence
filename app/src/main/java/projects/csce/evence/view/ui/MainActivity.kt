@@ -17,11 +17,9 @@ import com.google.android.gms.tasks.Task
 import daniel.perez.core.plusAssign
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.DialogStarter
-import daniel.perez.core.StartActivity
+import daniel.perez.core.ActivityStarter
 import daniel.perez.core.adapter.CardsAdapter
 import daniel.perez.core.di.ViewModelFactory
-import daniel.perez.core.model.UiPreference
-import daniel.perez.core.model.ViewCalendarData
 import daniel.perez.core.model.ViewEvent
 import daniel.perez.core.service.FileManager
 import daniel.perez.core.service.qr.QrBitmapGenerator
@@ -47,7 +45,7 @@ class MainActivity : BaseActivity() {
     @Inject lateinit var factory: ViewModelFactory
     @Inject lateinit var generator: QrBitmapGenerator
     @Inject lateinit var dialogStarter: DialogStarter
-    @Inject lateinit var startActivity: StartActivity
+    @Inject lateinit var activityStarter: ActivityStarter
     @Inject lateinit var sharedPref: SharedPref
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -136,30 +134,30 @@ class MainActivity : BaseActivity() {
     }
 
     fun startQrReaderActivity() {
-        startActivity.startQrReader(this)
+        activityStarter.startQrReader(this)
     }
 
     fun startQrActivity() {
-        startActivity.startGenerateQr(this)
+        activityStarter.startGenerateQr(this)
     }
 
     fun startSecondActivity() {
-        startActivity.startSecondActivity(this)
+        activityStarter.startSecondActivity(this)
     }
 
     fun startSettingsActivity(view: View?) {
         binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer)
-        startActivity.startSettingsActivity(this)
+        activityStarter.startSettingsActivity(this)
     }
 
     fun startShareAppActivity(view: View?) {
         binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer)
-        startActivity.startShareAppActivity(this)
+        activityStarter.startShareAppActivity(this)
     }
 
     fun startAboutActivity(view: View?) {
         binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer)
-        startActivity.startAboutActivity(this)
+        activityStarter.startAboutActivity(this)
     }
 
     fun signIn() {
