@@ -24,10 +24,11 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import java.time.LocalDateTime
 import java.util.*
 import javax.inject.Inject
 
-class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
+class GenerateQR : BaseActivity(), DialogClosable
 {
     private lateinit var viewModel: GenerateQrViewModel
     private lateinit var binding: ActivityGenerateQrBinding
@@ -49,8 +50,7 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
         binding = ActivityGenerateQrBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(GenerateQrViewModel::class.java)
-        viewModel.qrImages()
-                .subscribe(this)
+        
         if (intent != null && intent.getStringExtra("FILE_PATH") != null)
         {
             val file = File(intent.getStringExtra("FILE_PATH"))
@@ -63,7 +63,7 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
         binding.startTimeEditText.setOnClickListener { startTimeDialog() }
         binding.endDateEditText.setOnClickListener { endDateDialog() }
         binding.endTimeEditText.setOnClickListener { endTimeDialog() }
-        binding.addBtn.setOnClickListener { generateQR() }
+        binding.addBtn.setOnClickListener { saveEvent() }
     }
 
     //fill in editText and other fields when event is being edited
@@ -104,21 +104,8 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
 
         return true
     }
-    override fun accept(attempt: QrAttempt?)
-    {
-        if (attempt is QrAttempt.Success)
-        {
-            val bitmap = attempt.bitmap
-            //binding.QRImage.setImageBitmap(bitmap);
-        } else if (attempt is QrAttempt.Failure)
-        {
-            val e = attempt.e
-            e.printStackTrace()
-            applicationContext.toastShort(Objects.requireNonNull(e.localizedMessage))
-        }
-    }
 
-    private fun generateQR()
+    private fun saveEvent()
     {
         if (!areValidFields()) {
             return
@@ -131,10 +118,9 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
 
     private fun extractEventFromUi(): ViewEvent
     {
-
-        Timber.i("Start_Date: $startDate")
+        Timber.i("Start_Date: ${startDate.string()}")
         Timber.i("Start_Time: $startTime")
-        Timber.i("End_Date: $endDate")
+        Timber.i("End_Date: ${endDate.string()}")
         Timber.i("End_Time: $endTime")
         val viewEvent: ViewEvent
         with(binding)
@@ -143,10 +129,8 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
                     1L,
                     titleEditText.text.toString(),
                     descriptionEditText.text.toString(),
-                    startDate.string(),
-                    startTime.string(),
-                    endDate.string(),
-                    endTime.string(),
+                    LocalDateTime.parse("${startDate.string()}T${startTime.string()}" ),
+                    LocalDateTime.parse("${endDate.string()}T${endTime.string()}"),
                     locationEditText.text.toString()
             )
         }

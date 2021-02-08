@@ -1,14 +1,9 @@
 package daniel.perez.core.model
 
-import android.graphics.Bitmap
-import daniel.perez.core.getDay
-import daniel.perez.core.getLocaleMonth
-import daniel.perez.core.getYear
 import daniel.perez.core.toZonedDateTime
 import daniel.perez.ical.EventSpec
 import daniel.perez.ical.ICalSpec
-import timber.log.Timber
-import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.Month
 import java.util.*
 
@@ -16,23 +11,19 @@ data class ViewEvent(
         val id: Long,
         val title: String,
         val description: String,
-        val startDate: String,
-        val startTime: String,
-        val endDate: String,
-        val endTime: String,
+        val startDateTime: LocalDateTime,
+        val endDateTime: LocalDateTime,
         val location: String
 )
 {
     fun iCalText(): String
     {
-        val start = Time(startDate, startTime)
-        val end = Time(endDate, endTime)
         val event = EventSpec.Builder(0)
                 .title(title)
                 .description(description)
                 .location(location)
-                .start(toZonedDateTime(start.month, start.dayOfMonth, start.year, start.hour, start.minute))
-                .end(toZonedDateTime(end.month, end.dayOfMonth, end.year, end.hour, end.minute))
+                .start(toZonedDateTime(startDateTime.monthValue, startDateTime.dayOfMonth, startDateTime.year, startDateTime.hour, startDateTime.minute))
+                .end(toZonedDateTime(endDateTime.monthValue, endDateTime.dayOfMonth, endDateTime.year, endDateTime.hour, endDateTime.minute))
                 .build()
 
         val ical = ICalSpec.Builder()
@@ -43,31 +34,39 @@ data class ViewEvent(
         return ical.text()
     }
 
+    fun startDatePretty(): String
+    {
+        return startDateTime.pretty()
+    }
+
+    fun endDatePretty(): String
+    {
+        return endDateTime.pretty()
+    }
+
     fun startYear(): Int
     {
-        return getYear(startDate).toInt()
+        return startDateTime.year
     }
 
     fun startMonth(): Int
     {
-        return month(startDate)
+        return startDateTime.monthValue
     }
 
     fun startDayOfMonth(): Int
     {
-        return getDay(startDate).toInt()
+        return startDateTime.dayOfMonth
     }
 
     fun startHour(): Int
     {
-        val time = Time(startDate, startTime)
-        return time.hour
+        return startDateTime.hour
     }
 
     fun startMinute(): Int
     {
-        val time = Time(startDate, startTime)
-        return time.minute
+        return startDateTime.minute
     }
 
     fun startEpochMilli(): Long
@@ -77,29 +76,27 @@ data class ViewEvent(
 
     fun endYear(): Int
     {
-        return getYear(endDate).toInt()
+        return endDateTime.year
     }
 
     fun endMonth(): Int
     {
-        return month(endDate)
+        return endDateTime.monthValue
     }
 
     fun endDayOfMonth(): Int
     {
-        return getDay(endDate).toInt()
+        return endDateTime.dayOfMonth
     }
 
     fun endHour(): Int
     {
-        val time = Time(endDate, endTime)
-        return time.hour
+        return endDateTime.hour
     }
 
     fun endMinute(): Int
     {
-        val time = Time(endDate, endTime)
-        return time.minute
+        return endDateTime.minute
     }
 
     fun endEpochMilli(): Long
@@ -107,17 +104,9 @@ data class ViewEvent(
         return 0
     }
 
-    private fun month(date: String): Int
+    fun LocalDateTime.pretty(): String
     {
-        return Month.valueOf( getLocaleMonth( date ).toUpperCase(Locale.ROOT) ).value
-    }
-
-    private class Time(date: String, time: String)
-    {
-        val month: Int = Month.valueOf( getLocaleMonth(date).toUpperCase(Locale.ROOT) ).value
-        val dayOfMonth: Int = getDay(date).toInt()
-        val year: Int = getYear(date).toInt()
-        val hour: Int = time.split(":")[0].toInt()
-        val minute: Int = time.substringAfter(":").split(" ")[0].toInt()
+        val month = this.month.toString()
+        return "${month.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT)} ${this.dayOfMonth}, ${this.year}"
     }
 }
