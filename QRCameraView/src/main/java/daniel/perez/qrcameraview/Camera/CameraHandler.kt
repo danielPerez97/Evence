@@ -15,6 +15,7 @@ import androidx.lifecycle.LifecycleOwner
 import daniel.perez.qrcameraview.Scanner.BaseAnalyzer
 import daniel.perez.qrcameraview.Scanner.QRScanner
 import daniel.perez.qrcameraview.Scanner.TextScanner
+import daniel.perez.qrcameraview.data.SCAN_TYPE
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import javax.inject.Inject
@@ -107,9 +108,4 @@ class CameraHandler @Inject constructor(private val context: Context,
         camera.cameraControl.enableTorch(!flashOn)
     }
 
-    enum class SCAN_TYPE {
-        BARCODE,
-        TEXT, //possible future use
-        FACE //possible future use
-    }
 }

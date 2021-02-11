@@ -12,20 +12,45 @@ import daniel.perez.ical.EventSpec
 import daniel.perez.ical.ICalSpec
 import daniel.perez.qrcameraview.Scanner.QRScanner
 import daniel.perez.qrcameraview.Scanner.TextScanner
+import daniel.perez.qrcameraview.data.SCAN_TYPE
+import daniel.perez.qrcameraview.data.ScannedData
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
 
 class QrReaderViewModel @Inject constructor(
         private val fileManager: FileManager,
         private val generator: QrBitmapGenerator,
-        private val QRScanner: QRScanner,
+        private val qrScanner: QRScanner,
         private val textScanner: TextScanner): ViewModel() {
 
     fun saveFile(ical: ICalSpec) = fileManager.saveICalFile(ical)
 
-    fun liveQRData(): Observable<MutableList<Barcode>> =  QRScanner.qrScannerResult()
-    fun liveTextData(): Observable<Text> = textScanner.textScannerResult()
-    fun liveQRBoundingBoxes() : Observable<List<Rect>> = QRScanner.qrBoundingBoxes()
+    fun liveQRData(): Observable<List<ScannedData>> {
+        return qrScanner.qrScannerResult()
+                .flatMap { barcodes: List<Barcode> ->
+                    Observable.just(barcodes)
+                            .flatMapIterable { barcode: List<Barcode> -> barcodes }
+                            .map { barcode: Barcode ->
+                                ScannedData(SCAN_TYPE.BARCODE, barcode)
+                            }
+                            .toList()
+                            .toObservable()
+                }
+
+    }
+    fun liveTextData(): Observable<List<ScannedData>> {
+        return textScanner.textBlockResult()
+                .flatMap { texts: List<Text.TextBlock> ->
+                    Observable.just(texts)
+                            .flatMapIterable { text: List<Text.TextBlock> -> texts }
+                            .map { text: Text.TextBlock ->
+                                ScannedData(SCAN_TYPE.TEXT, text)
+                            }
+                            .toList()
+                            .toObservable()
+                }
+    }
+    fun liveQRBoundingBoxes() : Observable<List<Rect>> = qrScanner.qrBoundingBoxes()
     fun liveTextBoundingBoxes() : Observable<List<Rect?>> = textScanner.textBoundingBoxes()
 
     fun toViewEvent(event : EventSpec) : ViewEvent{

@@ -10,6 +10,7 @@ import timber.log.Timber
 
 class TextScanner() : BaseAnalyzer() {
     private val scannedTextSubject: PublishSubject<Text> = PublishSubject.create()
+    private val scannedTextBlockSubject: PublishSubject<List<Text.TextBlock>> = PublishSubject.create()
     private val boundingBoxesSubject: PublishSubject<List<Rect?>> = PublishSubject.create()
     private val textRecognizer = TextRecognition.getClient()
     private lateinit var recognizer: TextRecognizer
@@ -21,6 +22,7 @@ class TextScanner() : BaseAnalyzer() {
                 .addOnSuccessListener {
                     val text = it.text
                     scannedTextSubject.onNext(it)
+                    scannedTextBlockSubject.onNext(it.textBlocks)
                     boundingBoxesSubject.onNext(getTextBoundingBoxes(it.textBlocks))
                     //Timber.i("Scanned Text: " + text)
                 }
@@ -44,6 +46,7 @@ class TextScanner() : BaseAnalyzer() {
     }
 
     fun textScannerResult(): Observable<Text> = scannedTextSubject
+    fun textBlockResult(): Observable<List<Text.TextBlock>> = scannedTextBlockSubject
     fun textBoundingBoxes(): Observable<List<Rect?>>  = boundingBoxesSubject
 
     override fun close() = recognizer.close()

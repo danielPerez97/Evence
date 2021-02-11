@@ -11,7 +11,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 
 class QRScanner() : BaseAnalyzer()
 {
-    private val barcodeSubject: PublishSubject<MutableList<Barcode>> = PublishSubject.create()
+    private val barcodeSubject: PublishSubject<List<Barcode>> = PublishSubject.create()
     private val boundingBoxesSubject: PublishSubject<List<Rect>> = PublishSubject.create()
     private lateinit var barcodeScanner : BarcodeScanner
 
@@ -50,7 +50,7 @@ class QRScanner() : BaseAnalyzer()
     }
 
 
-    fun qrScannerResult(): Observable<MutableList<Barcode>> = barcodeSubject //switch to using List
+    fun qrScannerResult(): Observable<List<Barcode>> = barcodeSubject //switch to using List
     fun qrBoundingBoxes(): Observable<List<Rect>>  = boundingBoxesSubject
 
     override fun close() = barcodeScanner.close()
