@@ -32,20 +32,24 @@
         app:layout_anchor="@+id/previewView"
         app:layout_anchorGravity="bottom" />
 
-    <TextView
-        android:id="@+id/result"
-        style="@style/viewShadow"
+    <TextSwitcher
+        android:id="@+id/text_switcher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="56dp"
         android:paddingBottom="35dp"
-        android:text="Scanning..."
-        android:textAlignment="center"
-        android:textColor="@color/white"
         app:layout_anchor="@+id/gradient"
-        app:layout_anchorGravity="center" />
-
+        app:layout_anchorGravity="center">
+        <TextView
+            android:id="@+id/result"
+            style="@style/viewShadow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scanning..."
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+    </TextSwitcher>
     <androidx.cardview.widget.CardView
         android:id="@+id/overlay_button"
         android:visibility="gone"

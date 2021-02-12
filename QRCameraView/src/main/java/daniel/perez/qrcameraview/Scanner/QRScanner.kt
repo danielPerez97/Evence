@@ -1,6 +1,5 @@
 package daniel.perez.qrcameraview.Scanner
 
-import android.graphics.Rect
 import android.util.Log
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
@@ -12,7 +11,6 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 class QRScanner() : BaseAnalyzer()
 {
     private val barcodeSubject: PublishSubject<List<Barcode>> = PublishSubject.create()
-    private val boundingBoxesSubject: PublishSubject<List<Rect>> = PublishSubject.create()
     private lateinit var barcodeScanner : BarcodeScanner
 
 
@@ -28,7 +26,6 @@ class QRScanner() : BaseAnalyzer()
         val result = barcodeScanner.process(inputImage)
                 .addOnSuccessListener {
                     barcodeSubject.onNext(it)
-                    boundingBoxesSubject.onNext(getQRBoundingBoxes(it))
                     if (it.size !=0) {
                         Log.d("QrHandler", "scan successful" + it[0].rawValue.toString())
                     }
@@ -41,17 +38,7 @@ class QRScanner() : BaseAnalyzer()
                 }
     }
 
-    fun getQRBoundingBoxes(barcodes: List<Barcode>) : List<Rect> {
-        val boundingBoxes : MutableList<Rect> = mutableListOf()
-        for(barcode in barcodes) {
-            boundingBoxes.add(barcode.boundingBox)
-        }
-        return boundingBoxes.toList()
-    }
-
-
     fun qrScannerResult(): Observable<List<Barcode>> = barcodeSubject //switch to using List
-    fun qrBoundingBoxes(): Observable<List<Rect>>  = boundingBoxesSubject
 
     override fun close() = barcodeScanner.close()
 

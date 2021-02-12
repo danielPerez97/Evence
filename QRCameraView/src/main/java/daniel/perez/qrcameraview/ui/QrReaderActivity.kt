@@ -35,8 +35,8 @@ class QrReaderActivity : BaseActivity() {
     private lateinit var viewModel: QrReaderViewModel
     private var flashOn = false
     private lateinit var scannedData: List<ScannedData>
-    private lateinit var qrBoundingBoxes: List<Rect>
-    private lateinit var textBoundingBoxes: List<Rect?>
+    private  var qrBoundingBoxes: List<Rect>  = emptyList()
+    private  var textBoundingBoxes: List<Rect?> = emptyList()
     private lateinit var intentActions: IntentActions
     private lateinit var outlineOverlay: OutlineOverlay
 
@@ -72,6 +72,8 @@ class QrReaderActivity : BaseActivity() {
         binding.qrTypeCardview.setOnClickListener { onQRClick() }
         binding.switchScanButton.setOnClickListener { toggleScanMode() }
         binding.flashButton.setOnClickListener { toggleFlash() }
+        binding.textSwitcher.setInAnimation(this, android.R.anim.fade_in)
+        binding.textSwitcher.setOutAnimation(this, android.R.anim.fade_out)
         setupSubscriptions()
     }
 
@@ -89,35 +91,18 @@ class QrReaderActivity : BaseActivity() {
                 }
             }
         } else {
-
             when (currentScanType) {
                 SCAN_TYPE.BARCODE -> {
                     val qrData = scannedData[0].data as Barcode
                     binding.result.text = qrData.displayValue
-                    outlineOverlay.addOverlay(qrBoundingBoxes)
-
-                    when (qrData.valueType) {
-                        Barcode.TYPE_CALENDAR_EVENT -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_event_white_36dp))
-                        Barcode.TYPE_URL -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_open_in_new_white_24dp))
-                        Barcode.TYPE_CONTACT_INFO -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_person_add_white_24dp))
-                        Barcode.TYPE_EMAIL -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_email_white_24dp))
-                        Barcode.TYPE_PHONE -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_phone_white_24dp))
-                        Barcode.TYPE_SMS -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_textsms_black_24dp))
-                        Barcode.TYPE_ISBN -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_shopping_cart_white_24dp))
-                        Barcode.TYPE_WIFI -> {
-                            binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_wifi_white_24dp))
-                            binding.result.text = "Network name: ${qrData.wifi.ssid} \n Password: ${qrData.wifi.password}"
-                        }
-                        Barcode.TYPE_GEO -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_place_white_24dp))
-                        Barcode.TYPE_DRIVER_LICENSE -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_account_box_white_24dp))
-                        else -> binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_short_text_white_24dp))
-                    }
+                    outlineOverlay.addOverlay(scannedData)
+                    binding.qrTypeCardview.setImageDrawable(outlineOverlay.setBarcodeTypeIcon(qrData))
                 }
 
                 SCAN_TYPE.TEXT -> {
                     val textBlock = scannedData[0].data as Text.TextBlock
                     binding.result.text = textBlock.text
-                    outlineOverlay.addOverlay(textBoundingBoxes)
+                    //outlineOverlay.addOverlay(textBoundingBoxes)
                 }
             }
         }
@@ -213,6 +198,7 @@ class QrReaderActivity : BaseActivity() {
         disposables.add(viewModel.liveQRBoundingBoxes()
                 .subscribe {
                     qrBoundingBoxes = it
+                    updateViews()
                 })
         disposables.add(viewModel.liveTextData()
                 //add onerrorhandler
@@ -223,6 +209,7 @@ class QrReaderActivity : BaseActivity() {
         disposables.add(viewModel.liveTextBoundingBoxes()
                 .subscribe {
                     textBoundingBoxes = it
+                    updateViews()
                 })
     }
 
