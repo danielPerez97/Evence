@@ -38,6 +38,7 @@ class QrReaderViewModel @Inject constructor(
                 }
 
     }
+
     fun liveTextData(): Observable<List<ScannedData>> {
         return textScanner.textBlockResult()
                 .flatMap { texts: List<Text.TextBlock> ->
@@ -50,8 +51,32 @@ class QrReaderViewModel @Inject constructor(
                             .toObservable()
                 }
     }
-    fun liveQRBoundingBoxes() : Observable<List<Rect>> = qrScanner.qrBoundingBoxes()
-    fun liveTextBoundingBoxes() : Observable<List<Rect?>> = textScanner.textBoundingBoxes()
+
+    fun liveQRBoundingBoxes() : Observable<List<Rect>>  {
+        return qrScanner.qrScannerResult()
+                .flatMap { barcodes: List<Barcode> ->
+                    Observable.just(barcodes)
+                            .flatMapIterable { barcode: List<Barcode> -> barcodes }
+                            .map { barcode: Barcode ->
+                                barcode.boundingBox
+                            }
+                            .toList()
+                            .toObservable()
+                }
+
+    }
+    fun liveTextBoundingBoxes() : Observable<List<Rect?>>  {
+        return textScanner.textBlockResult()
+                .flatMap { texts: List<Text.TextBlock> ->
+                    Observable.just(texts)
+                            .flatMapIterable { text: List<Text.TextBlock> -> texts }
+                            .map { text: Text.TextBlock ->
+                                text.boundingBox
+                            }
+                            .toList()
+                            .toObservable()
+                }
+    }
 
     fun toViewEvent(event : EventSpec) : ViewEvent{
         val viewEvent = ViewEvent(event.title,
