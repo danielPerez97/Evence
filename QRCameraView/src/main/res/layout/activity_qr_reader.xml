@@ -40,7 +40,9 @@
         android:layout_marginBottom="56dp"
         android:paddingBottom="35dp"
         app:layout_anchor="@+id/gradient"
-        app:layout_anchorGravity="center">
+        app:layout_anchorGravity="center"
+        android:inAnimation="@android:anim/slide_in_left"
+        android:outAnimation="@android:anim/slide_out_right">
         <TextView
             android:id="@+id/result"
             style="@style/viewShadow"
@@ -50,6 +52,7 @@
             android:textAlignment="center"
             android:textColor="@color/white" />
     </TextSwitcher>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/overlay_button"
         android:visibility="gone"

@@ -32,17 +32,20 @@ class OutlineOverlay constructor(internal val context: Context, private val bind
         focusedPaint.strokeWidth = 15f
         focusedPaint.style = Paint.Style.STROKE
         focusedPaint.isAntiAlias = true;
-        focusedPaint.setShadowLayer(22f, 3f, 3f, Color.BLACK);
+        focusedPaint.setShadowLayer(45f, 3f, 3f, Color.BLACK);
 
         backPaint = Paint()
-        backPaint.color = Color.BLACK
+        backPaint.color = Color.WHITE
         backPaint.style = Paint.Style.FILL
-        //backPaint.maskFilter = BlurMaskFilter(50f ,BlurMaskFilter.Blur.INNER)
+        backPaint.alpha = 150
+        //backPaint.maskFilter = BlurMaskFilter(150f ,BlurMaskFilter.Blur.NORMAL)
+        backPaint.setShadowLayer(65f, 3f, 3f, Color.BLACK);
 
         imgPaint = Paint()
-        imgPaint.color = Color.BLACK
-        backPaint.style = Paint.Style.FILL
-        backPaint.maskFilter = BlurMaskFilter(130f ,BlurMaskFilter.Blur.OUTER)
+        imgPaint.style = Paint.Style.FILL
+        imgPaint.alpha = 110
+        imgPaint.colorFilter = PorterDuffColorFilter(Color.BLACK,
+                PorterDuff.Mode.SRC_IN)
 
         labelPaint = Paint()
         labelPaint.style = Paint.Style.FILL
@@ -80,10 +83,13 @@ class OutlineOverlay constructor(internal val context: Context, private val bind
 
             canvas.drawRoundRect(overlay, 35f, 35f, backPaint)
 
+
             canvas.drawBitmap(imgOverlays[i],
                     overlay.centerX() - (imgOverlay.width / 2),
                     overlay.centerY() - (imgOverlay.height / 2),
                     imgPaint)
+
+
             canvas.drawRoundRect(overlay, 35f, 35f, paint)
             if (i == 0) canvas.drawRoundRect(overlay, 35f, 35f, focusedPaint)
 

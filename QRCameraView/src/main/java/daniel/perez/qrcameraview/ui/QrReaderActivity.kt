@@ -72,8 +72,10 @@ class QrReaderActivity : BaseActivity() {
         binding.qrTypeCardview.setOnClickListener { onQRClick() }
         binding.switchScanButton.setOnClickListener { toggleScanMode() }
         binding.flashButton.setOnClickListener { toggleFlash() }
-        binding.textSwitcher.setInAnimation(this, android.R.anim.fade_in)
-        binding.textSwitcher.setOutAnimation(this, android.R.anim.fade_out)
+
+
+        binding.textSwitcher.setInAnimation(this, android.R.anim.slide_in_left)
+        binding.textSwitcher.setOutAnimation(this, android.R.anim.slide_out_right)
         setupSubscriptions()
     }
 
@@ -216,5 +218,6 @@ class QrReaderActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         disposables.dispose()
+        outlineOverlay.clearOverlays()
     }
 }
