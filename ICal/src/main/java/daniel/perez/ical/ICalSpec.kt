@@ -3,9 +3,8 @@ package daniel.perez.ical
 import java.util.Objects
 
 
-class ICalSpec private constructor(val builder: Builder)
+data class ICalSpec private constructor(val builder: Builder)
 {
-	val fileName: String = builder.fileName!!
 	val events: List<EventSpec> = builder.events
 	val timeZone: TimeZones = builder.timeZone
 
@@ -33,12 +32,8 @@ class ICalSpec private constructor(val builder: Builder)
 
 	class Builder constructor()
 	{
-		internal var fileName: String? = null
 		internal val events: MutableList<EventSpec> = mutableListOf()
 		internal var timeZone: TimeZones = TimeZones.AMERICA_CHICAGO
-
-
-		fun fileName(fileName: String): Builder = apply { this.fileName = fileName }
 
 		fun addEvent(vararg event: EventSpec): Builder = apply { events += event }
 
@@ -51,9 +46,6 @@ class ICalSpec private constructor(val builder: Builder)
 			{
 				throw IdsNotUniqueException()
 			}
-
-			// Check that a filename has been given
-			Objects.requireNonNull(fileName, "fileName == null")
 
 			// Return the ICalSpec
 			return ICalSpec(this)
@@ -84,9 +76,5 @@ class ICalSpec private constructor(val builder: Builder)
 			END:STANDARD
 			END:VTIMEZONE
 		""".trimIndent()
-	}
-
-	override fun toString(): String {
-		return "ICalSpec(fileName=$fileName, events=$events, timeZone=$timeZone)"
 	}
 }

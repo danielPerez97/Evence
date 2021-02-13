@@ -11,6 +11,8 @@ import daniel.perez.core.model.UiPreference
 import daniel.perez.core.model.ViewEvent
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import coil.ImageLoader
+import coil.load
 import daniel.perez.core.*
 import daniel.perez.core.databinding.EventsListEntryLayoutBinding
 import daniel.perez.core.db.timeString
@@ -19,7 +21,7 @@ import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
-class CardsAdapter(private val context: Context) : RecyclerView.Adapter<CardsAdapter.ViewHolder>(), Observer<List<ViewEvent>>, Consumer<List<ViewEvent>> {
+class CardsAdapter(private val context: Context, private val imageLoader: ImageLoader) : RecyclerView.Adapter<CardsAdapter.ViewHolder>(), Observer<List<ViewEvent>>, Consumer<List<ViewEvent>> {
     private var dataList: List<ViewEvent> = emptyList()
     private val clicks = PublishSubject.create<ViewEvent>()
     private var uiPreference: UiPreference? = null
@@ -74,7 +76,7 @@ class CardsAdapter(private val context: Context) : RecyclerView.Adapter<CardsAda
             binding.listEntryTimeTextview.text = event.startDateTime.timeString()
             val isDark = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             if (isDark == Configuration.UI_MODE_NIGHT_YES) binding.qrImageView.setColorFilter(ContextCompat.getColor(context, R.color.qr_dark_tint), PorterDuff.Mode.MULTIPLY) else if (isDark == Configuration.UI_MODE_NIGHT_NO) binding.qrImageView.clearColorFilter()
-//            binding.qrImageView.setImageBitmap(event.image)
+            binding.qrImageView.load(event.imageUri, imageLoader)
             if (uiPreference!!.isQrPreviewed) {
                 binding.qrImageView.visibility = View.VISIBLE
                 binding.datePreview.visibility = View.GONE
