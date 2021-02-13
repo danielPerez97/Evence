@@ -1,27 +1,47 @@
 package projects.csce.evence.database
 
+import android.net.Uri
 import com.squareup.sqldelight.runtime.rx3.asObservable
 import com.squareup.sqldelight.runtime.rx3.mapToList
 import com.squareup.sqldelight.runtime.rx3.mapToOne
 import daniel.perez.core.db.Event
 import daniel.perez.core.db.EventOps
+import daniel.perez.core.db.UiNewEvent
+import daniel.perez.core.service.FileManager
 import daniel.perez.evencedb.EventQueries
+import daniel.perez.ical.EventSpec
+import daniel.perez.ical.ICalSpec
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toKotlinLocalDateTime
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.*
 
-internal class EventOpsImpl( private val queries: EventQueries): EventOps
+fun getEventOps( queries: EventQueries, fileManager: FileManager, timeZone: TimeZone = TimeZone.getDefault() ): EventOps = EventOpsImpl(  queries, fileManager, timeZone.toZoneId() )
+
+private class EventOpsImpl(
+        private val queries: EventQueries,
+        private val fileManager: FileManager,
+        private val timeZone: ZoneId): EventOps
 {
-    override fun insertEvent(title: String, description: String, location: String, startTime: LocalDateTime, endTime: LocalDateTime)
+    override fun insertEvent(event: UiNewEvent): Observable<Long>
     {
-        return queries.insertEvent(
-                title,
-                description,
-                location,
-                startTime.toKotlinLocalDateTime(),
-                endTime.toKotlinLocalDateTime()
-        )
+        return insertEvent(event.title, event.description, event.location, event.start, event.end)
+    }
+
+    override fun insertEvent(title: String, description: String, location: String, startTime: LocalDateTime, endTime: LocalDateTime): Observable<Long>
+    {
+        return queries.transactionWithResult {
+            queries.insertEvent(
+                    title,
+                    description,
+                    location,
+                    startTime.toKotlinLocalDateTime(),
+                    endTime.toKotlinLocalDateTime()
+            )
+            queries.lastInsertRowID().asObservable().mapToOne()
+        }
     }
 
     override fun insertEventWithRecurrence(title: String, description: String, location: String, startTime: LocalDateTime, endTime: LocalDateTime, recurrenceRule: String)
@@ -41,7 +61,7 @@ internal class EventOpsImpl( private val queries: EventQueries): EventOps
         return queries.selectAll()
                 .asObservable()
                 .mapToList()
-                .map { it.convert() }
+                .map { it.toEvent() }
     }
 
     override fun selectByTitle(title: String): Observable<Event>
@@ -49,7 +69,7 @@ internal class EventOpsImpl( private val queries: EventQueries): EventOps
         return queries.selectByTitle(title)
                 .asObservable()
                 .mapToOne()
-                .map { it.convert() }
+                .map { it.toEvent() }
     }
 
     override fun getEventById(id: Long): Observable<Event>
@@ -57,7 +77,7 @@ internal class EventOpsImpl( private val queries: EventQueries): EventOps
         return queries.getEventById(id)
                 .asObservable()
                 .mapToOne()
-                .map { it.convert() }
+                .map { it.toEvent() }
     }
 
     override fun getEventsSortedSoonest(): Observable<List<Event>>
@@ -65,7 +85,7 @@ internal class EventOpsImpl( private val queries: EventQueries): EventOps
         return queries.getEventsSortedSoonest()
                 .asObservable()
                 .mapToList()
-                .map { it.convert() }
+                .map { it.toEvent() }
     }
 
     override fun getEventsSortedLatest(): Observable<List<Event>>
@@ -73,18 +93,51 @@ internal class EventOpsImpl( private val queries: EventQueries): EventOps
         return queries.getEventsSortedLatest()
                 .asObservable()
                 .mapToList()
-                .map { it.convert() }
+                .map { it.toEvent() }
     }
 
-    private fun daniel.perez.evencedb.Event.convert(): Event
+    private fun daniel.perez.evencedb.Event.toEvent(): Event
     {
-        return Event(_id, title, description, location, start_time.toJavaLocalDateTime(), end_time.toJavaLocalDateTime(), recurrence_rule)
+        return Event(
+                _id,
+                title,
+                description,
+                location,
+                start_time.toJavaLocalDateTime(),
+                end_time.toJavaLocalDateTime(),
+                getImageUri(this, _id),
+                recurrence_rule
+        )
     }
 
-    private fun List<daniel.perez.evencedb.Event>.convert(): List<Event>
+    fun getImageUri(event: daniel.perez.evencedb.Event, id: Long): Uri
     {
-        return this.map { it.convert() }
+        //TODO( Map this _id a random value so we don't expose our database id's through our file names )
+        return fileManager.getOrSaveImage( event.toICalSpec(), id.toString() )
+    }
+
+    fun getIcsUri(event: daniel.perez.evencedb.Event, id: Long): Uri
+    {
+        return fileManager.getOrSaveIcs( event.toICalSpec(), id.toString() )
+    }
+
+    private fun daniel.perez.evencedb.Event.toICalSpec(): ICalSpec
+    {
+        return ICalSpec.Builder()
+                .addEvent(
+                        EventSpec.Builder( this._id.toInt() )
+                                .title( this.title )
+                                .description( this.description )
+                                .location( this.location )
+                                .start( this.start_time.toJavaLocalDateTime().atZone( timeZone ) )
+                                .end( this.end_time.toJavaLocalDateTime().atZone( timeZone ) )
+                                .build()
+                )
+                .build()
+    }
+
+    private fun List<daniel.perez.evencedb.Event>.toEvent(): List<Event>
+    {
+        return this.map { it.toEvent() }
     }
 }
-
-fun getEventOps( queries: EventQueries ): EventOps = EventOpsImpl( queries )

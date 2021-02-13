@@ -1,22 +1,23 @@
 package daniel.perez.core.model
 
+import android.net.Uri
 import daniel.perez.core.toZonedDateTime
 import daniel.perez.ical.EventSpec
 import daniel.perez.ical.ICalSpec
 import java.time.LocalDateTime
-import java.time.Month
 import java.util.*
 
 data class ViewEvent(
         val id: Long,
         val title: String,
         val description: String,
+        val location: String,
         val startDateTime: LocalDateTime,
         val endDateTime: LocalDateTime,
-        val location: String
+        val imageUri: Uri
 )
 {
-    fun iCalText(): String
+    fun iCalSpec(): ICalSpec
     {
         val event = EventSpec.Builder(0)
                 .title(title)
@@ -26,12 +27,9 @@ data class ViewEvent(
                 .end(toZonedDateTime(endDateTime.monthValue, endDateTime.dayOfMonth, endDateTime.year, endDateTime.hour, endDateTime.minute))
                 .build()
 
-        val ical = ICalSpec.Builder()
-                .fileName(title)
+        return ICalSpec.Builder()
                 .addEvent(event)
                 .build()
-
-        return ical.text()
     }
 
     fun startDatePretty(): String

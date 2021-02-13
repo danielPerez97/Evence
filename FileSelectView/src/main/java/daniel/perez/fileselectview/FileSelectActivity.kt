@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
+import coil.ImageLoader
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.adapter.CardsAdapter
 import daniel.perez.core.service.FileManager
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class FileSelectActivity : BaseActivity() {
     @Inject lateinit var fileManager: FileManager
     @Inject lateinit var generator: QrBitmapGenerator
+    @Inject lateinit var imageLoader: ImageLoader
     private lateinit var adapter: CardsAdapter
     private var fileUri: Uri? = null
     private var resultIntent: Intent? = null
@@ -30,7 +32,7 @@ class FileSelectActivity : BaseActivity() {
 
         resultIntent = Intent("projects.csce.evence.ACTION_RETURN_FILE")
         setResult(RESULT_CANCELED, null)
-        adapter = CardsAdapter(this)
+        adapter = CardsAdapter(this, imageLoader)
         binding!!.fileSelector.adapter = adapter
 
 //        disposables.add(adapter.clicks().subscribe { (fileName) ->

@@ -1,6 +1,8 @@
 package daniel.perez.ical
 
+import android.net.Uri
 import android.util.Log
+import androidx.core.net.toFile
 import okio.buffer
 import okio.source
 import timber.log.Timber
@@ -14,6 +16,10 @@ object Parser
     private var state: State? = null
     private var eventBuilder: EventSpec.Builder? = null
 
+    fun parse(uri: Uri): ICalSpec
+    {
+        return parse( uri.toFile() )
+    }
 
     fun parse(file: File): ICalSpec
     {
@@ -33,7 +39,7 @@ object Parser
                     builder = handleLine(line)
             }
         }
-        val ical = builder.fileName(file.nameWithoutExtension).build()
+        val ical = builder.build()
         builder = ICalSpec.Builder()
         state = null
         eventBuilder = null
