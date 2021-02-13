@@ -8,6 +8,11 @@ object Evence
 
 object Libs
 {
+    // Coil
+    private const val coilVersion = "1.1.1"
+    // const val coilBase = "io.coil-kt:coil-base:$coilVersion"
+    const val coil = "io.coil-kt:coil:$coilVersion"
+
     // ConstraintLayout
     private const val constraintLayoutVersion = "1.1.3"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"

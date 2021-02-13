@@ -30,6 +30,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
     buildFeatures {
         viewBinding = true
     }
@@ -47,10 +50,12 @@ dependencies {
     implementation( project( Project.core ) )
 
     implementation( Libs.cardView )
+    implementation( Libs.coil )
     implementation( Libs.coordinatorLayout )
     implementation( Libs.dagger )
     kapt( Libs.daggerCompiler )
     coreLibraryDesugaring( Libs.desugar )
+    implementation( Libs.rxAndroid )
     implementation( Libs.rxBinding )
     implementation( Libs.timber )
 }

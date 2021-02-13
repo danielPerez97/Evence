@@ -7,10 +7,11 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.provider.CalendarContract
 import android.view.LayoutInflater
+import coil.ImageLoader
+import coil.load
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.DialogClosable
 import daniel.perez.core.ActivityStarter
-import daniel.perez.core.db.dateString
 import daniel.perez.core.model.ViewEvent
 import daniel.perez.core.service.FileManager
 import daniel.perez.qrdialogview.databinding.DialogBoxQrBinding
@@ -21,6 +22,7 @@ class QRDialog(context: Context, var event: ViewEvent) {
     private val context: Context
     private val dialog: Dialog
     private val binding: DialogBoxQrBinding
+    @Inject lateinit var imageLoader: ImageLoader
     @Inject lateinit var fileManager: FileManager
     @Inject lateinit var activityStarter: ActivityStarter
 
@@ -34,7 +36,7 @@ class QRDialog(context: Context, var event: ViewEvent) {
         binding.qrDialogEventStartDateTextview.text = event.startDatePretty()
         binding.qrDialogEventStartTimeTextview.text = event.startDateTime.toLocalTime().toString()
         binding.qrDialogEventLocationTextview.text = event.location
-//        binding.qrDialogQrImageview.setImageBitmap(event.image)
+        binding.qrDialogQrImageview.load(event.imageUri, imageLoader)
         dialog = Dialog(context)
         dialog.setContentView(binding.root)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -69,7 +71,7 @@ class QRDialog(context: Context, var event: ViewEvent) {
     private fun shareQR() {
         val shareIntent = Intent()
         shareIntent.action = Intent.ACTION_SEND
-        shareIntent.putExtra(Intent.EXTRA_STREAM, fileManager.getFileUri("image_" + event.id))
+        shareIntent.putExtra(Intent.EXTRA_STREAM, event.imageUri)
         shareIntent.type = "image/*"
         context.startActivity(Intent.createChooser(shareIntent, "Share images to.."))
     }
@@ -85,11 +87,19 @@ class QRDialog(context: Context, var event: ViewEvent) {
         context.startActivity(toCalendar)
     }
 
-    private fun closeDialog() {
-        if (context is DialogClosable) {
-            dialog.dismiss() //fixes window leak
+    private fun closeDialog()
+    {
+        // Close the Dialog and the activity
+        if (context is DialogClosable)
+        {
+            dialog.dismiss()
             (context as DialogClosable).close()
-        } else dialog.dismiss()
+        }
+        // Just close the Dialog
+        else
+        {
+            dialog.dismiss()
+        }
     }
 
     companion object {

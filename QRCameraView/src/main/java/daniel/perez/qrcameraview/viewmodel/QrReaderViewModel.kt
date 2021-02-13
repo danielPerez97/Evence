@@ -11,9 +11,5 @@ import daniel.perez.ical.ICalSpec
 import javax.inject.Inject
 
 class QrReaderViewModel @Inject constructor(private val fileManager: FileManager): ViewModel() {
-    fun saveFile(ical: ICalSpec) {
-        fileManager.saveICalFile(ical)
-    }
-
 
 }

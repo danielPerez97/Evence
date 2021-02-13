@@ -12,14 +12,13 @@ import daniel.perez.ical.EventSpec
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toKotlinLocalDateTime
 import java.time.ZoneOffset
 import java.util.stream.Collectors
 import javax.inject.Inject
 
 class MainViewModel @Inject internal constructor(
-        private val eventOps: EventOps,
-        private val fileManager: FileManager,
-        private val generator: QrBitmapGenerator
+        private val eventOps: EventOps
         ) : ViewModel()
 {
     fun liveFiles(): Observable<List<ViewEvent>>
@@ -34,9 +33,10 @@ class MainViewModel @Inject internal constructor(
                     it.id,
                     it.title,
                     it.description,
+                    it.location,
                     it.startTime,
                     it.endTime,
-                    it.location
+                    it.qrImageUri
             )
         }
 

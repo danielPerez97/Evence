@@ -54,5 +54,6 @@ dependencies {
     implementation( Libs.material )
     implementation( Libs.okio )
     implementation( Libs.rxJava )
+    implementation( Libs.rxAndroid )
     implementation( Libs.timber )
 }

@@ -16,6 +16,9 @@ INSERT INTO Event(title, description, location, start_time, end_time) VALUES(?, 
 insertEventWithRecurrence:
 INSERT INTO Event(title, description, location, start_time, end_time, recurrence_rule) VALUES(?, ?, ?, ?, ?, ?);
 
+lastInsertRowID:
+SELECT last_insert_rowid();
+
 selectAll:
 SELECT * FROM Event;
 
