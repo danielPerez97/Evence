@@ -7,16 +7,15 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import daniel.perez.core.*
+import daniel.perez.core.db.UiNewEvent
 import daniel.perez.core.model.DateSetEvent
 import daniel.perez.core.model.Half
 import daniel.perez.core.model.TimeSetEvent
-import daniel.perez.core.model.ViewEvent
-import daniel.perez.core.service.qr.QrAttempt
 import daniel.perez.generateqrview.databinding.ActivityGenerateQrBinding
 import daniel.perez.generateqrview.di.GenerateQRComponentProvider
 import daniel.perez.ical.ICalSpec
 import daniel.perez.ical.Parser.parse
-import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import okio.buffer
 import okio.sink
 import timber.log.Timber
@@ -25,7 +24,6 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.time.LocalDateTime
-import java.util.*
 import javax.inject.Inject
 
 class GenerateQR : BaseActivity(), DialogClosable
@@ -110,32 +108,31 @@ class GenerateQR : BaseActivity(), DialogClosable
         if (!areValidFields()) {
             return
         }
-        val viewEvent: ViewEvent = extractEventFromUi()
-        viewModel.saveEvent(viewEvent)
-
-        dialogStarter.startQrDialog(this, viewEvent)
+        val uiNewEvent: UiNewEvent = extractEventFromUi()
+        viewModel.saveEvent(uiNewEvent)
+                .observeOn( AndroidSchedulers.mainThread() )
+                .subscribe { dialogStarter.startQrDialog(this, it) }
     }
 
-    private fun extractEventFromUi(): ViewEvent
+    private fun extractEventFromUi(): UiNewEvent
     {
         Timber.i("Start_Date: ${startDate.string()}")
         Timber.i("Start_Time: $startTime")
         Timber.i("End_Date: ${endDate.string()}")
         Timber.i("End_Time: $endTime")
-        val viewEvent: ViewEvent
+        val uiNewEvent: UiNewEvent
         with(binding)
         {
-            viewEvent = ViewEvent(
-                    1L,
+            uiNewEvent = UiNewEvent(
                     titleEditText.text.toString(),
                     descriptionEditText.text.toString(),
+                    locationEditText.text.toString(),
                     LocalDateTime.parse("${startDate.string()}T${startTime.string()}" ),
                     LocalDateTime.parse("${endDate.string()}T${endTime.string()}"),
-                    locationEditText.text.toString()
             )
         }
 
-        return viewEvent
+        return uiNewEvent
     }
 
     // Handle the user choosing a place to store the file

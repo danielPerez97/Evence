@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.ImageLoader
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -47,6 +48,7 @@ class MainActivity : BaseActivity() {
     @Inject lateinit var dialogStarter: DialogStarter
     @Inject lateinit var activityStarter: ActivityStarter
     @Inject lateinit var sharedPref: SharedPref
+    @Inject lateinit var imageLoader: ImageLoader
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -59,7 +61,7 @@ class MainActivity : BaseActivity() {
         //apply custom toolbar
         setSupportActionBar(binding.toolbarMain)
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
-        eventsAdapter = CardsAdapter(this)
+        eventsAdapter = CardsAdapter(this, imageLoader)
         handleRecyclerView()
 
         //binding.loginBtn.setOnClickListener(view -> signIn());
@@ -99,7 +101,6 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        fileManager.notifyIcals()
         sharedPref.notifyUiPref()
     }
 

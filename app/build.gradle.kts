@@ -32,6 +32,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
     buildFeatures {
         viewBinding = true
     }
@@ -54,6 +57,10 @@ dependencies {
     implementation( project( Project.ical ) )
     implementation( project( Project.qrCameraView ) )
     implementation( project( Project.qrDialogView ) )
+
+    // Coil
+    implementation( Libs.coil )
+//    implementation( Libs.coilBase )
 
     // Dagger 2
     implementation( Libs.dagger )

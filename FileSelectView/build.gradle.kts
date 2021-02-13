@@ -49,6 +49,7 @@ dependencies {
     implementation( project( Project.core ) )
 
     implementation( Libs.cardView )
+    implementation( Libs.coil )
     implementation( Libs.coordinatorLayout )
     implementation( Libs.dagger )
     kapt( Libs.daggerCompiler )
