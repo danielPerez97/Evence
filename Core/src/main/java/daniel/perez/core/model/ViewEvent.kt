@@ -1,6 +1,7 @@
 package daniel.perez.core.model
 
 import android.net.Uri
+import daniel.perez.core.db.timeString
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.util.*
@@ -23,9 +24,19 @@ data class ViewEvent(
         return startDateTime.pretty()
     }
 
+    fun startTimePretty(): String
+    {
+        return startDateTime.timeString()
+    }
+
     fun endDatePretty(): String
     {
         return endDateTime.pretty()
+    }
+
+    fun endTimePretty(): String
+    {
+        return endDateTime.timeString()
     }
 
     fun startEpochMilli(): Long
