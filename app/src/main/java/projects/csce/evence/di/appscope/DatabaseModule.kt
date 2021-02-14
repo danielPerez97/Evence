@@ -12,7 +12,7 @@ import daniel.perez.core.service.FileManager
 import projects.csce.evence.database.getEventOps
 
 @Module
-class DatabaseModule(appContext: Context)
+class DatabaseModule(private val appContext: Context)
 {
     private val db: EvenceDatabase
     init {
@@ -23,6 +23,6 @@ class DatabaseModule(appContext: Context)
     @Provides
     fun provideDatabase(fileManager: FileManager): EventOps
     {
-        return getEventOps( db.eventQueries, fileManager )
+        return appContext.getEventOps( db.eventQueries, fileManager )
     }
 }

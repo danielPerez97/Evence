@@ -36,7 +36,7 @@ class QRDialog(context: Context, var event: ViewEvent) {
         binding.qrDialogEventStartDateTextview.text = event.startDatePretty()
         binding.qrDialogEventStartTimeTextview.text = event.startDateTime.toLocalTime().toString()
         binding.qrDialogEventLocationTextview.text = event.location
-        binding.qrDialogQrImageview.load(event.imageUri, imageLoader)
+        binding.qrDialogQrImageview.load(event.imageFileUri, imageLoader)
         dialog = Dialog(context)
         dialog.setContentView(binding.root)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -60,8 +60,9 @@ class QRDialog(context: Context, var event: ViewEvent) {
     private fun save() {
         // Bug the user about storing it
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "application/*"
+                .addCategory(Intent.CATEGORY_OPENABLE)
+                .setType("text/calendar")
+
         intent.putExtra(Intent.EXTRA_TITLE, event.title + ".ics")
         if (context is BaseActivity) {
             context.startActivityForResult(intent, 1)
@@ -69,10 +70,12 @@ class QRDialog(context: Context, var event: ViewEvent) {
     }
 
     private fun shareQR() {
-        val shareIntent = Intent()
-        shareIntent.action = Intent.ACTION_SEND
-        shareIntent.putExtra(Intent.EXTRA_STREAM, event.imageUri)
-        shareIntent.type = "image/*"
+        val shareIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_STREAM, event.imageFileContentUri)
+            type = "image/png"
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
         context.startActivity(Intent.createChooser(shareIntent, "Share images to.."))
     }
 

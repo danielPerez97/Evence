@@ -76,7 +76,7 @@ class CardsAdapter(private val context: Context, private val imageLoader: ImageL
             binding.listEntryTimeTextview.text = event.startDateTime.timeString()
             val isDark = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             if (isDark == Configuration.UI_MODE_NIGHT_YES) binding.qrImageView.setColorFilter(ContextCompat.getColor(context, R.color.qr_dark_tint), PorterDuff.Mode.MULTIPLY) else if (isDark == Configuration.UI_MODE_NIGHT_NO) binding.qrImageView.clearColorFilter()
-            binding.qrImageView.load(event.imageUri, imageLoader)
+            binding.qrImageView.load(event.imageFileUri, imageLoader)
             if (uiPreference!!.isQrPreviewed) {
                 binding.qrImageView.visibility = View.VISIBLE
                 binding.datePreview.visibility = View.GONE
