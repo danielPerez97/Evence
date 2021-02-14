@@ -1,6 +1,8 @@
 package projects.csce.evence.database
 
+import android.content.Context
 import android.net.Uri
+import androidx.core.content.FileProvider
 import com.squareup.sqldelight.runtime.rx3.asObservable
 import com.squareup.sqldelight.runtime.rx3.mapToList
 import com.squareup.sqldelight.runtime.rx3.mapToOne
@@ -14,13 +16,15 @@ import daniel.perez.ical.ICalSpec
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toKotlinLocalDateTime
+import java.io.File
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 
-fun getEventOps( queries: EventQueries, fileManager: FileManager, timeZone: TimeZone = TimeZone.getDefault() ): EventOps = EventOpsImpl(  queries, fileManager, timeZone.toZoneId() )
+internal fun Context.getEventOps( queries: EventQueries, fileManager: FileManager, timeZone: TimeZone = TimeZone.getDefault() ): EventOps = EventOpsImpl(  this, queries, fileManager, timeZone.toZoneId() )
 
 private class EventOpsImpl(
+        private val appContext: Context,
         private val queries: EventQueries,
         private val fileManager: FileManager,
         private val timeZone: ZoneId): EventOps
@@ -98,6 +102,7 @@ private class EventOpsImpl(
 
     private fun daniel.perez.evencedb.Event.toEvent(): Event
     {
+        val imageFile = fileManager.getOrSaveImage( this.toICalSpec(), this._id.toString() )
         return Event(
                 _id,
                 title,
@@ -105,20 +110,26 @@ private class EventOpsImpl(
                 location,
                 start_time.toJavaLocalDateTime(),
                 end_time.toJavaLocalDateTime(),
-                getImageUri(this, _id),
+                getImageFileUri( imageFile ),
+                getImageContentUri( imageFile ),
+                getIcsUri(this, _id),
                 recurrence_rule
         )
     }
 
-    fun getImageUri(event: daniel.perez.evencedb.Event, id: Long): Uri
+    private fun getImageContentUri(imageFile: File): Uri
     {
-        //TODO( Map this _id a random value so we don't expose our database id's through our file names )
-        return fileManager.getOrSaveImage( event.toICalSpec(), id.toString() )
+        return FileProvider.getUriForFile(appContext, "projects.csce.evence.fileprovider", imageFile)
     }
 
-    fun getIcsUri(event: daniel.perez.evencedb.Event, id: Long): Uri
+    private fun getImageFileUri( imageFile: File): Uri
     {
-        return fileManager.getOrSaveIcs( event.toICalSpec(), id.toString() )
+        return Uri.fromFile( imageFile )
+    }
+
+    private fun getIcsUri(event: daniel.perez.evencedb.Event, id: Long): Uri
+    {
+        return Uri.fromFile( fileManager.getOrSaveIcs( event.toICalSpec(), id.toString() ) )
     }
 
     private fun daniel.perez.evencedb.Event.toICalSpec(): ICalSpec

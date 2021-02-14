@@ -23,6 +23,8 @@ fun Event.toViewEvent(): ViewEvent
             this.location,
             this.startTime,
             this.endTime,
-            this.qrImageUri
+            this.qrImageFileUri,
+            this.qrImageContentUri,
+            this.icsFileUri
     )
 }
