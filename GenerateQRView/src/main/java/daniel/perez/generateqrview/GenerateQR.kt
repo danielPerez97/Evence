@@ -11,6 +11,7 @@ import daniel.perez.core.db.UiNewEvent
 import daniel.perez.core.model.DateSetEvent
 import daniel.perez.core.model.Half
 import daniel.perez.core.model.TimeSetEvent
+import daniel.perez.core.service.FileManager
 import daniel.perez.generateqrview.databinding.ActivityGenerateQrBinding
 import daniel.perez.generateqrview.di.GenerateQRComponentProvider
 import daniel.perez.ical.ICalSpec
@@ -37,6 +38,7 @@ class GenerateQR : BaseActivity(), DialogClosable
     private var endDate = DateSetEvent(1, 31, 1999)
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var dialogStarter: DialogStarter
+    @Inject lateinit var fileManager: FileManager
 
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?)
@@ -139,34 +141,11 @@ class GenerateQR : BaseActivity(), DialogClosable
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1)
+        if (requestCode == RequestCodes.REQUEST_SAF)
         {
-            val uri: Uri?
             if (data != null)
             {
-                uri = data.data
-                try
-                {
-                    val pfd = contentResolver.openFileDescriptor(uri!!, "w")
-                    val fileOutputStream = FileOutputStream(pfd!!.fileDescriptor)
-                    try
-                    {
-                        fileOutputStream.sink().buffer().use { sink -> sink.writeUtf8(currentEvent.text()) }
-                    } catch (e: IOException)
-                    {
-                        Timber.i(e)
-                        e.printStackTrace()
-                    }
-                    pfd.close()
-                } catch (e: FileNotFoundException)
-                {
-                    Timber.i(e)
-                    e.printStackTrace()
-                } catch (e: IOException)
-                {
-                    e.printStackTrace()
-                }
-                Timber.i("Wrote File")
+                fileManager.writeFileActionCreateDocument(this, currentEvent, data)
             }
         }
     }
