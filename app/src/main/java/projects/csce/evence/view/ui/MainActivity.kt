@@ -12,6 +12,7 @@ import coil.ImageLoader
 import daniel.perez.core.*
 import daniel.perez.core.RequestCodes.REQUEST_SAF
 import daniel.perez.core.adapter.CardsAdapter
+import daniel.perez.core.db.EventOps
 import daniel.perez.core.di.ViewModelFactory
 import daniel.perez.core.model.ViewEvent
 import daniel.perez.core.service.FileManager
@@ -26,6 +27,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
+    private lateinit var currentEvent: ViewEvent
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
     private lateinit var eventsAdapter: CardsAdapter
@@ -36,6 +38,7 @@ class MainActivity : BaseActivity() {
     @Inject lateinit var sharedPref: SharedPref
     @Inject lateinit var imageLoader: ImageLoader
     @Inject lateinit var fileManager: FileManager
+    @Inject lateinit var eventOps: EventOps
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -43,15 +46,13 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.qrBtn.setOnClickListener { unit: View? -> startQrActivity() }
+        binding.qrBtn.setOnClickListener { startQrActivity() }
 
         //apply custom toolbar
         setSupportActionBar(binding.toolbarMain)
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
         eventsAdapter = CardsAdapter(this, imageLoader)
         handleRecyclerView()
-
-        //binding.loginBtn.setOnClickListener(view -> signIn());
 
         //handle drawer
         val actionBarDrawerToggle = ActionBarDrawerToggle(this, binding.drawerMain, binding.toolbarMain, R.string.app_name, R.string.app_name)
@@ -74,6 +75,7 @@ class MainActivity : BaseActivity() {
         disposables += eventsAdapter.clicks()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
+                    currentEvent = it
                     dialogStarter.startQrDialog(this, it)
                 }
 
@@ -157,7 +159,13 @@ class MainActivity : BaseActivity() {
             Timber.i("RESULT_OK")
             if (requestCode == REQUEST_SAF)
             {
-
+                if(data != null)
+                {
+                    eventOps.getEventById( currentEvent.id)
+                            .subscribe {
+                                fileManager.writeFileActionCreateDocument(this, it, data)
+                            }
+                }
             }
         }
     }

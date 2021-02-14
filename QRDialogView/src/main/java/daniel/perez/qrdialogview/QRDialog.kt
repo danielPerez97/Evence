@@ -12,6 +12,7 @@ import coil.load
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.DialogClosable
 import daniel.perez.core.ActivityStarter
+import daniel.perez.core.RequestCodes
 import daniel.perez.core.model.ViewEvent
 import daniel.perez.core.service.FileManager
 import daniel.perez.qrdialogview.databinding.DialogBoxQrBinding
@@ -59,13 +60,15 @@ class QRDialog(context: Context, var event: ViewEvent) {
 
     private fun save() {
         // Bug the user about storing it
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-                .addCategory(Intent.CATEGORY_OPENABLE)
-                .setType("text/calendar")
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "text/calendar"
+            putExtra(Intent.EXTRA_TITLE, event.title + ".ics")
+        }
 
-        intent.putExtra(Intent.EXTRA_TITLE, event.title + ".ics")
+
         if (context is BaseActivity) {
-            context.startActivityForResult(intent, 1)
+            context.startActivityForResult(intent, RequestCodes.REQUEST_SAF)
         }
     }
 

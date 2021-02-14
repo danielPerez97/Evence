@@ -8,6 +8,7 @@ import android.os.Environment
 import androidx.core.content.FileProvider
 import androidx.core.net.toFile
 import daniel.perez.core.BaseActivity
+import daniel.perez.core.db.Event
 import daniel.perez.core.service.qr.QrBitmapGenerator
 import daniel.perez.ical.ICalSpec
 import okio.buffer
@@ -18,7 +19,10 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 
-class FileManager(val context: Context, private val qrBitmapGenerator: QrBitmapGenerator)
+class FileManager(
+		private val context: Context,
+		private val qrBitmapGenerator: QrBitmapGenerator
+)
 {
 	private val icalDir = File(context.getExternalFilesDir(Environment.DIRECTORY_DCIM), "/ical")
 
@@ -100,7 +104,7 @@ class FileManager(val context: Context, private val qrBitmapGenerator: QrBitmapG
 		return FileProvider.getUriForFile(context, "${context.applicationContext.packageName}.fileprovider", file)
 	}
 
-	fun writeFileActionCreateDocument(context: BaseActivity, ical: ICalSpec, data: Intent)
+	fun writeFileActionCreateDocument(context: BaseActivity, event: Event, data: Intent)
 	{
 		val uri: Uri? = data.data
 		try
@@ -109,7 +113,7 @@ class FileManager(val context: Context, private val qrBitmapGenerator: QrBitmapG
 			val fileOutputStream = FileOutputStream(pfd!!.fileDescriptor)
 			try
 			{
-				fileOutputStream.sink().buffer().use { sink -> sink.writeUtf8(ical.text()) }
+				fileOutputStream.sink().buffer().use { sink -> sink.writeUtf8( event.icsText() ) }
 			}
 			catch (e: IOException)
 			{
