@@ -1,5 +1,6 @@
 package daniel.perez.core.db
 
+import daniel.perez.core.model.ViewEvent
 import io.reactivex.rxjava3.core.Observable
 import java.time.LocalDateTime
 
@@ -20,4 +21,8 @@ interface EventOps
     fun getEventsSortedSoonest(): Observable<List<Event>>
 
     fun getEventsSortedLatest(): Observable<List<Event>>
+
+    fun icsText(event: Event): Observable<String>
+
+    fun icsText(event: ViewEvent): Observable<String>
 }

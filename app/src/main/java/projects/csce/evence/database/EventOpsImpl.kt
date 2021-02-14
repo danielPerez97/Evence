@@ -9,6 +9,7 @@ import com.squareup.sqldelight.runtime.rx3.mapToOne
 import daniel.perez.core.db.Event
 import daniel.perez.core.db.EventOps
 import daniel.perez.core.db.UiNewEvent
+import daniel.perez.core.model.ViewEvent
 import daniel.perez.core.service.FileManager
 import daniel.perez.evencedb.EventQueries
 import daniel.perez.ical.EventSpec
@@ -98,6 +99,22 @@ private class EventOpsImpl(
                 .asObservable()
                 .mapToList()
                 .map { it.toEvent() }
+    }
+
+    override fun icsText(event: Event): Observable<String>
+    {
+        return queries.getEventById( event.id )
+                .asObservable()
+                .mapToOne()
+                .map { it.toICalSpec().text() }
+    }
+
+    override fun icsText(event: ViewEvent): Observable<String>
+    {
+        return queries.getEventById( event.id )
+                .asObservable()
+                .mapToOne()
+                .map { it.toICalSpec().text() }
     }
 
     private fun daniel.perez.evencedb.Event.toEvent(): Event

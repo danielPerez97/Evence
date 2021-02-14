@@ -8,6 +8,7 @@ import coil.util.CoilUtils
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
+import daniel.perez.core.db.EventOps
 import okhttp3.OkHttpClient
 import daniel.perez.core.service.FileManager
 import daniel.perez.core.service.qr.QrBitmapGenerator
