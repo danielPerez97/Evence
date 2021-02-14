@@ -10,6 +10,8 @@ data class Event(
         val location: String,
         val startTime: LocalDateTime,
         val endTime: LocalDateTime,
-        val qrImageUri: Uri,
+        val qrImageFileUri: Uri,
+        val qrImageContentUri: Uri,
+        val icsFileUri: Uri,
         val recurrenceRule: String? = null
 )
