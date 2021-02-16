@@ -37,8 +37,7 @@ class MainActivity : BaseActivity() {
     @Inject lateinit var activityStarter: ActivityStarter
     @Inject lateinit var sharedPref: SharedPref
     @Inject lateinit var imageLoader: ImageLoader
-    @Inject lateinit var fileManager: FileManager
-    @Inject lateinit var eventOps: EventOps
+    @Inject lateinit var activityResultActions: ActivityResultActions
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -161,9 +160,21 @@ class MainActivity : BaseActivity() {
             {
                 if(data != null)
                 {
-                    eventOps.getEventById( currentEvent.id)
+                    disposables += activityResultActions.actionCreateDocumentEvent(this, currentEvent, data)
                             .subscribe {
-                                fileManager.writeFileActionCreateDocument(this, it, data)
+                                when(it)
+                                {
+                                    ActionResult.Success -> toastShort("Wrote File Successfully")
+                                    is ActionResult.Failure ->
+                                    {
+                                        Timber.e(it.t)
+                                        toastShort("Error writing file")
+                                    }
+                                    ActionResult.InTransit ->
+                                    {
+                                        Timber.i("Writing file...")
+                                    }
+                                }
                             }
                 }
             }

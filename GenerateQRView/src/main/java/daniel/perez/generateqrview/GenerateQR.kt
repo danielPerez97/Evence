@@ -143,7 +143,7 @@ class GenerateQR : BaseActivity(), DialogClosable
         {
             if (data != null)
             {
-                activityResultActions.actionCreateDocumentEvent(this, currentEvent, data)
+                disposables += activityResultActions.actionCreateDocumentEvent(this, currentEvent, data)
                         .subscribe {
                             when(it)
                             {
