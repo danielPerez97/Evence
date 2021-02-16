@@ -45,7 +45,7 @@ class GenerateQR : BaseActivity(), DialogClosable
         binding = ActivityGenerateQrBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(GenerateQrViewModel::class.java)
-        
+
         if (intent != null && intent.getStringExtra("FILE_PATH") != null)
         {
             val file = File(intent.getStringExtra("FILE_PATH"))
