@@ -53,7 +53,8 @@ dependencies {
     implementation( Libs.lifeCycle )
     implementation( Libs.material )
     implementation( Libs.okio )
-    implementation( Libs.rxJava )
     implementation( Libs.rxAndroid )
+    implementation( Libs.rxBinding )
+    implementation( Libs.rxJava )
     implementation( Libs.timber )
 }

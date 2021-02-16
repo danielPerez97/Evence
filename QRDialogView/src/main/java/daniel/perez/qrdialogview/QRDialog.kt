@@ -19,8 +19,7 @@ import daniel.perez.qrdialogview.databinding.DialogBoxQrBinding
 import daniel.perez.qrdialogview.di.QRDialogComponentProvider
 import javax.inject.Inject
 
-class QRDialog(context: Context, var event: ViewEvent) {
-    private val context: Context
+class QRDialog(val context: Context, var event: ViewEvent) {
     private val dialog: Dialog
     private val binding: DialogBoxQrBinding
     @Inject lateinit var imageLoader: ImageLoader
@@ -31,7 +30,6 @@ class QRDialog(context: Context, var event: ViewEvent) {
         (context.applicationContext as QRDialogComponentProvider)
                 .provideQrDialogComponent()
                 .inject(this)
-        this.context = context
         binding = DialogBoxQrBinding.inflate(LayoutInflater.from(context))
         binding.qrDialogEventTitleTextview.text = event.title
         binding.qrDialogEventStartDateTextview.text = event.startDatePretty()

@@ -34,7 +34,7 @@ class NetworkModule(private val appContext: Context )
 	@Singleton
 	fun provideOkhttpClient(): OkHttpClient
 	{
-		val megaBytes: Long = 10 *1024 * 1028
+		val megaBytes: Long = 10 * 1024 * 1024
 		return OkHttpClient.Builder()
 				.cache( Cache(appContext.cacheDir, megaBytes) )
 				.build()

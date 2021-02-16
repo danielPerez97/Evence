@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.jakewharton.rxbinding4.view.clicks
 import daniel.perez.core.*
 import daniel.perez.core.db.*
 import daniel.perez.core.model.DateSetEvent
@@ -54,11 +55,11 @@ class GenerateQR : BaseActivity(), DialogClosable
             Timber.i(ical.events[0].toString())
             fillInFields()
         }
-        binding.startDateEditText.setOnClickListener { startDateDialog() }
-        binding.startTimeEditText.setOnClickListener { startTimeDialog() }
-        binding.endDateEditText.setOnClickListener { endDateDialog() }
-        binding.endTimeEditText.setOnClickListener { endTimeDialog() }
-        binding.addBtn.setOnClickListener { saveEvent() }
+        disposables += binding.startDateEditText.clicks().subscribe { startDateDialog() }
+        binding.startTimeEditText.clicks().subscribe { startTimeDialog() }
+        binding.endDateEditText.clicks().subscribe { endDateDialog() }
+        binding.endTimeEditText.clicks().subscribe { endTimeDialog() }
+        binding.addBtn.clicks().subscribe { saveEvent() }
     }
 
     //fill in editText and other fields when event is being edited
@@ -198,6 +199,11 @@ class GenerateQR : BaseActivity(), DialogClosable
                     endTime = it
                     binding.endTimeTextView.text = getAMPMTimeFormat("${it.hour} ${it.minute}")
                 })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.dispose()
     }
 
     override fun close()
