@@ -58,6 +58,8 @@ dependencies {
     implementation( project( Project.qrCameraView ) )
     implementation( project( Project.qrDialogView ) )
 
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.6")
+
     // Coil
     implementation( Libs.coil )
 //    implementation( Libs.coilBase )

@@ -71,7 +71,7 @@ class CardsAdapter(private val context: Context, private val imageLoader: ImageL
             binding.listEntryTitleTextview.text = event.title
             binding.listEntryDateTextview.text = event.startDatePretty()
             binding.listEntryPreviewDay.text = event.startDateTime.dayOfMonth.toString()
-            binding.listEntryPreviewMonth.text = event.startDateTime.monthValue.toString()
+            binding.listEntryPreviewMonth.text = event.startDatePretty().substringBefore(" ")
             binding.listEntryPreviewYear.text = event.startDateTime.year.toString()
             binding.listEntryTimeTextview.text = event.startDateTime.timeString()
             val isDark = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
