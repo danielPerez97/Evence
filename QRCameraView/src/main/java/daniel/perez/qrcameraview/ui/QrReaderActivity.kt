@@ -38,7 +38,8 @@ class QrReaderActivity : BaseActivity() {
     private  var qrBoundingBoxes: List<Rect>  = emptyList()
     private  var textBoundingBoxes: List<Rect?> = emptyList()
     private lateinit var intentActions: IntentActions
-    private lateinit var outlineOverlay: OutlineOverlay
+    //private lateinit var outlineOverlay: OutlineOverlay
+    private lateinit var overlays : Overlays
 
     private var currentScanType: SCAN_TYPE = SCAN_TYPE.BARCODE
 
@@ -66,8 +67,11 @@ class QrReaderActivity : BaseActivity() {
         } else
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSIONS)
 
-        outlineOverlay = OutlineOverlay(this, binding)
-        binding.parentLayout.addView(outlineOverlay)
+        //outlineOverlay = OutlineOverlay(this, binding)
+//        binding.parentLayout.addView(outlineOverlay)
+
+        overlays = Overlays(this)
+        binding.parentLayout.addView(overlays)
 
         binding.qrTypeCardview.setOnClickListener { onQRClick() }
         binding.switchScanButton.setOnClickListener { toggleScanMode() }
@@ -83,7 +87,7 @@ class QrReaderActivity : BaseActivity() {
     private fun updateViews() {
         if (isScanning()) {
             binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_search_white_24dp))
-            outlineOverlay.clearOverlays()
+            overlays.clearOverlays() //todo rename appropriately
             when (currentScanType) {
                 SCAN_TYPE.BARCODE -> {
                     binding.result.text = "Scanning for QR codes"
@@ -97,8 +101,11 @@ class QrReaderActivity : BaseActivity() {
                 SCAN_TYPE.BARCODE -> {
                     val qrData = scannedData[0].data as Barcode
                     binding.result.text = qrData.displayValue
-                    outlineOverlay.addOverlay(scannedData)
-                    binding.qrTypeCardview.setImageDrawable(outlineOverlay.setBarcodeTypeIcon(qrData))
+//                    outlineOverlay.addOverlay(scannedData)
+//                    binding.qrTypeCardview.setImageDrawable(outlineOverlay.setBarcodeTypeIcon(qrData))
+
+                    overlays.updateOverlays(scannedData)
+
                 }
 
                 SCAN_TYPE.TEXT -> {
@@ -218,6 +225,7 @@ class QrReaderActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         disposables.dispose()
-        outlineOverlay.clearOverlays()
+        //outlineOverlay.clearOverlays()
+        overlays.clearOverlays()
     }
 }

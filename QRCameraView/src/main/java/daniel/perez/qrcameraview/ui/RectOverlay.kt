@@ -3,23 +3,30 @@ package daniel.perez.qrcameraview.ui
 import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
-import android.view.View
 import androidx.core.graphics.drawable.toBitmap
 import com.google.mlkit.vision.barcode.Barcode
 import daniel.perez.qrcameraview.R
-import daniel.perez.qrcameraview.data.ScannedData
-import daniel.perez.qrcameraview.databinding.ActivityQrReaderBinding
 
-class OutlineOverlay constructor(internal val context: Context, private val binding: ActivityQrReaderBinding) : View(context) {
+class RectOverlay constructor(internal val context: Context, private val barcode: Barcode ) : BaseOverlay(context) {
+
+    private var scaleVal: Float = 0f
     private lateinit var paint: Paint
     private lateinit var focusedPaint: Paint
     private lateinit var backPaint: Paint
     private lateinit var imgPaint: Paint
-    private lateinit var  labelPaint: Paint
-    private var overlays : MutableList<RectF> = mutableListOf()
-    private var imgOverlays : MutableList<Bitmap> = mutableListOf()
+    private lateinit var labelPaint: Paint
+    private lateinit var boundingBox : RectF
+    private lateinit var img : Bitmap
 
-    init{ setupPaint() }
+    init{
+        initialize()
+        setupPaint()
+    }
+
+    private fun initialize(){
+        boundingBox = RectF(barcode.boundingBox)
+        img = setBarcodeTypeIcon(barcode)!!.toBitmap()
+    }
 
     private fun setupPaint() {
         paint = Paint()
@@ -52,49 +59,28 @@ class OutlineOverlay constructor(internal val context: Context, private val bind
         labelPaint.textSize=70f
     }
 
-    fun addOverlay(scannedData: List<ScannedData>) {
-        overlays = mutableListOf()
-
-        for (i in scannedData.indices) {
-            val qr = scannedData[i].data as Barcode
-            val newRectF = RectF(qr.boundingBox)
-            overlays.add(newRectF)
-
-            val img : Bitmap = setBarcodeTypeIcon(qr)!!.toBitmap()
-            imgOverlays.add(img)
-        }
-        invalidate()
+    override fun setScale(scale : Float) {
+        scaleVal = scale
     }
 
-    fun clearOverlays(){
-        overlays.clear()
-        imgOverlays.clear()
-        invalidate()
-    }
+    override fun draw(canvas: Canvas) {
+        canvas.drawRoundRect(boundingBox, 35f, 35f, backPaint)
 
-    override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-
-        binding.overlayLayout.removeAllViews()
-        for (i in overlays.indices){
-            val overlay = overlays[i]
-            val imgOverlay = imgOverlays[i]
-
-            canvas.drawRoundRect(overlay, 35f, 35f, backPaint)
-            canvas.drawBitmap(imgOverlays[i],
-                    overlay.centerX() - (imgOverlay.width / 2),
-                    overlay.centerY() - (imgOverlay.height / 2),
+        canvas.drawBitmap(img,
+                    boundingBox.centerX() - (img.width / 2) ,
+                    boundingBox.centerY() - (img.height / 2),
                     imgPaint)
 
+//        canvas.drawRoundRect(boundingBox.left * scaleVal,
+//        boundingBox.top * scaleVal,
+//        boundingBox.right * scaleVal,
+//        boundingBox.bottom * scaleVal,
+//        35f,35f, paint)
+        canvas.drawRoundRect(boundingBox, 35f, 35f, paint)
+        canvas.drawRoundRect(boundingBox, 35f, 35f, focusedPaint)
 
-            canvas.drawRoundRect(overlay, 35f, 35f, paint)
-            if (i == 0) canvas.drawRoundRect(overlay, 35f, 35f, focusedPaint)
-
-
-            ///if (i > 4) //only shows 6 qr codes at a time for more stability
-              //  break
-        }
     }
+
 
     fun setBarcodeTypeIcon(barcode: Barcode) : Drawable? {
         when (barcode.valueType) {
@@ -124,7 +110,4 @@ class OutlineOverlay constructor(internal val context: Context, private val bind
 
     }
 
-    override fun setOnClickListener(l: OnClickListener?) {
-        super.setOnClickListener(l)
-    }
 }

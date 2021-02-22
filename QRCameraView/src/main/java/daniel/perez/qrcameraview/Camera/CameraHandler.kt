@@ -58,7 +58,6 @@ class CameraHandler @Inject constructor(private val context: Context,
             val preview = Preview.Builder()
                     .setTargetResolution(Size(displayMetrics.widthPixels, displayMetrics.heightPixels))
                     .build()
-
             //chooses a camera
             val cameraSelector = CameraSelector.Builder()
                     .requireLensFacing(CameraSelector.LENS_FACING_BACK)
