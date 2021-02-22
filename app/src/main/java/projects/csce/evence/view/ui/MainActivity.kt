@@ -9,13 +9,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.ImageLoader
+import com.jakewharton.rxbinding4.widget.textChanges
 import daniel.perez.core.*
 import daniel.perez.core.RequestCodes.REQUEST_SAF
 import daniel.perez.core.adapter.CardsAdapter
-import daniel.perez.core.db.EventOps
 import daniel.perez.core.di.ViewModelFactory
 import daniel.perez.core.model.ViewEvent
-import daniel.perez.core.service.FileManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import projects.csce.evence.R
@@ -24,6 +23,7 @@ import projects.csce.evence.service.model.SharedPref
 import projects.csce.evence.utils.getAppComponent
 import projects.csce.evence.viewmodel.MainViewModel
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
@@ -64,11 +64,20 @@ class MainActivity : BaseActivity() {
 
     private fun setupSubscriptions()
     {
-        disposables += viewModel.liveFiles()
+        disposables += viewModel.events()
                 .observeOn( AndroidSchedulers.mainThread() )
-                .subscribe { events: List<ViewEvent> ->
-                    Timber.i("Received Events")
+                .subscribe{ events: List<ViewEvent> ->
+                    Timber.i("Received Events, size: ${events.size}")
                     eventsAdapter.setData(events)
+                }
+
+        disposables += binding.searchEditText.textChanges()
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .map { it.toString() }
+                .distinctUntilChanged()
+                .subscribe {
+                    Timber.i("""Text Change Subscribe: '$it'""")
+                    viewModel.newSearch( it.toString() )
                 }
 
 
@@ -122,6 +131,13 @@ class MainActivity : BaseActivity() {
                     if (events.isEmpty()) binding.emptyTextview.visibility = View.VISIBLE
                     else binding.emptyTextview.visibility = View.GONE
         }
+//        disposables += viewModel.events()
+//                .observeOn( AndroidSchedulers.mainThread() )
+//                .subscribe { events ->
+//                    Timber.i( "handleRecyclerView() Size: ${events.size}" )
+//                    eventsAdapter.setData( events )
+//                    if (events.isEmpty()) binding.emptyTextview.visibility = View.VISIBLE else binding.emptyTextview.visibility = View.GONE
+//        }
     }
 
     fun startQrReaderActivity() {
