@@ -59,6 +59,7 @@ class MainActivity : BaseActivity() {
         binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer)
         binding.drawerMain.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
+        viewSetup()
         setupSubscriptions()
     }
 
@@ -72,7 +73,7 @@ class MainActivity : BaseActivity() {
                 }
 
         disposables += binding.searchEditText.textChanges()
-                .debounce(300, TimeUnit.MILLISECONDS)
+                .debounce(100, TimeUnit.MILLISECONDS)
                 .map { it.toString() }
                 .distinctUntilChanged()
                 .subscribe {
@@ -102,6 +103,11 @@ class MainActivity : BaseActivity() {
         sharedPref.notifyUiPref()
     }
 
+    override fun onStop() {
+        super.onStop()
+        binding.searchEditText.setText("")
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         disposables.dispose()
@@ -114,12 +120,14 @@ class MainActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.qr_camera_btn) {
-            startQrReaderActivity()
+            activityStarter.startQrReader(this)
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun handleRecyclerView() {
+    private fun viewSetup()
+    {
+        // RecyclerView
         binding.eventsRecyclerView.adapter = eventsAdapter
         binding.eventsRecyclerView.layoutManager = LinearLayoutManager(baseContext)
 
@@ -143,26 +151,36 @@ class MainActivity : BaseActivity() {
     fun startQrReaderActivity() {
         activityStarter.startQrReader(this)
     }
+        //
+        binding.qrBtn.setOnClickListener { activityStarter.startGenerateQr(this) }
 
-    fun startQrActivity() {
-        activityStarter.startGenerateQr(this)
+        //apply custom toolbar
+        setSupportActionBar(binding.toolbarMain)
+        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+        eventsAdapter = CardsAdapter(this, imageLoader)
+        viewSetup()
+
+        //handle drawer
+        val actionBarDrawerToggle = ActionBarDrawerToggle(this, binding.drawerMain, binding.toolbarMain, R.string.app_name, R.string.app_name)
+        binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer)
+        binding.drawerMain.addDrawerListener(actionBarDrawerToggle)
+        actionBarDrawerToggle.syncState()
     }
 
-    fun startSecondActivity() {
-        activityStarter.startSecondActivity(this)
-    }
-
-    fun startSettingsActivity(view: View?) {
+    fun startSettingsActivity(view: View?)
+    {
         binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer)
         activityStarter.startSettingsActivity(this)
     }
 
-    fun startShareAppActivity(view: View?) {
+    fun startShareAppActivity(view: View?)
+    {
         binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer)
         activityStarter.startShareAppActivity(this)
     }
 
-    fun startAboutActivity(view: View?) {
+    fun startAboutActivity(view: View?)
+    {
         binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer)
         activityStarter.startAboutActivity(this)
     }
