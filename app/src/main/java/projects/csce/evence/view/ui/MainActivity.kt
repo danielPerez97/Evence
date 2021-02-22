@@ -45,19 +45,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.qrBtn.setOnClickListener { startQrActivity() }
-
-        //apply custom toolbar
-        setSupportActionBar(binding.toolbarMain)
-        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
-        eventsAdapter = CardsAdapter(this, imageLoader)
-        handleRecyclerView()
-
-        //handle drawer
-        val actionBarDrawerToggle = ActionBarDrawerToggle(this, binding.drawerMain, binding.toolbarMain, R.string.app_name, R.string.app_name)
-        binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer)
-        binding.drawerMain.addDrawerListener(actionBarDrawerToggle)
-        actionBarDrawerToggle.syncState()
+        viewSetup()
         setupSubscriptions()
     }
 
@@ -71,7 +59,7 @@ class MainActivity : BaseActivity() {
                 }
 
         disposables += binding.searchEditText.textChanges()
-                .debounce(300, TimeUnit.MILLISECONDS)
+                .debounce(100, TimeUnit.MILLISECONDS)
                 .map { it.toString() }
                 .distinctUntilChanged()
                 .subscribe {
@@ -101,6 +89,11 @@ class MainActivity : BaseActivity() {
         sharedPref.notifyUiPref()
     }
 
+    override fun onStop() {
+        super.onStop()
+        binding.searchEditText.setText("")
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         disposables.dispose()
@@ -113,47 +106,47 @@ class MainActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.qr_camera_btn) {
-            startQrReaderActivity()
+            activityStarter.startQrReader(this)
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun handleRecyclerView() {
+    private fun viewSetup()
+    {
+        // RecyclerView
         binding.eventsRecyclerView.adapter = eventsAdapter
         binding.eventsRecyclerView.layoutManager = LinearLayoutManager(baseContext)
 
-//        disposables += viewModel.events()
-//                .observeOn( AndroidSchedulers.mainThread() )
-//                .subscribe { events ->
-//                    Timber.i( "handleRecyclerView() Size: ${events.size}" )
-//                    eventsAdapter.setData( events )
-//                    if (events.isEmpty()) binding.emptyTextview.visibility = View.VISIBLE else binding.emptyTextview.visibility = View.GONE
-//        }
+        //
+        binding.qrBtn.setOnClickListener { activityStarter.startGenerateQr(this) }
+
+        //apply custom toolbar
+        setSupportActionBar(binding.toolbarMain)
+        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+        eventsAdapter = CardsAdapter(this, imageLoader)
+        viewSetup()
+
+        //handle drawer
+        val actionBarDrawerToggle = ActionBarDrawerToggle(this, binding.drawerMain, binding.toolbarMain, R.string.app_name, R.string.app_name)
+        binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer)
+        binding.drawerMain.addDrawerListener(actionBarDrawerToggle)
+        actionBarDrawerToggle.syncState()
     }
 
-    fun startQrReaderActivity() {
-        activityStarter.startQrReader(this)
-    }
-
-    fun startQrActivity() {
-        activityStarter.startGenerateQr(this)
-    }
-
-    fun startSecondActivity() {
-        activityStarter.startSecondActivity(this)
-    }
-
-    fun startSettingsActivity(view: View?) {
+    fun startSettingsActivity(view: View?)
+    {
         binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer)
         activityStarter.startSettingsActivity(this)
     }
 
-    fun startShareAppActivity(view: View?) {
+    fun startShareAppActivity(view: View?)
+    {
         binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer)
         activityStarter.startShareAppActivity(this)
     }
 
-    fun startAboutActivity(view: View?) {
+    fun startAboutActivity(view: View?)
+    {
         binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer)
         activityStarter.startAboutActivity(this)
     }

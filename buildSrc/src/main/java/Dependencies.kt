@@ -65,9 +65,10 @@ object Libs
     const val reactiveStreams = "androidx.lifecycle:lifecycle-reactivestreams:2.1.0"
 
     // RecyclerView, CardView
-    private const val recyclerViewVersion = "1.0.0"
+    private const val recyclerViewVersion = "1.2.0-beta01"
+    private const val cardViewVersion = "1.0.0"
     const val recyclerView = "androidx.recyclerview:recyclerview:$recyclerViewVersion"
-    const val cardView = "androidx.cardview:cardview:$recyclerViewVersion"
+    const val cardView = "androidx.cardview:cardview:$cardViewVersion"
 
     // Retrofit
     private const val retrofitVersion = "2.9.0"
