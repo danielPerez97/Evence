@@ -7,6 +7,7 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
+import timber.log.Timber
 
 class QRScanner() : BaseAnalyzer()
 {
@@ -29,6 +30,8 @@ class QRScanner() : BaseAnalyzer()
                     if (it.size !=0) {
                         Log.d("QrHandler", "scan successful" + it[0].rawValue.toString())
                     }
+                    Timber.i("PROXYYYY width=========" + imageProxy.width + "height==========" +  imageProxy.height )
+
                 }
                 .addOnFailureListener{
                     Log.e("QRScanner", "scan failed", it)
