@@ -30,6 +30,7 @@ class CameraHandler @Inject constructor(private val context: Context,
     private lateinit var currentAnalyzer: BaseAnalyzer
     private lateinit var lifecycleOwner: LifecycleOwner
     private lateinit var previewView: PreviewView
+    var isPortraitMode : Boolean = true
 
     init {
         setup()
@@ -70,7 +71,7 @@ class CameraHandler @Inject constructor(private val context: Context,
                     imageAnalysis,
                     preview)
             preview.setSurfaceProvider(previewView.createSurfaceProvider(camera.cameraInfo))
-            previewView.scaleType = PreviewView.ScaleType.FIT_START
+            previewView.scaleType = PreviewView.ScaleType.FIT_CENTER
         }, ContextCompat.getMainExecutor(context))
     }
 
@@ -106,5 +107,18 @@ class CameraHandler @Inject constructor(private val context: Context,
     fun toggleFlash(flashOn: Boolean) {
         camera.cameraControl.enableTorch(!flashOn)
     }
+
+    fun getAnalyzedImageSize() : Size {
+        val shortSide = Math.min(currentAnalyzer.imageProxy.width,
+                currentAnalyzer.imageProxy.height)
+        val longSide = Math.max(currentAnalyzer.imageProxy.width,
+                currentAnalyzer.imageProxy.height)
+
+        return if (isPortraitMode)
+            Size(shortSide, longSide)
+        else //landscape (for future updates)
+            Size(shortSide, longSide)
+    }
+
 
 }

@@ -8,14 +8,11 @@ import com.google.mlkit.vision.barcode.Barcode
 import daniel.perez.qrcameraview.R
 
 class RectOverlay constructor(internal val context: Context, private val barcode: Barcode ) : BaseOverlay(context) {
-
-    private var scaleVal: Float = 0f
-    private lateinit var paint: Paint
-    private lateinit var focusedPaint: Paint
-    private lateinit var backPaint: Paint
+    private lateinit var outlinePaint: Paint
+    private lateinit var focusedOutlinePaint: Paint
+    private lateinit var bgPaint: Paint
     private lateinit var imgPaint: Paint
     private lateinit var labelPaint: Paint
-    private lateinit var boundingBox : RectF
     private lateinit var img : Bitmap
 
     init{
@@ -29,29 +26,29 @@ class RectOverlay constructor(internal val context: Context, private val barcode
     }
 
     private fun setupPaint() {
-        paint = Paint()
-        paint.color = Color.WHITE
-        paint.strokeWidth = 5f
-        paint.style = Paint.Style.STROKE
+        outlinePaint = Paint()
+        outlinePaint.color = Color.WHITE
+        outlinePaint.strokeWidth = 8f
+        outlinePaint.style = Paint.Style.STROKE
 
-        focusedPaint = Paint()
-        focusedPaint.color = context.getColor(R.color.blue1)
-        focusedPaint.strokeWidth = 15f
-        focusedPaint.style = Paint.Style.STROKE
-        focusedPaint.isAntiAlias = true;
-        focusedPaint.setShadowLayer(45f, 3f, 3f, Color.BLACK);
+        focusedOutlinePaint = Paint()
+        focusedOutlinePaint.color = context.getColor(R.color.blue1)
+        focusedOutlinePaint.strokeWidth = 15f
+        focusedOutlinePaint.style = Paint.Style.STROKE
+        focusedOutlinePaint.isAntiAlias = true;
+        focusedOutlinePaint.setShadowLayer(45f, 3f, 3f, Color.BLACK);
 
-        backPaint = Paint()
-        backPaint.color = Color.WHITE
-        backPaint.style = Paint.Style.FILL
-        backPaint.alpha = 150
+        bgPaint = Paint()
+        bgPaint.color = Color.WHITE
+        bgPaint.style = Paint.Style.FILL
+        bgPaint.alpha = 150
         //backPaint.maskFilter = BlurMaskFilter(150f ,BlurMaskFilter.Blur.NORMAL)
-        backPaint.setShadowLayer(65f, 3f, 3f, Color.BLACK);
+        bgPaint.setShadowLayer(65f, 3f, 3f, Color.BLACK);
 
         imgPaint = Paint()
         imgPaint.style = Paint.Style.FILL
-        imgPaint.alpha = 110
-        imgPaint.colorFilter = PorterDuffColorFilter(Color.BLACK,
+        //imgPaint.alpha = 110
+        imgPaint.colorFilter = PorterDuffColorFilter(Color.WHITE,
                 PorterDuff.Mode.SRC_IN)
 
         labelPaint = Paint()
@@ -59,28 +56,15 @@ class RectOverlay constructor(internal val context: Context, private val barcode
         labelPaint.textSize=70f
     }
 
-    override fun setScale(scale : Float) {
-        scaleVal = scale
-    }
-
     override fun draw(canvas: Canvas) {
-        canvas.drawRoundRect(boundingBox, 35f, 35f, backPaint)
-
+        canvas.drawRoundRect(boundingBox, 35f, 35f, bgPaint)
         canvas.drawBitmap(img,
                     boundingBox.centerX() - (img.width / 2) ,
                     boundingBox.centerY() - (img.height / 2),
                     imgPaint)
-
-//        canvas.drawRoundRect(boundingBox.left * scaleVal,
-//        boundingBox.top * scaleVal,
-//        boundingBox.right * scaleVal,
-//        boundingBox.bottom * scaleVal,
-//        35f,35f, paint)
-        canvas.drawRoundRect(boundingBox, 35f, 35f, paint)
-        canvas.drawRoundRect(boundingBox, 35f, 35f, focusedPaint)
-
+        canvas.drawRoundRect(boundingBox,35f,35f, outlinePaint)
+        //canvas.drawRoundRect(boundingBox, 35f, 35f, focusedOutlinePaint)
     }
-
 
     fun setBarcodeTypeIcon(barcode: Barcode) : Drawable? {
         when (barcode.valueType) {
@@ -107,7 +91,5 @@ class RectOverlay constructor(internal val context: Context, private val barcode
             else ->
                 return context.getDrawable(R.drawable.ic_baseline_qr_code_scanner_24)
         }
-
     }
-
 }
