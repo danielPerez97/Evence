@@ -7,7 +7,7 @@ import com.google.mlkit.vision.common.InputImage
 
 abstract class BaseAnalyzer : ImageAnalysis.Analyzer {
     protected lateinit var  inputImage : InputImage
-    protected lateinit var imageProxy: ImageProxy
+    lateinit var imageProxy: ImageProxy
 
     @SuppressLint("UnsafeExperimentalUsageError")
     override fun analyze(imageProxy: ImageProxy) {

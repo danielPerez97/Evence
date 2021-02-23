@@ -77,7 +77,6 @@ class QrReaderActivity : BaseActivity() {
         binding.switchScanButton.setOnClickListener { toggleScanMode() }
         binding.flashButton.setOnClickListener { toggleFlash() }
 
-
         binding.textSwitcher.setInAnimation(this, android.R.anim.slide_in_left)
         binding.textSwitcher.setOutAnimation(this, android.R.anim.slide_out_right)
         setupSubscriptions()
@@ -97,13 +96,13 @@ class QrReaderActivity : BaseActivity() {
                 }
             }
         } else {
+            overlays.updateScannedImageSize(cameraHandler.getAnalyzedImageSize())
             when (currentScanType) {
                 SCAN_TYPE.BARCODE -> {
                     val qrData = scannedData[0].data as Barcode
                     binding.result.text = qrData.displayValue
 //                    outlineOverlay.addOverlay(scannedData)
 //                    binding.qrTypeCardview.setImageDrawable(outlineOverlay.setBarcodeTypeIcon(qrData))
-
                     overlays.updateOverlays(scannedData)
 
                 }
@@ -180,7 +179,6 @@ class QrReaderActivity : BaseActivity() {
     }
 
     private fun isScanning(): Boolean = scannedData.isEmpty()
-
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(

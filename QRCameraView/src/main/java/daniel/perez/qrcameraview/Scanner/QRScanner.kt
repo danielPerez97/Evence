@@ -14,7 +14,6 @@ class QRScanner() : BaseAnalyzer()
     private val barcodeSubject: PublishSubject<List<Barcode>> = PublishSubject.create()
     private lateinit var barcodeScanner : BarcodeScanner
 
-
     override fun scan(){
         barcodeScanner = BarcodeScanning.getClient()
         val options = BarcodeScannerOptions.Builder()
