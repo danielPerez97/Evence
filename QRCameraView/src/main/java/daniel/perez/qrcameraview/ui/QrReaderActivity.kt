@@ -3,17 +3,16 @@ package daniel.perez.qrcameraview.ui
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.graphics.Rect
 import android.os.Bundle
+import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.mlkit.vision.barcode.Barcode
-import com.google.mlkit.vision.text.Text
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.DialogStarter
-import daniel.perez.core.copyToClipboard
 import daniel.perez.core.model.ViewCalendarData
 import daniel.perez.core.service.FileManager
 import daniel.perez.core.toastShort
@@ -27,21 +26,20 @@ import daniel.perez.qrcameraview.data.ScannedData
 import daniel.perez.qrcameraview.databinding.ActivityQrReaderBinding
 import daniel.perez.qrcameraview.di.QrReaderComponentProvider
 import daniel.perez.qrcameraview.viewmodel.QrReaderViewModel
-import timber.log.Timber
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 class QrReaderActivity : BaseActivity() {
     private lateinit var binding: ActivityQrReaderBinding
     private lateinit var viewModel: QrReaderViewModel
-    private var flashOn = false
-    private lateinit var scannedData: List<ScannedData>
-    private  var qrBoundingBoxes: List<Rect>  = emptyList()
-    private  var textBoundingBoxes: List<Rect?> = emptyList()
-    private lateinit var intentActions: IntentActions
-    //private lateinit var outlineOverlay: OutlineOverlay
     private lateinit var overlays : Overlays
-
+    private lateinit var adapter: ScannedQrAdapter
+    private lateinit var intentActions: IntentActions
+    private lateinit var barcodeTypes: BarcodeTypes
+    private var scannedData: List<ScannedData> = emptyList()
     private var currentScanType: SCAN_TYPE = SCAN_TYPE.BARCODE
+    private var flashOn = false
+    private var scanOn = true
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var fileManager: FileManager
@@ -61,93 +59,99 @@ class QrReaderActivity : BaseActivity() {
         setContentView(binding.root)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(QrReaderViewModel::class.java)
         intentActions = IntentActions(this)
+        barcodeTypes = BarcodeTypes(this)
 
         if (allPermissionsGranted()) {
             cameraHandler.openCamera(this, binding.previewView)
         } else
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSIONS)
 
-        //outlineOverlay = OutlineOverlay(this, binding)
-//        binding.parentLayout.addView(outlineOverlay)
-
         overlays = Overlays(this)
         binding.parentLayout.addView(overlays)
-
-        binding.qrTypeCardview.setOnClickListener { onQRClick() }
+        binding.scanButton.setOnClickListener { onScanClick() }
         binding.switchScanButton.setOnClickListener { toggleScanMode() }
         binding.flashButton.setOnClickListener { toggleFlash() }
-
         binding.textSwitcher.setInAnimation(this, android.R.anim.slide_in_left)
         binding.textSwitcher.setOutAnimation(this, android.R.anim.slide_out_right)
+
+        handleRecyclerView()
         setupSubscriptions()
+    }
+
+    private fun handleRecyclerView(){
+        adapter = ScannedQrAdapter(this)
+        binding.cameraRecyclerView.adapter = adapter
+        val llm =  LinearLayoutManager(baseContext)
+        llm.stackFromEnd = true
+        binding.cameraRecyclerView.layoutManager = llm
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun updateViews() {
-        if (isScanning()) {
-            binding.qrTypeCardview.setImageDrawable(getDrawable(R.drawable.ic_search_white_24dp))
-            overlays.clearOverlays() //todo rename appropriately
-            when (currentScanType) {
-                SCAN_TYPE.BARCODE -> {
-                    binding.result.text = "Scanning for QR codes"
+        if (scanOn)
+            if (scannedData.isEmpty()) {
+                overlays.clearOverlays() //todo rename appropriately
+                when (currentScanType) {
+                    SCAN_TYPE.BARCODE -> {
+                        binding.result.text = "Scanning for QR codes"
+                    }
+                    SCAN_TYPE.TEXT -> {
+                        binding.result.text = "Scanning for texts"
+                    }
                 }
-                SCAN_TYPE.TEXT -> {
-                    binding.result.text = "Scanning for texts"
-                }
-            }
-        } else {
-            overlays.updateScannedImageSize(cameraHandler.getAnalyzedImageSize())
-            when (currentScanType) {
-                SCAN_TYPE.BARCODE -> {
-                    val qrData = scannedData[0].data as Barcode
-                    binding.result.text = qrData.displayValue
-//                    outlineOverlay.addOverlay(scannedData)
-//                    binding.qrTypeCardview.setImageDrawable(outlineOverlay.setBarcodeTypeIcon(qrData))
-                    overlays.updateOverlays(scannedData)
-
-                }
-
-                SCAN_TYPE.TEXT -> {
-                    val textBlock = scannedData[0].data as Text.TextBlock
-                    binding.result.text = textBlock.text
-                    //outlineOverlay.addOverlay(textBoundingBoxes)
+            } else {
+                overlays.updateScannedImageSize(cameraHandler.getAnalyzedImageSize())
+                binding.result.text = ""
+                when (currentScanType) {
+                    SCAN_TYPE.BARCODE -> {
+                        overlays.updateOverlays(scannedData)
+                    }
+                    SCAN_TYPE.TEXT -> {
+//                        val textBlock = scannedData[0].data as Text.TextBlock
+//                        binding.result.text = textBlock.text
+                    }
                 }
             }
+    }
+
+    private fun onScanClick() {
+        when {
+            scanOn -> showResults()
+            else -> hideResults()
         }
     }
 
-    fun onQRClick() {
-        if (isScanning()) {
-            toastShort("No QR code found")
-        } else {
-            val qrData = scannedData[0].data as Barcode
-            Timber.i(qrData.valueType.toString())
-            when (qrData.valueType) {
-                Barcode.TYPE_CALENDAR_EVENT -> handleQrEvent()
-                Barcode.TYPE_URL -> intentActions.openWebpage(qrData.url)
-                Barcode.TYPE_CONTACT_INFO -> intentActions.saveContact(qrData.contactInfo)
-                Barcode.TYPE_EMAIL -> intentActions.sendEmail(qrData.email)
-                Barcode.TYPE_PHONE -> intentActions.performCall(qrData.phone)
-                Barcode.TYPE_SMS -> intentActions.sendSMS(qrData.sms)
-                Barcode.TYPE_ISBN -> intentActions.searchWeb(qrData)
-                Barcode.TYPE_WIFI -> copyToClipboard(this, "wifi password", qrData.wifi.password)
-                Barcode.TYPE_GEO -> intentActions.searchGeo(qrData.geoPoint)
-                else -> copyToClipboard(this, "Copy text", qrData.displayValue)
-            }
-        }
+    private fun showResults(){
+        scanOn = false
+        adapter.setData(scannedData) // todo create child class for scanned data
+        overlays.clearOverlays()
+        binding.cameraRecyclerView.visibility = View.VISIBLE
+        binding.scanButton.setImageDrawable(getDrawable(R.drawable.ic_close_white_24dp))
+        binding.result.text = "Found ${scannedData.size} QR codes" //todo fix plurality
+        binding.flashButton.visibility = View.GONE
+        binding.switchScanButton.visibility = View.GONE
     }
 
-    private fun handleQrEvent() {
-        val qrData = scannedData[0].data as Barcode
+    private fun hideResults() {
+        scanOn = true
+        adapter.clearData()
+        binding.cameraRecyclerView.visibility = View.GONE
+        binding.scanButton.setImageDrawable(getDrawable(R.drawable.ic_search_white_24dp))
+        binding.flashButton.visibility = View.VISIBLE
+        binding.switchScanButton.visibility = View.VISIBLE
+
+    }
+
+    private fun handleQrEvent(barcode: Barcode) {
         val currentEvent = ICalSpec.Builder()
-                .fileName(qrData.calendarEvent.summary)
-                .addEvent(viewModel.toEventSpec(qrData))
+                .fileName(barcode.calendarEvent.summary)
+                .addEvent(viewModel.toEventSpec(barcode))
                 .build()
 
         // Write the file to the file system
         viewModel.saveFile(currentEvent)
         val calendar = ViewCalendarData(currentEvent.fileName,
-                listOf(viewModel.toViewEvent(viewModel.toEventSpec(qrData))))
+                listOf(viewModel.toViewEvent(viewModel.toEventSpec(barcode))))
         dialogStarter.startQrDialog(this, calendar)
     }
 
@@ -166,7 +170,6 @@ class QrReaderActivity : BaseActivity() {
     }
 
     private fun toggleScanMode() {
-        //switches scan type
         currentScanType = cameraHandler.switchScanType(currentScanType)
         when (currentScanType) {
             SCAN_TYPE.BARCODE -> {
@@ -177,8 +180,6 @@ class QrReaderActivity : BaseActivity() {
             }
         }
     }
-
-    private fun isScanning(): Boolean = scannedData.isEmpty()
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
@@ -202,28 +203,27 @@ class QrReaderActivity : BaseActivity() {
                     scannedData = it
                     updateViews()
                 })
-        disposables.add(viewModel.liveQRBoundingBoxes()
-                .subscribe {
-                    qrBoundingBoxes = it
-                    updateViews()
-                })
         disposables.add(viewModel.liveTextData()
                 //add onerrorhandler
                 .subscribe {
                     scannedData = it
                     updateViews()
                 })
-        disposables.add(viewModel.liveTextBoundingBoxes()
-                .subscribe {
-                    textBoundingBoxes = it
-                    updateViews()
+        disposables.add(adapter.clicks()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { barcode: Barcode? ->
+                    if (barcode != null) {
+                        if (barcode.valueType == Barcode.TYPE_CALENDAR_EVENT)
+                            handleQrEvent(barcode)
+                        else
+                            barcodeTypes.performAction(barcode)
+                    }
                 })
     }
 
     override fun onDestroy() {
         super.onDestroy()
         disposables.dispose()
-        //outlineOverlay.clearOverlays()
         overlays.clearOverlays()
     }
 }

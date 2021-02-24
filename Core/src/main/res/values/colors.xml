@@ -6,6 +6,7 @@
     <color name="colorAccent">#2196F3</color>
     <color name="blue1">#2196F3</color>
     <color name="cardviewBackground">#fff</color>
+    <color name="transparentCardviewBackground">#f5ffffff</color>
     <color name="edittext_font_color">#666</color>
     <color name="formInputBackground">#ECEFF1</color>
     <color name="mainText">#000</color>

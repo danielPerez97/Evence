@@ -29,7 +29,7 @@
         <LinearLayout
             android:id="@+id/date_preview"
             android:layout_width="@dimen/events_entry_date_preview_size"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
             >
@@ -43,11 +43,6 @@
                 style="@style/EventItemPreviewText"
                 android:text="12"
                 android:textSize="28sp"/>
-            <TextView
-                android:id="@+id/list_entry_preview_year"
-                style="@style/EventItemPreviewText"
-                android:text="2020"
-                android:textSize="12sp"/>
         </LinearLayout>
         <ImageView
             android:id="@+id/qrImageView"

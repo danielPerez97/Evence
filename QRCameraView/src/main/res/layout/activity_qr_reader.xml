@@ -12,10 +12,9 @@
         android:id="@+id/previewView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="53dp"/>
+        android:layout_marginBottom="53dp" />
 
     <RelativeLayout
-
         android:id="@+id/overlay_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,10 +22,22 @@
 
     </RelativeLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/camera_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="24dp"
+        android:layout_marginBottom="53dp"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/gradient_height"
+        app:layout_anchor="@+id/gradient"
+        app:layout_anchorGravity="top"
+        tools:listitem="@layout/scanned_qr_list_entry_layout" />
+
     <View
         android:id="@+id/gradient"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="@dimen/gradient_height"
         android:layout_marginBottom="53dp"
         android:background="@drawable/gradient"
         app:layout_anchor="@+id/previewView"
@@ -38,11 +49,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="56dp"
+        android:inAnimation="@android:anim/slide_in_left"
+        android:outAnimation="@android:anim/slide_out_right"
         android:paddingBottom="35dp"
         app:layout_anchor="@+id/gradient"
-        app:layout_anchorGravity="center"
-        android:inAnimation="@android:anim/slide_in_left"
-        android:outAnimation="@android:anim/slide_out_right">
+        app:layout_anchorGravity="center">
+
         <TextView
             android:id="@+id/result"
             style="@style/viewShadow"
@@ -55,58 +67,56 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/overlay_button"
-        android:visibility="gone"
         style="@style/CircularButtonCardView"
-        android:layout_margin="16dp"
         android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"
         android:backgroundTint="@color/grey1"
-        >
+        android:visibility="gone">
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/foverlay_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/ic_search_white_24dp"
-            />
+            android:src="@drawable/ic_search_white_24dp" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/flash_button"
         style="@style/CircularButtonCardView"
-        android:layout_margin="16dp"
         android:layout_gravity="bottom|start"
-        android:backgroundTint="@color/grey1"
-        >
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/grey1">
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/flash_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/ic_flash_off_white_24dp"
-            />
+            android:src="@drawable/ic_flash_off_white_24dp" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/switch_scan_button"
         style="@style/CircularButtonCardView"
-        android:layout_margin="16dp"
         android:layout_gravity="bottom|end"
-        android:backgroundTint="@color/grey1"
-        >
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/grey1">
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/switch_scan_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/ic_baseline_scan_text_24"
-            />
+            android:src="@drawable/ic_baseline_scan_text_24" />
     </androidx.cardview.widget.CardView>
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/qr_type_cardview"
+        android:id="@+id/scan_button"
         style="@style/FAB"
         android:layout_gravity="bottom|center"
-        android:backgroundTint="@color/grey1" />
+        android:backgroundTint="@color/grey1"
+        android:src="@drawable/ic_search_white_24dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

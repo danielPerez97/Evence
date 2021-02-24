@@ -9,11 +9,14 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import daniel.perez.core.*
+import daniel.perez.core.R
 import daniel.perez.core.databinding.EventsListEntryLayoutBinding
+import daniel.perez.core.getDay
+import daniel.perez.core.getLocaleMonth
 import daniel.perez.core.model.UiPreference
 import daniel.perez.core.model.ViewCalendarData
 import daniel.perez.core.model.ViewEvent
+import daniel.perez.core.setLocaleDateFormat
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -70,7 +73,6 @@ class CardsAdapter(private val context: Context) : RecyclerView.Adapter<CardsAda
             binding.listEntryDateTextview.text = setLocaleDateFormat(event.startDate)
             binding.listEntryPreviewDay.text = getDay(event.startDate)
             binding.listEntryPreviewMonth.text = getLocaleMonth(event.startDate)
-            binding.listEntryPreviewYear.text = getYear(event.startDate)
             binding.listEntryTimeTextview.text = event.startTime
             val isDark = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             if (isDark == Configuration.UI_MODE_NIGHT_YES)
