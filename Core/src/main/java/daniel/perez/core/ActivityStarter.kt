@@ -2,12 +2,13 @@ package daniel.perez.core
 
 import android.content.Context
 import daniel.perez.core.model.ViewCalendarData
+import daniel.perez.core.model.ViewEvent
 
-interface StartActivity
+interface ActivityStarter
 {
     fun startGenerateQr(activity: Context)
 
-    fun startEditQr(activity: Context, ical: ViewCalendarData)
+    fun startEditQr(activity: Context, ical: ViewEvent)
 
     fun startQrReader(activity: Context)
 

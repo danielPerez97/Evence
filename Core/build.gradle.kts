@@ -27,8 +27,12 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
     buildFeatures {
         viewBinding = true
@@ -50,6 +54,9 @@ dependencies {
 
     // CardView
     implementation( Libs.cardView )
+
+    // Coil
+    implementation( Libs.coil )
 
     // Dagger
     implementation( Libs.dagger )

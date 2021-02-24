@@ -2,44 +2,39 @@ package daniel.perez.generateqrview
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.jakewharton.rxbinding4.view.clicks
 import daniel.perez.core.*
-import daniel.perez.core.model.*
+import daniel.perez.core.db.*
+import daniel.perez.core.model.DateSetEvent
+import daniel.perez.core.model.Half
+import daniel.perez.core.model.TimeSetEvent
+import daniel.perez.core.model.ViewEvent
 import daniel.perez.core.service.FileManager
-import daniel.perez.core.service.qr.QrAttempt
-import daniel.perez.core.service.qr.QrBitmapGenerator
 import daniel.perez.generateqrview.databinding.ActivityGenerateQrBinding
 import daniel.perez.generateqrview.di.GenerateQRComponentProvider
-import daniel.perez.ical.EventSpec
 import daniel.perez.ical.ICalSpec
 import daniel.perez.ical.Parser.parse
-import io.reactivex.rxjava3.functions.Consumer
-import okio.buffer
-import okio.sink
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
-import java.util.*
+import java.time.LocalDateTime
 import javax.inject.Inject
 
-class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
+class GenerateQR : BaseActivity(), DialogClosable
 {
     private lateinit var viewModel: GenerateQrViewModel
     private lateinit var binding: ActivityGenerateQrBinding
-    private lateinit var currentEvent: ICalSpec
+    private lateinit var currentEvent: ViewEvent
     private var startTime = TimeSetEvent(0, 0, Half.AM)
     private var endTime = TimeSetEvent(0, 0, Half.AM)
     private var startDate = DateSetEvent(1, 31, 1999)
     private var endDate = DateSetEvent(1, 31, 1999)
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    @Inject lateinit var generator: QrBitmapGenerator
-    @Inject lateinit var fileManager: FileManager
     @Inject lateinit var dialogStarter: DialogStarter
+    @Inject lateinit var activityResultActions: ActivityResultActions
 
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?)
@@ -51,39 +46,38 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
         binding = ActivityGenerateQrBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(GenerateQrViewModel::class.java)
-        viewModel.qrImages()
-                .subscribe(this)
+
         if (intent != null && intent.getStringExtra("FILE_PATH") != null)
         {
             val file = File(intent.getStringExtra("FILE_PATH"))
             val ical = parse(file)
-            currentEvent = ical
+//            currentEvent = ical
             Timber.i(ical.events[0].toString())
             fillInFields()
         }
-        binding.startDateEditText.setOnClickListener { startDateDialog() }
-        binding.startTimeEditText.setOnClickListener { startTimeDialog() }
-        binding.endDateEditText.setOnClickListener { endDateDialog() }
-        binding.endTimeEditText.setOnClickListener { endTimeDialog() }
-        binding.addBtn.setOnClickListener { generateQR() }
+        disposables += binding.startDateEditText.clicks().subscribe { startDateDialog() }
+        binding.startTimeEditText.clicks().subscribe { startTimeDialog() }
+        binding.endDateEditText.clicks().subscribe { endDateDialog() }
+        binding.endTimeEditText.clicks().subscribe { endTimeDialog() }
+        binding.addBtn.clicks().subscribe { saveEvent() }
     }
 
     //fill in editText and other fields when event is being edited
     private fun fillInFields()
     {
-        val event = currentEvent.events[0]
+        val event = currentEvent
 
         //TODO("Implement the enum properly, calculate if its morning or after noon for AM, PM")
-        startTime = TimeSetEvent(event.start.hour, event.start.minute, Half.AM)
-        endTime = TimeSetEvent(event.end.hour, event.end.minute, Half.PM)
-        startDate = DateSetEvent(event.start.monthValue, event.start.dayOfMonth, event.start.year)
-        endDate = DateSetEvent(event.end.monthValue, event.end.dayOfMonth, event.end.year)
+        startTime = TimeSetEvent(event.startDateTime.hour, event.startDateTime.minute, Half.AM)
+        endTime = TimeSetEvent(event.endDateTime.hour, event.endDateTime.minute, Half.PM)
+        startDate = DateSetEvent(event.startDateTime.monthValue, event.startDateTime.dayOfMonth, event.startDateTime.year)
+        endDate = DateSetEvent(event.endDateTime.monthValue, event.endDateTime.dayOfMonth, event.endDateTime.year)
 
         binding.titleEditText.setText(event.title)
-        binding.startDateTextView.text = event.getStartDate()
-        binding.startTimeTextView.text = event.getStartTime()
-        binding.endDateTextView.text = event.getEndFormatted("MM-dd-yyyy")
-        binding.endTimeTextView.text = event.getEndFormatted("hh:mm a")
+        binding.startDateTextView.text = event.startDatePretty()
+        binding.startTimeTextView.text = event.startTimePretty()
+        binding.endDateTextView.text = event.endDatePretty()
+        binding.endTimeTextView.text = event.endTimePretty()
         binding.locationEditText.setText(event.location)
         binding.descriptionEditText.setText(event.description)
     }
@@ -106,87 +100,66 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
 
         return true
     }
-    override fun accept(attempt: QrAttempt?)
-    {
-        if (attempt is QrAttempt.Success)
-        {
-            val bitmap = attempt.bitmap
-            //binding.QRImage.setImageBitmap(bitmap);
-        } else if (attempt is QrAttempt.Failure)
-        {
-            val e = attempt.e
-            e.printStackTrace()
-            applicationContext.toastShort(Objects.requireNonNull(e.localizedMessage))
-        }
-    }
 
-    private fun generateQR()
+    private fun saveEvent()
     {
         if (!areValidFields()) {
             return
         }
-        // Handle the hours and minutes
-        val event = EventSpec.Builder(0)
-                .title(binding.titleEditText.text.toString())
-                .description(binding.descriptionEditText.text.toString())
-                .location(binding.locationEditText.text.toString())
-                .start(toZonedDateTime(startDate.month, startDate.dayOfMonth, startDate.year, startTime.hour, startTime.minute))
-                .end(toZonedDateTime(endDate.month, endDate.dayOfMonth, endDate.year, endTime.hour, endTime.minute))
-                .build()
+        val uiNewEvent: UiNewEvent = extractEventFromUi()
+        viewModel.saveEvent(uiNewEvent)
+                .observeOn( AndroidSchedulers.mainThread() )
+                .subscribe {
+                    currentEvent = it.toViewEvent()
+                    dialogStarter.startQrDialog(this, it.toViewEvent())
+                }
+    }
 
-        currentEvent = ICalSpec.Builder()
-                .fileName(binding.titleEditText.text.toString())
-                .addEvent(event)
-                .build()
+    private fun extractEventFromUi(): UiNewEvent
+    {
+        Timber.i("Start_Date: ${startDate.string()}")
+        Timber.i("Start_Time: $startTime")
+        Timber.i("End_Date: ${endDate.string()}")
+        Timber.i("End_Time: $endTime")
+        val uiNewEvent: UiNewEvent
+        with(binding)
+        {
+            uiNewEvent = UiNewEvent(
+                    titleEditText.text.toString(),
+                    descriptionEditText.text.toString(),
+                    locationEditText.text.toString(),
+                    LocalDateTime.parse("${startDate.string()}T${startTime.string()}" ),
+                    LocalDateTime.parse("${endDate.string()}T${endTime.string()}"),
+            )
+        }
 
-        // Write the file to the file system
-        viewModel.saveFile(currentEvent)
-        val viewEvent = ViewEvent(event.title,
-                event.description,
-                event.getStartDate(),
-                event.getStartTime(),
-                event.getStartInstantEpoch(),
-                event.getEndEpochMilli(),
-                event.location,
-                event.text(),
-                generator.forceGenerate(event.text())
-        )
-        val calendar = ViewCalendarData(currentEvent.fileName, listOf(viewEvent))
-        dialogStarter.startQrDialog(this, calendar)
+        return uiNewEvent
     }
 
     // Handle the user choosing a place to store the file
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1)
+        if (requestCode == RequestCodes.REQUEST_SAF)
         {
-            val uri: Uri?
             if (data != null)
             {
-                uri = data.data
-                try
-                {
-                    val pfd = contentResolver.openFileDescriptor(uri!!, "w")
-                    val fileOutputStream = FileOutputStream(pfd!!.fileDescriptor)
-                    try
-                    {
-                        fileOutputStream.sink().buffer().use { sink -> sink.writeUtf8(currentEvent.text()) }
-                    } catch (e: IOException)
-                    {
-                        Timber.i(e)
-                        e.printStackTrace()
-                    }
-                    pfd.close()
-                } catch (e: FileNotFoundException)
-                {
-                    Timber.i(e)
-                    e.printStackTrace()
-                } catch (e: IOException)
-                {
-                    e.printStackTrace()
-                }
-                Timber.i("Wrote File")
+                disposables += activityResultActions.actionCreateDocumentEvent(this, currentEvent, data)
+                        .subscribe {
+                            when(it)
+                            {
+                                ActionResult.Success -> toastShort("Wrote File Successfully")
+                                is ActionResult.Failure ->
+                                {
+                                    Timber.e(it.t)
+                                    toastShort("Error writing file")
+                                }
+                                ActionResult.InTransit ->
+                                {
+                                    Timber.i("Writing file...")
+                                }
+                            }
+                        }
             }
         }
     }
@@ -226,6 +199,11 @@ class GenerateQR : BaseActivity(), Consumer<QrAttempt?>, DialogClosable
                     endTime = it
                     binding.endTimeTextView.text = getAMPMTimeFormat("${it.hour} ${it.minute}")
                 })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.dispose()
     }
 
     override fun close()

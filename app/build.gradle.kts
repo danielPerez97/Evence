@@ -32,6 +32,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
     buildFeatures {
         viewBinding = true
     }
@@ -48,15 +51,25 @@ dependencies {
     coreLibraryDesugaring( "com.android.tools:desugar_jdk_libs:1.0.5" )
 
     implementation( project( Project.core ) )
-    implementation( project( Project.ical ) )
+    implementation( project( Project.evenceDatabase ) )
     implementation( project( Project.fileSelectView ) )
     implementation( project( Project.generateQrView ) )
+    implementation( project( Project.ical ) )
     implementation( project( Project.qrCameraView ) )
     implementation( project( Project.qrDialogView ) )
+
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.6")
+
+    // Coil
+    implementation( Libs.coil )
+//    implementation( Libs.coilBase )
 
     // Dagger 2
     implementation( Libs.dagger )
     kapt( Libs.daggerCompiler )
+
+    // Kotlin Date-Time
+    api("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
 
     // Timber
     implementation( Libs.timber )
@@ -79,6 +92,9 @@ dependencies {
     implementation( Libs.retrofitMoshi )
     implementation( Libs.retrofitScalars )
     implementation( Libs.retrofitRxJava )
+
+    // SQLDelight
+    implementation( Libs.sqlDelightAndroidDriver )
 
     // ICal4j
     implementation( Libs.ical4j )
@@ -116,4 +132,8 @@ dependencies {
 
 repositories {
     mavenCentral()
+
+    // Needed for kotlinx-datetime
+    // TODO("Keep up with what JetBrains does with this, bintray is getting shut down in May this is going to break our build")
+    maven(url = "https://kotlin.bintray.com/kotlinx/")
 }
