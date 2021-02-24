@@ -120,5 +120,7 @@ class CameraHandler @Inject constructor(private val context: Context,
             Size(shortSide, longSide)
     }
 
-
+    fun unbind(){
+        cameraProvider.unbindAll()
+    }
 }

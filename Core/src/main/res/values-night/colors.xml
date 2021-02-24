@@ -5,6 +5,7 @@
     <color name="colorAccent">#3F4E80</color>
     <color name="screenBackground">#37474F</color>
     <color name="cardviewBackground">#263238</color>
+    <color name="transparentCardviewBackground">#f5263238</color>
     <color name="edittext_font_color">#fff</color>
     <color name="qr_dark_tint">#8A8BAE</color>
     <color name="white">#fff</color>

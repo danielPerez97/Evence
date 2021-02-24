@@ -14,6 +14,7 @@ class RectOverlay constructor(internal val context: Context, private val barcode
     private lateinit var imgPaint: Paint
     private lateinit var labelPaint: Paint
     private lateinit var img : Bitmap
+    private val barcodeType = BarcodeTypes(context)
 
     init{
         initialize()
@@ -22,7 +23,7 @@ class RectOverlay constructor(internal val context: Context, private val barcode
 
     private fun initialize(){
         boundingBox = RectF(barcode.boundingBox)
-        img = setBarcodeTypeIcon(barcode)!!.toBitmap()
+        img = barcodeType.getBarcodeTypeIcon(barcode)!!.toBitmap()
     }
 
     private fun setupPaint() {

@@ -6,7 +6,6 @@ import android.util.Size
 import android.view.View
 import com.google.mlkit.vision.barcode.Barcode
 import daniel.perez.qrcameraview.data.ScannedData
-import timber.log.Timber
 
 class Overlays(context: Context?) : View(context) {
     private val overlays : MutableList<BaseOverlay> = mutableListOf()
@@ -36,10 +35,6 @@ class Overlays(context: Context?) : View(context) {
 
         val scaleX = width/scannedImageSize.width.toFloat()
         val scaleY = height/scannedImageSize.height.toFloat()
-
-        Timber.i("imagewidth = " + scannedImageSize.width.toFloat() +
-                "imageHeight = " + scannedImageSize.height.toFloat()
-        )
 
         for(overlay in overlays) {
             overlay.setScale(minOf(scaleX, scaleY))
