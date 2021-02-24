@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.mlkit.vision.barcode.Barcode
 import daniel.perez.core.R
 import daniel.perez.qrcameraview.data.ScannedData
+import daniel.perez.qrcameraview.data.ScannedQR
 import daniel.perez.qrcameraview.databinding.ScannedQrListEntryLayoutBinding
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -28,7 +29,7 @@ class ScannedQrAdapter(private val context: Context) : RecyclerView.Adapter<Scan
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindData(dataList[position].data as Barcode)
+        holder.bindData((dataList[position] as ScannedQR).data)
     }
 
     override fun getItemCount(): Int {

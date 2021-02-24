@@ -13,14 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.mlkit.vision.barcode.Barcode
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.DialogStarter
-import daniel.perez.core.model.ViewCalendarData
 import daniel.perez.core.service.FileManager
 import daniel.perez.core.toastShort
-import daniel.perez.ical.ICalSpec
 import daniel.perez.qrcameraview.Camera.CameraHandler
 import daniel.perez.qrcameraview.IntentActions
 import daniel.perez.qrcameraview.R
-import daniel.perez.qrcameraview.Scanner.QRScanner
 import daniel.perez.qrcameraview.data.SCAN_TYPE
 import daniel.perez.qrcameraview.data.ScannedData
 import daniel.perez.qrcameraview.databinding.ActivityQrReaderBinding
@@ -45,7 +42,6 @@ class QrReaderActivity : BaseActivity() {
     @Inject lateinit var fileManager: FileManager
     @Inject lateinit var dialogStarter: DialogStarter
     @Inject lateinit var cameraHandler: CameraHandler
-    @Inject lateinit var QRScanner: QRScanner
 
     companion object {
         private const val REQUEST_CAMERA_PERMISSIONS = 10
@@ -71,8 +67,6 @@ class QrReaderActivity : BaseActivity() {
         binding.scanButton.setOnClickListener { onScanClick() }
         binding.switchScanButton.setOnClickListener { toggleScanMode() }
         binding.flashButton.setOnClickListener { toggleFlash() }
-        binding.textSwitcher.setInAnimation(this, android.R.anim.slide_in_left)
-        binding.textSwitcher.setOutAnimation(this, android.R.anim.slide_out_right)
 
         handleRecyclerView()
         setupSubscriptions()
@@ -130,6 +124,7 @@ class QrReaderActivity : BaseActivity() {
         binding.result.text = "Found ${scannedData.size} QR codes" //todo fix plurality
         binding.flashButton.visibility = View.GONE
         binding.switchScanButton.visibility = View.GONE
+        binding.darkBackground.visibility = View.VISIBLE
     }
 
     private fun hideResults() {
@@ -139,20 +134,20 @@ class QrReaderActivity : BaseActivity() {
         binding.scanButton.setImageDrawable(getDrawable(R.drawable.ic_search_white_24dp))
         binding.flashButton.visibility = View.VISIBLE
         binding.switchScanButton.visibility = View.VISIBLE
-
+        binding.darkBackground.visibility = View.GONE
     }
 
     private fun handleQrEvent(barcode: Barcode) {
-        val currentEvent = ICalSpec.Builder()
-                .fileName(barcode.calendarEvent.summary)
-                .addEvent(viewModel.toEventSpec(barcode))
-                .build()
-
-        // Write the file to the file system
-        viewModel.saveFile(currentEvent)
-        val calendar = ViewCalendarData(currentEvent.fileName,
-                listOf(viewModel.toViewEvent(viewModel.toEventSpec(barcode))))
-        dialogStarter.startQrDialog(this, calendar)
+//        val currentEvent = ICalSpec.Builder()
+//                .fileName(barcode.calendarEvent.summary)
+//                .addEvent(viewModel.toEventSpec(barcode))
+//                .build()
+//
+//        // Write the file to the file system
+//        viewModel.saveFile(currentEvent)
+//        val calendar = ViewCalendarData(currentEvent.fileName,
+//                listOf(viewModel.toViewEvent(viewModel.toEventSpec(barcode))))
+//        dialogStarter.startQrDialog(this, calendar)
     }
 
     private fun toggleFlash() {
