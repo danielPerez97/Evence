@@ -1,23 +1,29 @@
 package daniel.perez.core.service
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
 import androidx.core.content.FileProvider
+import androidx.core.net.toFile
+import daniel.perez.core.BaseActivity
+import daniel.perez.core.db.Event
 import daniel.perez.core.service.qr.QrBitmapGenerator
+import daniel.perez.ical.ICalSpec
 import okio.buffer
 import okio.sink
-import daniel.perez.ical.ICalSpec
-import daniel.perez.ical.Parser
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.subjects.PublishSubject
 import timber.log.Timber
 import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 
-class FileManager(val context: Context, val qrBitmapGenerator: QrBitmapGenerator)
+class FileManager(
+		private val context: Context,
+		private val qrBitmapGenerator: QrBitmapGenerator
+)
 {
-	private val processor = PublishSubject.create<List<ICalSpec>>()
 	private val icalDir = File(context.getExternalFilesDir(Environment.DIRECTORY_DCIM), "/ical")
 
 	init
@@ -25,85 +31,105 @@ class FileManager(val context: Context, val qrBitmapGenerator: QrBitmapGenerator
 		icalDir.mkdirs()
 	}
 
-
-	fun saveICalFile(ical: ICalSpec)
+	fun getOrSaveImage(ical: ICalSpec, fileName: String): File
 	{
-		// Create our file
-		Timber.e(ical.fileName)
-		val newFile = File("$icalDir/${ical.fileName}.ics")
-
-		// Write the file
-		newFile.sink().buffer().use {
-			it.writeUtf8(ical.text())
-		}
-
-		// Notify of change
-		notifyIcals()
-
-		// Save it's image
-		saveICalImage(ical)
+		return saveImage(ical, fileName, false)
 	}
 
-	private fun saveICalImage(ical: ICalSpec)
+	fun updateImage(ical: ICalSpec, uri: Uri)
 	{
-		val bitmap: Bitmap = qrBitmapGenerator.forceGenerate(ical.text())
+		val fileName: String = uri.toFile().name
+		saveImage(ical, fileName, true)
+	}
 
-		// Create the image file
-		val newFile = File("${icalDir}/image_${ical.fileName}.png")
+	fun getOrSaveIcs(ical: ICalSpec, fileName: String): File
+	{
+		return saveIcs(ical, fileName, false)
+	}
+
+	fun updateIcs(ical: ICalSpec, uri: Uri)
+	{
+		val fileName: String = uri.toFile().name
+		saveIcs(ical, fileName, true)
+	}
+
+	private fun saveIcs(ical: ICalSpec, fileName: String, forceOverwrite: Boolean ): File
+	{
+		// Create the ics file
+		val icsFile = File("$icalDir/$fileName.ics")
+
+		// Check if the ics file has already been made
+		if(icsFile.exists() && !forceOverwrite)
+		{
+			return icsFile
+		}
+
+		// Create the ics data to write
+		val icsString = ical.text()
 
 		// Write the file
-		newFile.sink().buffer().use {
+		icsFile.sink().buffer().use {
+			it.writeUtf8( icsString )
+		}
+
+		return icsFile
+	}
+
+
+	private fun saveImage(ical: ICalSpec, fileName: String, forceOverwrite: Boolean): File
+	{
+		// Create the image file
+		val imageFile = File("${icalDir}/image_$fileName.png")
+
+		// Check if the image has already been made
+		if(imageFile.exists() && !forceOverwrite)
+		{
+			return imageFile
+		}
+
+		// Create the bitmap data to write
+		val bitmap: Bitmap = qrBitmapGenerator.generate(ical.text())
+
+		// Write the file
+		imageFile.sink().buffer().use {
 			bitmap.compress(Bitmap.CompressFormat.PNG, 85, it.outputStream())
 		}
+
+		return imageFile
 	}
 
-	fun notifyIcals()
+	fun getContentUri(fileName: String): Uri?
 	{
-		// Notify of change
-		val files = icalDir.listFiles()
-		val parsedIcals: List<ICalSpec> = files.toList().filter { !it.name.contains("image_") }.map { Parser.parse(it) }
-		processor.onNext(parsedIcals)
-	}
-
-	fun notifyEvents()
-	{
-		// Notify of change
-		processor.onNext( getCurrentFiles() )
-	}
-
-	private fun getCurrentFiles(): List<ICalSpec>
-	{
-		val files: Array<File>? = icalDir.listFiles()
-		if(files == null)
-		{
-			Timber.i("FOUND NO FILES")
-		}
-		else
-		{
-			Timber.i("FOUND FILES")
-			Timber.tag("UPSTREAM").i(files.size.toString())
-		}
-		return files?.toList()?.map { Parser.parse(it) } ?: emptyList()
-	}
-
-	fun getFileUri(fileName: String): Uri?
-	{
-		Timber.tag("FILENAME").e(fileName)
-		Timber.tag("FILENAME").e(icalDir.listFiles()[1].toString())
 		val file: File = icalDir.listFiles().find { it.name.contains(fileName) }!!
-		return FileProvider.getUriForFile(context, "projects.csce.evence.FileProvider", file)
+		return FileProvider.getUriForFile(context, "${context.applicationContext.packageName}.fileprovider", file)
 	}
 
-	fun getFilePath(fileName: String): String
+	fun writeFileActionCreateDocument(context: BaseActivity, event: Event, data: Intent)
 	{
-		val file: File? = icalDir.listFiles().find { it.name.contains(fileName) }
-		return file!!.absolutePath
+		val uri: Uri? = data.data
+		try
+		{
+			val pfd = context.contentResolver.openFileDescriptor(uri!!, "w")
+			val fileOutputStream = FileOutputStream(pfd!!.fileDescriptor)
+			try
+			{
+				fileOutputStream.sink().buffer().use { sink -> sink.writeUtf8( event.icsText() ) }
+			}
+			catch (e: IOException)
+			{
+				Timber.i(e)
+				e.printStackTrace()
+			}
+			pfd.close()
+		} catch (e: FileNotFoundException)
+		{
+			Timber.i(e)
+			e.printStackTrace()
+		} catch (e: IOException)
+		{
+			e.printStackTrace()
+		}
+		Timber.i("Wrote File")
 	}
 
-	fun icals(): Observable<List<ICalSpec>>
-	{
-		val currentIcals: Observable<List<ICalSpec>> = Observable.just( getCurrentFiles() )
-		return Observable.merge(processor, currentIcals)
-				.doOnNext{ Timber.i( "Size of array: ${it.size}" ) }
-	}
 }

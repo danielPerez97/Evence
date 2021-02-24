@@ -19,7 +19,7 @@ class CalendarDialog(private val context: Context)
     {
         val calendar = Calendar.getInstance()
         val listener = TimePickerDialog.OnTimeSetListener { _, newHour, newMinute ->
-            timeEvents.onNext(TimeSetEvent(newHour, newMinute, if(newHour < 12) Half.AM else Half.PM))
+            timeEvents.onNext( TimeSetEvent(newHour, newMinute, if(newHour < 12) Half.AM else Half.PM) )
         }
         val timePickerDialog = TimePickerDialog(context, listener, calendar[Calendar.HOUR], calendar[Calendar.MINUTE], false)
         timePickerDialog.show()
@@ -29,9 +29,9 @@ class CalendarDialog(private val context: Context)
     fun dateDialog(): Observable<DateSetEvent>
     {
         val calendar = Calendar.getInstance()
-        val datePickerDialog = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, newYear, newMonth, dayOfMonth ->
-            dateEvents.onNext( DateSetEvent(newMonth, dayOfMonth, newYear) )
-        }, calendar[Calendar.YEAR], calendar[Calendar.MONTH] + 1, calendar[Calendar.DAY_OF_MONTH])
+        val datePickerDialog = DatePickerDialog(context, { _, newYear, newMonth, dayOfMonth ->
+            dateEvents.onNext( DateSetEvent(newMonth + 1, dayOfMonth, newYear) )
+        }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH])
         datePickerDialog.show()
 
         return dateEvents

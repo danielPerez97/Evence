@@ -3,11 +3,16 @@ object Evence
     const val compileSdkVersion = 30
     const val buildToolsVersion = "30.0.2"
     const val targetSdkVersion = 30
-    const val minSdkVersion = 24
+    const val minSdkVersion = 26
 }
 
 object Libs
 {
+    // Coil
+    private const val coilVersion = "1.1.1"
+    // const val coilBase = "io.coil-kt:coil-base:$coilVersion"
+    const val coil = "io.coil-kt:coil:$coilVersion"
+
     // ConstraintLayout
     private const val constraintLayoutVersion = "1.1.3"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
@@ -23,7 +28,7 @@ object Libs
 
     // Desugar
     private const val desugarVersion = "1.0.9"
-    const val desugar = "com.android.tools:desugar_jdk_libs:1.0.9"
+    const val desugar = "com.android.tools:desugar_jdk_libs:$desugarVersion"
 
 
     // ICal4J
@@ -85,6 +90,10 @@ object Libs
     private const val rxReplayingShareVersion = "3.0.0"
     const val rxReplayingShare = "com.jakewharton.rx3:replaying-share:$rxReplayingShareVersion"
 
+    // SqlDelight
+    const val sqlDelightAndroidDriver = "com.squareup.sqldelight:android-driver:${Project.sqlDelightVersion}"
+    const val sqlDelightInMemoryDriver = "com.squareup.sqldelight:sqlite-driver:${Project.sqlDelightVersion}"
+
     // Timber
     private const val timberVersion = "4.7.1"
     const val timber = "com.jakewharton.timber:timber:$timberVersion"
@@ -129,10 +138,12 @@ object Project
     const val sdkVersion = 30
     const val buildToolsVerion = "30.0.0"
     const val kotlinVersion = "1.4.21"
+    const val sqlDelightVersion = "1.4.3"
     const val core = ":Core"
     const val ical = ":ICal"
     const val fileSelectView = ":FileSelectView"
     const val generateQrView = ":GenerateQRView"
     const val qrCameraView = ":QRCameraView"
     const val qrDialogView = ":QRDialogView"
+    const val evenceDatabase = ":EvenceDb"
 }
