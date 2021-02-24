@@ -4,17 +4,17 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.Size
 import android.view.View
-import com.google.mlkit.vision.barcode.Barcode
 import daniel.perez.qrcameraview.data.ScannedData
+import daniel.perez.qrcameraview.data.ScannedQR
 
 class Overlays(context: Context?) : View(context) {
     private val overlays : MutableList<BaseOverlay> = mutableListOf()
     private var scannedImageSize = Size(0,0) //fix, find better init
 
-    fun updateOverlays(scannedData: List<ScannedData>){
+    fun updateOverlays(scannedQR: List<ScannedData>){
         clearOverlays()
-        for (item in scannedData){
-            val overlay = RectOverlay(context, item.data as Barcode) //todo fix abstraction
+        for (item in scannedQR ){
+            val overlay = RectOverlay(context, (item as ScannedQR).data)
             overlays.add(overlay)
 
         }
