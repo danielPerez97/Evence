@@ -4,6 +4,9 @@ import android.graphics.Rect
 import androidx.lifecycle.ViewModel
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.text.Text
+import daniel.perez.core.db.Event
+import daniel.perez.core.db.EventOps
+import daniel.perez.core.db.UiNewEvent
 import daniel.perez.core.service.FileManager
 import daniel.perez.core.service.qr.QrBitmapGenerator
 import daniel.perez.qrcameraview.Scanner.QRScanner
@@ -19,7 +22,8 @@ class QrReaderViewModel @Inject constructor(
         private val fileManager: FileManager,
         private val generator: QrBitmapGenerator,
         private val qrScanner: QRScanner,
-        private val textScanner: TextScanner): ViewModel() {
+        private val textScanner: TextScanner,
+        private val eventOps: EventOps): ViewModel() {
 
     //fun saveFile(ical: ICalSpec) = fileManager.saveICalFile(ical)
 
@@ -74,6 +78,12 @@ class QrReaderViewModel @Inject constructor(
                             .toList()
                             .toObservable()
                 }
+    }
+
+    fun saveEvent(event: UiNewEvent): Observable<Event>
+    {
+        return eventOps.insertEvent( event )
+                .flatMap { eventOps.getEventById(it) }
     }
 
 //    fun toViewEvent(event : EventSpec) : ViewEvent{

@@ -11,10 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.mlkit.vision.barcode.Barcode
-import daniel.perez.core.BaseActivity
-import daniel.perez.core.DialogStarter
+import daniel.perez.core.*
+import daniel.perez.core.db.UiNewEvent
+import daniel.perez.core.db.toViewEvent
 import daniel.perez.core.service.FileManager
-import daniel.perez.core.toastShort
 import daniel.perez.qrcameraview.Camera.CameraHandler
 import daniel.perez.qrcameraview.IntentActions
 import daniel.perez.qrcameraview.R
@@ -26,7 +26,7 @@ import daniel.perez.qrcameraview.viewmodel.QrReaderViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
-class QrReaderActivity : BaseActivity() {
+class QrReaderActivity : BaseActivity(), DialogClosable {
     private lateinit var binding: ActivityQrReaderBinding
     private lateinit var viewModel: QrReaderViewModel
     private lateinit var overlays : Overlays
@@ -100,10 +100,6 @@ class QrReaderActivity : BaseActivity() {
                     SCAN_TYPE.BARCODE -> {
                         overlays.updateOverlays(scannedData)
                     }
-                    SCAN_TYPE.TEXT -> {
-//                        val textBlock = scannedData[0].data as Text.TextBlock
-//                        binding.result.text = textBlock.text
-                    }
                 }
             }
     }
@@ -138,16 +134,22 @@ class QrReaderActivity : BaseActivity() {
     }
 
     private fun handleQrEvent(barcode: Barcode) {
-//        val currentEvent = ICalSpec.Builder()
-//                .fileName(barcode.calendarEvent.summary)
-//                .addEvent(viewModel.toEventSpec(barcode))
-//                .build()
-//
-//        // Write the file to the file system
-//        viewModel.saveFile(currentEvent)
-//        val calendar = ViewCalendarData(currentEvent.fileName,
-//                listOf(viewModel.toViewEvent(viewModel.toEventSpec(barcode))))
-//        dialogStarter.startQrDialog(this, calendar)
+        val uiNewEvent: UiNewEvent
+        with (barcode.calendarEvent) {
+            uiNewEvent = UiNewEvent(
+                    summary,
+                    description,
+                    location,
+                    toLocalDateTime(start.day, start.month, start.year, start.hours, start.minutes),
+                    toLocalDateTime(end.day, end.month, end.year, end.hours, end.minutes)
+            )
+        }
+
+        viewModel.saveEvent(uiNewEvent)
+                .observeOn( AndroidSchedulers.mainThread() )
+                .subscribe {
+                    dialogStarter.startQrDialog(this, it.toViewEvent())
+                }
     }
 
     private fun toggleFlash() {
@@ -220,5 +222,9 @@ class QrReaderActivity : BaseActivity() {
         super.onDestroy()
         disposables.dispose()
         overlays.clearOverlays()
+    }
+
+    override fun close() {
+        finish()
     }
 }
