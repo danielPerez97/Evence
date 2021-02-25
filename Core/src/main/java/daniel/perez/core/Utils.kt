@@ -10,11 +10,15 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import daniel.perez.core.model.DateSetEvent
+import daniel.perez.core.model.Half
+import daniel.perez.core.model.TimeSetEvent
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import timber.log.Timber
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -84,6 +88,25 @@ fun getAMPMTimeFormat(timeString: String) : String {
     val initialTimeFormat = SimpleDateFormat("H mm", Locale.US).parse(timeString)
     val dateFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
     return dateFormat.format(initialTimeFormat)
+}
+
+fun toLocalDateTime(day: Int, month: Int, year: Int, hour: Int, minute: Int) : LocalDateTime {
+    val date = DateSetEvent(toOneIfNeg(month),toOneIfNeg(day), to1111IfNeg(year))
+    val time = TimeSetEvent(toZeroIfNeg(hour), toZeroIfNeg(minute), Half.AM)
+
+    return LocalDateTime.parse("${date.string()}T${time.string()}")
+}
+
+fun toZeroIfNeg(num : Int) : Int{
+    return if(num < 0) 0 else num
+}
+
+fun toOneIfNeg(num : Int) : Int{
+    return if(num < 0) 1 else num
+}
+
+fun to1111IfNeg(num: Int): Int{
+    return if(num < 0) 1111 else num
 }
 
 fun Array<String>.toInts(): IntArray
