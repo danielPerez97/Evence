@@ -28,10 +28,11 @@
         android:id="@+id/qr_main_cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="6dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="55dp"
+        android:layout_marginBottom="6dp"
         android:backgroundTint="@color/cardviewBackground"
         app:cardCornerRadius="32dp">
 
@@ -72,7 +73,7 @@
                         android:id="@+id/qr_dialog_event_title_textview"
                         style="@style/EventDetailsDialogBoxTextView"
                         android:text="Graduation Day"
-                        android:textSize="18sp" />
+                        android:textSize="17sp" />
 
                     <TextView
                         android:id="@+id/qr_dialog_event_start_date_textview"
@@ -92,9 +93,25 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="8dp"
                         android:gravity="center_horizontal"
                         android:orientation="horizontal">
+
+                        <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/import_to_calendar_btn"
+                                style="@style/CircularButtonCardView">
+
+                                <ImageView
+                                    style="@style/CircularButtonImageView"
+                                    android:src="@drawable/ic_event_white_36dp" />
+                            </androidx.cardview.widget.CardView>
+
+                            <TextView
+                                style="@style/CircularButtonTextView"
+                                android:text="Import to calendar" />
+                        </LinearLayout>
 
                         <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
 
@@ -116,22 +133,6 @@
                         <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
 
                             <androidx.cardview.widget.CardView
-                                android:id="@+id/import_to_calendar_btn"
-                                style="@style/CircularButtonCardView">
-
-                                <ImageView
-                                    style="@style/CircularButtonImageView"
-                                    android:src="@drawable/ic_event_white_36dp" />
-                            </androidx.cardview.widget.CardView>
-
-                            <TextView
-                                style="@style/CircularButtonTextView"
-                                android:text="Import to calendar" />
-                        </LinearLayout>
-
-                        <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
-
-                            <androidx.cardview.widget.CardView
                                 android:id="@+id/save_btn"
                                 style="@style/CircularButtonCardView">
 
@@ -144,15 +145,6 @@
                                 style="@style/CircularButtonTextView"
                                 android:text="Save ical" />
                         </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal">
-
 
                         <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
 
@@ -170,10 +162,19 @@
                                 android:text="Edit" />
                         </LinearLayout>
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
                         <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
 
                             <androidx.cardview.widget.CardView
                                 android:id="@+id/delete_btn"
+                                android:backgroundTint="@color/red2"
                                 style="@style/CircularButtonCardView">
 
                                 <ImageView
@@ -185,6 +186,9 @@
                                 style="@style/CircularButtonTextView"
                                 android:text="Delete" />
                         </LinearLayout>
+
+
+
                     </LinearLayout>
                 </LinearLayout>
 

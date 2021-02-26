@@ -20,15 +20,15 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:layout_marginRight">6dp</item>
-        <item name="android:layout_marginLeft">6dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
         <item name="android:gravity">center</item>
     </style>
 
     <style name="CircularButtonCardView" parent="ButtonCardView">
         <item name="android:layout_height">36dp</item>
         <item name="android:layout_width">36dp</item>
-        <item name="android:layout_margin">4dp</item>
+        <item name="android:layout_margin">3dp</item>
         <item name="android:backgroundTint">@color/blue1</item>
         <item name="android:gravity">center</item>
         <item name="cardCornerRadius">23dp</item>
