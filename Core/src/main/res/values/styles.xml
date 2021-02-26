@@ -26,8 +26,8 @@
     </style>
 
     <style name="CircularButtonCardView" parent="ButtonCardView">
-        <item name="android:layout_height">46dp</item>
-        <item name="android:layout_width">46dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:layout_width">36dp</item>
         <item name="android:layout_margin">4dp</item>
         <item name="android:backgroundTint">@color/blue1</item>
         <item name="android:gravity">center</item>
@@ -45,9 +45,8 @@
     <style name="CircularButtonTextView">
         <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">4dp</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">8sp</item>
     </style>
 
     <style name="CustomBottomAppBar" parent="@style/Widget.MaterialComponents.BottomAppBar">
