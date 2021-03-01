@@ -2,7 +2,6 @@ package daniel.perez.qrcameraview.ui
 
 import android.content.Context
 import android.graphics.*
-import android.graphics.drawable.Drawable
 import androidx.core.graphics.drawable.toBitmap
 import com.google.mlkit.vision.barcode.Barcode
 import daniel.perez.qrcameraview.R
@@ -67,30 +66,4 @@ class RectOverlay constructor(internal val context: Context, private val barcode
         //canvas.drawRoundRect(boundingBox, 35f, 35f, focusedOutlinePaint)
     }
 
-    fun setBarcodeTypeIcon(barcode: Barcode) : Drawable? {
-        when (barcode.valueType) {
-            Barcode.TYPE_CALENDAR_EVENT ->
-                return context.getDrawable(R.drawable.ic_event_white_36dp)
-            Barcode.TYPE_URL ->
-                return context.getDrawable(R.drawable.ic_open_in_new_white_24dp)
-            Barcode.TYPE_CONTACT_INFO ->
-                return context.getDrawable(R.drawable.ic_person_add_white_24dp)
-            Barcode.TYPE_EMAIL ->
-                return context.getDrawable(R.drawable.ic_email_white_24dp)
-            Barcode.TYPE_PHONE ->
-                return context.getDrawable(R.drawable.ic_phone_white_24dp)
-            Barcode.TYPE_SMS ->
-                return context.getDrawable(R.drawable.ic_textsms_black_24dp)
-            Barcode.TYPE_ISBN ->
-                return context.getDrawable(R.drawable.ic_shopping_cart_white_24dp)
-            Barcode.TYPE_WIFI ->
-                return context.getDrawable(R.drawable.ic_wifi_white_24dp)
-            Barcode.TYPE_GEO ->
-                return context.getDrawable(R.drawable.ic_place_white_24dp)
-            Barcode.TYPE_DRIVER_LICENSE ->
-                return context.getDrawable(R.drawable.ic_account_box_white_24dp)
-            else ->
-                return context.getDrawable(R.drawable.ic_baseline_qr_code_scanner_24)
-        }
-    }
 }
