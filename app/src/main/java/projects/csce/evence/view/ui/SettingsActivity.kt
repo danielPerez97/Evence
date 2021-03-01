@@ -18,7 +18,6 @@ class SettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     lateinit var binding: ActivitySettingsBinding
     private var isDark: Int = -99
     private var isDayMonthYear = false
-    private var isQrDisplayed = true
 
     @Inject
     lateinit var sharedPref:SharedPref
@@ -32,9 +31,6 @@ class SettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         setContentView(binding.root)
 
         binding.backBtn.setOnClickListener { onBackClicked() }
-        //binding.darkModeSwitch.setOnClickListener { onDarkModeSwitchClicked() }
-        binding.qrPreviewSwitch.setOnClickListener { onQrPreviewSwitchClicked() }
-
 
         ArrayAdapter.createFromResource(this, R.array.dark_mode_options_list, R.layout.spinner_text)
                 .also { adapter ->
@@ -57,23 +53,10 @@ class SettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
             else ->
                 binding.darkModeSpinner.setSelection(DarkModeOptions.AUTO.ordinal)
         }
-
-        isQrDisplayed = sharedPref.loadBooleanValue(getString(R.string.saved_qr_preview_setting), false)
-        when(isQrDisplayed){
-            true->
-                binding.qrPreviewSwitch.isChecked = true
-            else->
-                binding.qrPreviewSwitch.isChecked = false
-        }
-
     }
 
     private fun onBackClicked(){
         finish()
-    }
-
-    fun onQrPreviewSwitchClicked(){
-        sharedPref.saveBooleanValue(getString(R.string.saved_qr_preview_setting), binding.qrPreviewSwitch.isChecked)
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
