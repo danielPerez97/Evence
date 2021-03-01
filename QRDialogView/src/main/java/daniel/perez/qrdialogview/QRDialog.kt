@@ -1,5 +1,6 @@
 package daniel.perez.qrdialogview
 
+import android.app.ActionBar
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -7,11 +8,12 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.provider.CalendarContract
 import android.view.LayoutInflater
+import android.view.WindowManager
 import coil.ImageLoader
 import coil.load
+import daniel.perez.core.ActivityStarter
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.DialogClosable
-import daniel.perez.core.ActivityStarter
 import daniel.perez.core.RequestCodes
 import daniel.perez.core.model.ViewEvent
 import daniel.perez.core.service.FileManager
@@ -41,6 +43,7 @@ class QRDialog(val context: Context, var event: ViewEvent) {
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setCancelable(true)
         dialog.setCanceledOnTouchOutside(true)
+        dialog?.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT)
         dialog.show()
         setupClicks()
     }
