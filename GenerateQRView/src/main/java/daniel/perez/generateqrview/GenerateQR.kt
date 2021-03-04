@@ -3,19 +3,21 @@ package daniel.perez.generateqrview
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxbinding4.view.clicks
 import daniel.perez.core.*
-import daniel.perez.core.db.*
+import daniel.perez.core.db.UiNewEvent
+import daniel.perez.core.db.toViewEvent
 import daniel.perez.core.model.DateSetEvent
 import daniel.perez.core.model.Half
 import daniel.perez.core.model.TimeSetEvent
 import daniel.perez.core.model.ViewEvent
-import daniel.perez.core.service.FileManager
 import daniel.perez.generateqrview.databinding.ActivityGenerateQrBinding
 import daniel.perez.generateqrview.di.GenerateQRComponentProvider
-import daniel.perez.ical.ICalSpec
 import daniel.perez.ical.Parser.parse
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import timber.log.Timber
@@ -23,7 +25,7 @@ import java.io.File
 import java.time.LocalDateTime
 import javax.inject.Inject
 
-class GenerateQR : BaseActivity(), DialogClosable
+class GenerateQR : BaseActivity(), DialogClosable, AdapterView.OnItemSelectedListener
 {
     private lateinit var viewModel: GenerateQrViewModel
     private lateinit var binding: ActivityGenerateQrBinding
@@ -55,12 +57,20 @@ class GenerateQR : BaseActivity(), DialogClosable
             Timber.i(ical.events[0].toString())
             fillInFields()
         }
+
+        ArrayAdapter.createFromResource(this, R.array.event_recurrence_options_list, R.layout.spinner_text)
+                .also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    binding.recurrenceSpinner.adapter = adapter}
+        binding.recurrenceSpinner.onItemSelectedListener = this
         disposables += binding.startDateEditText.clicks().subscribe { startDateDialog() }
         binding.startTimeEditText.clicks().subscribe { startTimeDialog() }
         binding.endDateEditText.clicks().subscribe { endDateDialog() }
         binding.endTimeEditText.clicks().subscribe { endTimeDialog() }
         binding.addBtn.clicks().subscribe { saveEvent() }
     }
+
+
 
     //fill in editText and other fields when event is being edited
     private fun fillInFields()
@@ -209,5 +219,13 @@ class GenerateQR : BaseActivity(), DialogClosable
     override fun close()
     {
         finish()
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+
     }
 }
