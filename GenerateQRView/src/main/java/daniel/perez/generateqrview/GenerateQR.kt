@@ -7,15 +7,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxbinding4.view.clicks
 import daniel.perez.core.*
-import daniel.perez.core.db.*
+import daniel.perez.core.db.UiNewEvent
+import daniel.perez.core.db.toViewEvent
 import daniel.perez.core.model.DateSetEvent
 import daniel.perez.core.model.Half
 import daniel.perez.core.model.TimeSetEvent
 import daniel.perez.core.model.ViewEvent
-import daniel.perez.core.service.FileManager
 import daniel.perez.generateqrview.databinding.ActivityGenerateQrBinding
 import daniel.perez.generateqrview.di.GenerateQRComponentProvider
-import daniel.perez.ical.ICalSpec
 import daniel.perez.ical.Parser.parse
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import timber.log.Timber
@@ -128,7 +127,7 @@ class GenerateQR : BaseActivity(), DialogClosable
                     titleEditText.text.toString(),
                     descriptionEditText.text.toString(),
                     locationEditText.text.toString(),
-                    LocalDateTime.parse("${startDate.string()}T${startTime.string()}" ),
+                    LocalDateTime.parse("${startDate.string()}T${startTime.string()}" ), //todo add method into Utils.kt
                     LocalDateTime.parse("${endDate.string()}T${endTime.string()}"),
             )
         }
