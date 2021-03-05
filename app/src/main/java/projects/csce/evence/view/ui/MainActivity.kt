@@ -93,17 +93,10 @@ class MainActivity : BaseActivity()
                 .debounce(100, TimeUnit.MILLISECONDS)
                 .map { it.toString() }
                 .distinctUntilChanged()
-                .subscribe { viewModel.newSearch( it.toString() ) }
-
-        disposables += binding.searchEditText.textChanges()
-                .debounce(100, TimeUnit.MILLISECONDS)
-                .map { it.toString() }
-                .distinctUntilChanged()
                 .subscribe {
                     Timber.i("""Text Change Subscribe: '$it'""")
                     viewModel.newSearch( it.toString() )
                 }
-
 
         disposables += eventsAdapter.clicks()
                 .observeOn(AndroidSchedulers.mainThread())
