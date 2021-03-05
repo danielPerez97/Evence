@@ -69,11 +69,11 @@ private class EventOpsImpl(
                 .map { it.toEvent() }
     }
 
-    override fun selectByTitle(title: String): Observable<Event>
+    override fun searchByTitle(title: String): Observable<List<Event>>
     {
-        return queries.selectByTitle(title)
+        return queries.selectByTitle( title )
                 .asObservable()
-                .mapToOne()
+                .mapToList()
                 .map { it.toEvent() }
     }
 
