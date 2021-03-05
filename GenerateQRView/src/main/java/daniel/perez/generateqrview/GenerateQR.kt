@@ -117,7 +117,7 @@ class GenerateQR : BaseActivity(), DialogClosable, AdapterView.OnItemSelectedLis
             return
         }
         val uiNewEvent: UiNewEvent = extractEventFromUi()
-        viewModel.saveEvent(uiNewEvent)
+        disposables += viewModel.saveEvent(uiNewEvent)
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe {
                     currentEvent = it.toViewEvent()
