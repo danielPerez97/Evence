@@ -3,11 +3,8 @@ package daniel.perez.core.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import coil.ImageLoader
-import daniel.perez.core.R
 import daniel.perez.core.databinding.EventsListEntryLayoutBinding
 import daniel.perez.core.db.timeString
 import daniel.perez.core.model.UiPreference
@@ -18,12 +15,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class CardsAdapter(private val context: Context, private val imageLoader: ImageLoader) : RecyclerView.Adapter<CardsAdapter.ViewHolder>(),
-        Consumer<List<ViewEvent>>
-{
-    private var dataList: MutableList<ViewEvent> = mutableListOf()
-class CardsAdapter : RecyclerView.Adapter<CardsAdapter.ViewHolder>(),
-        Consumer<List<ViewEvent>>
+class CardsAdapter : RecyclerView.Adapter<CardsAdapter.ViewHolder>(), Consumer<List<ViewEvent>>
 {
     private var dataList: MutableList<ViewEvent> = mutableListOf()
     private val clicks = PublishSubject.create<ViewEvent>()
@@ -71,8 +63,6 @@ class CardsAdapter : RecyclerView.Adapter<CardsAdapter.ViewHolder>(),
             dataList.addAll(newData)
             result.dispatchUpdatesTo(this)
         }
-//        dataList = newData
-//        notifyDataSetChanged()
     }
 
     override fun accept(viewCalendarData: List<ViewEvent>) {
