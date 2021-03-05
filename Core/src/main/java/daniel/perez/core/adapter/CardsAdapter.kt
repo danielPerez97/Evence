@@ -1,16 +1,10 @@
 package daniel.perez.core.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.RecyclerView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
-import coil.ImageLoader
-import coil.load
-import daniel.perez.core.R
+import androidx.recyclerview.widget.RecyclerView
 import daniel.perez.core.databinding.EventsListEntryLayoutBinding
 import daniel.perez.core.db.timeString
 import daniel.perez.core.model.UiPreference
@@ -21,7 +15,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class CardsAdapter(private val context: Context, private val imageLoader: ImageLoader) : RecyclerView.Adapter<CardsAdapter.ViewHolder>(),
+class CardsAdapter : RecyclerView.Adapter<CardsAdapter.ViewHolder>(),
         Consumer<List<ViewEvent>>
 {
     private var dataList: MutableList<ViewEvent> = mutableListOf()
