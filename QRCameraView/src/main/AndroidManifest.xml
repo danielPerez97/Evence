@@ -3,7 +3,7 @@
     <uses-feature android:name="android.hardware.camera.any" />
     <uses-permission android:name="android.permission.CAMERA" />
     <application>
-        <activity android:name="daniel.perez.qrcameraview.QrReaderActivity" />
+        <activity android:name="daniel.perez.qrcameraview.ui.QrReaderActivity" />
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"

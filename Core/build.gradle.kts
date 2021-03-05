@@ -66,6 +66,7 @@ dependencies {
     implementation( Libs.vision )
 
     implementation( Libs.material )
+    implementation( Libs.coordinatorLayout)
 
     // Okio
     implementation( Libs.okio )

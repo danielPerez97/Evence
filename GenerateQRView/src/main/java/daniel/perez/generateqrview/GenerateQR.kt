@@ -138,7 +138,7 @@ class GenerateQR : BaseActivity(), DialogClosable, AdapterView.OnItemSelectedLis
                     titleEditText.text.toString(),
                     descriptionEditText.text.toString(),
                     locationEditText.text.toString(),
-                    LocalDateTime.parse("${startDate.string()}T${startTime.string()}" ),
+                    LocalDateTime.parse("${startDate.string()}T${startTime.string()}" ), //todo add method into Utils.kt
                     LocalDateTime.parse("${endDate.string()}T${endTime.string()}"),
             )
         }
