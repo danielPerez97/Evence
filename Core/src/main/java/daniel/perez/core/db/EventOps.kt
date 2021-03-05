@@ -14,7 +14,7 @@ interface EventOps
 
     fun selectAll(): Observable<List<Event>>
 
-    fun selectByTitle(title: String): Observable<Event>
+    fun searchByTitle(title: String): Observable<List<Event>>
 
     fun getEventById(id: Long): Observable<Event>
 

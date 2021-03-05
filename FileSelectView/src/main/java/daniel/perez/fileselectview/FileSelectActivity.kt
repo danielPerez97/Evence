@@ -32,7 +32,7 @@ class FileSelectActivity : BaseActivity() {
 
         resultIntent = Intent("projects.csce.evence.ACTION_RETURN_FILE")
         setResult(RESULT_CANCELED, null)
-        cardsAdapter = CardsAdapter(this, imageLoader)
+        cardsAdapter = CardsAdapter()
         binding!!.fileSelector.adapter = cardsAdapter
 
         disposables += cardsAdapter.clicks()

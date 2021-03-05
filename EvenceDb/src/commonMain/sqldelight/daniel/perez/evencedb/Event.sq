@@ -23,7 +23,8 @@ selectAll:
 SELECT * FROM Event;
 
 selectByTitle:
-SELECT * FROM Event WHERE title = ?;
+SELECT * FROM Event WHERE title LIKE ('%' || :title)
+OR title LIKE (:title || '%');
 
 getEventById:
 SELECT * FROM Event WHERE _id = ?;

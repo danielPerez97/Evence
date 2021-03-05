@@ -71,6 +71,9 @@ dependencies {
     // Okio
     implementation( Libs.okio )
 
+    // RecyclerView
+    implementation( Libs.recyclerView )
+
     // RxJava
     implementation( Libs.rxJava )
     implementation( Libs.rxAndroid )
