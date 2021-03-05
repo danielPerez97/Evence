@@ -45,6 +45,7 @@ class QRDialog(val context: Context, var event: ViewEvent) {
         dialog.setCanceledOnTouchOutside(true)
         dialog?.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT)
         dialog.show()
+        
         setupClicks()
     }
 

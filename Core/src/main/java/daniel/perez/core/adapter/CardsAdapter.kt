@@ -67,7 +67,6 @@ class CardsAdapter(private val context: Context, private val imageLoader: ImageL
             binding.listEntryDateTextview.text = event.startDatePretty()
             binding.listEntryPreviewDay.text = event.startDateTime.dayOfMonth.toString()
             binding.listEntryPreviewMonth.text = event.startDatePretty().substringBefore(" ")
-            binding.listEntryPreviewYear.text = event.startDateTime.year.toString()
             binding.listEntryTimeTextview.text = event.startDateTime.timeString()
 
         }

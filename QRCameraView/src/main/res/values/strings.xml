@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toggle_flash">Toggle Flash</string>
+    <string name="calendar_event">Calendar Event</string>
+    <string name="contact_info">Contact Info</string>
+    <string name="url">Url</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="sms">SMS</string>
+    <string name="isbn">ISBN</string>
+    <string name="wifi">WIFI</string>
+    <string name="geo">Geo Location</string>
+    <string name="license">Drivers License</string>
+    <string name="text">Text</string>
+    <string name="unknown">Unknown</string>
+</resources>

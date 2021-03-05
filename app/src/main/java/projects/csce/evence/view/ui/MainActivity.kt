@@ -49,6 +49,7 @@ class MainActivity : BaseActivity() {
 
         //apply custom toolbar
         setSupportActionBar(binding.toolbarMain)
+
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
         eventsAdapter = CardsAdapter(this, imageLoader)
         handleRecyclerView()
@@ -118,7 +119,8 @@ class MainActivity : BaseActivity() {
                 .subscribe { events ->
                     Timber.i( "handleRecyclerView() Size: ${events.size}" )
                     eventsAdapter.onChanged( events )
-                    if (events.isEmpty()) binding.emptyTextview.visibility = View.VISIBLE else binding.emptyTextview.visibility = View.GONE
+                    if (events.isEmpty()) binding.emptyTextview.visibility = View.VISIBLE
+                    else binding.emptyTextview.visibility = View.GONE
         }
     }
 

@@ -1,7 +1,7 @@
 package daniel.perez.qrcameraview.di
 
 import dagger.Subcomponent
-import daniel.perez.qrcameraview.QrReaderActivity
+import daniel.perez.qrcameraview.ui.QrReaderActivity
 
 @Subcomponent
 interface QrReaderComponent
