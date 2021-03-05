@@ -77,8 +77,7 @@ class MainActivity : BaseActivity()
     {
         disposables += viewModel.events()
                 .observeOn( AndroidSchedulers.mainThread() )
-                .subscribe { events ->
-                    Timber.i( "handleRecyclerView() Size: ${events.size}" )
+                .subscribe{ events: List<ViewEvent> ->
                     eventsAdapter.setData( events )
                     if (events.isEmpty())
                     {
@@ -95,6 +94,15 @@ class MainActivity : BaseActivity()
                 .map { it.toString() }
                 .distinctUntilChanged()
                 .subscribe { viewModel.newSearch( it.toString() ) }
+
+        disposables += binding.searchEditText.textChanges()
+                .debounce(100, TimeUnit.MILLISECONDS)
+                .map { it.toString() }
+                .distinctUntilChanged()
+                .subscribe {
+                    Timber.i("""Text Change Subscribe: '$it'""")
+                    viewModel.newSearch( it.toString() )
+                }
 
 
         disposables += eventsAdapter.clicks()
@@ -141,6 +149,27 @@ class MainActivity : BaseActivity()
         return super.onOptionsItemSelected(item)
     }
 
+    private fun viewSetup()
+    {
+        // RecyclerView
+        binding.eventsRecyclerView.adapter = eventsAdapter
+        binding.eventsRecyclerView.layoutManager = LinearLayoutManager(baseContext)
+
+        //
+        binding.qrBtn.setOnClickListener { activityStarter.startGenerateQr(this) }
+
+        //apply custom toolbar
+        setSupportActionBar(binding.toolbarMain)
+        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+        eventsAdapter = CardsAdapter(this, imageLoader)
+        viewSetup()
+
+        //handle drawer
+        val actionBarDrawerToggle = ActionBarDrawerToggle(this, binding.drawerMain, binding.toolbarMain, R.string.app_name, R.string.app_name)
+        binding.drawerMain.closeDrawer(binding.includedDrawer.navigationDrawer)
+        binding.drawerMain.addDrawerListener(actionBarDrawerToggle)
+        actionBarDrawerToggle.syncState()
+    }
 
     fun startSettingsActivity(view: View?)
     {
