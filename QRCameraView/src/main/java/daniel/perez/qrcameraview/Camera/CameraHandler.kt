@@ -12,6 +12,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import dagger.hilt.android.qualifiers.ActivityContext
 import daniel.perez.qrcameraview.Scanner.BaseAnalyzer
 import daniel.perez.qrcameraview.Scanner.QRScanner
 import daniel.perez.qrcameraview.Scanner.TextScanner
@@ -20,7 +21,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
-class CameraHandler @Inject constructor(private val context: Context,
+class CameraHandler @Inject constructor(@ActivityContext private val context: Context,
                                         private val qrScanner: QRScanner,
                                         private val textScanner: TextScanner) {
 

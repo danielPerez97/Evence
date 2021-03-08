@@ -8,13 +8,26 @@ object Evence
 
 object Libs
 {
+    // AppCompat
+    private const val appCompatVersion = "1.2.0"
+    const val appCompat = "androidx.appcompat:appcompat:$appCompatVersion"
+
+    // CameraX
+    private const val cameraXVersion = "1.0.0-rc01"
+    private const val cameraXCameraViewVersion = "1.0.0-alpha10"
+    private const val cameraXExtensionsVersion = "1.0.0-alpha10"
+    const val cameraXCamera2 = "androidx.camera:camera-camera2:$cameraXVersion"
+    const val cameraXCore = "androidx.camera:camera-core:$cameraXVersion"
+    const val cameraXLifecycle = "androidx.camera:camera-lifecycle:$cameraXVersion"
+    const val cameraXCameraView = "androidx.camera:camera-view:$cameraXCameraViewVersion"
+    const val cameraXExtensions = "androidx.camera:camera-extensions:$cameraXExtensionsVersion"
+
     // Coil
     private const val coilVersion = "1.1.1"
-    // const val coilBase = "io.coil-kt:coil-base:$coilVersion"
     const val coil = "io.coil-kt:coil:$coilVersion"
 
     // ConstraintLayout
-    private const val constraintLayoutVersion = "1.1.3"
+    private const val constraintLayoutVersion = "2.0.4"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
     // CoordinatorLayout
@@ -25,12 +38,9 @@ object Libs
     private const val daggerVersion = "2.31.2"
     const val dagger = "com.google.dagger:dagger:$daggerVersion"
     const val daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
-
     const val daggerHiltVersion = "2.33-beta"
     const val daggerHiltGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:$daggerHiltVersion"
     const val daggerHilt = "com.google.dagger:hilt-android:$daggerHiltVersion"
-    const val daggerHiltViewModel = "androidx.hilt:hilt-lifecycle-viewmodel:$daggerHiltVersion"
-
     const val daggerHiltCompiler = "com.google.dagger:hilt-compiler:$daggerHiltVersion"
 
 
@@ -38,16 +48,29 @@ object Libs
     private const val desugarVersion = "1.0.9"
     const val desugar = "com.android.tools:desugar_jdk_libs:$desugarVersion"
 
+    // Guava Conflict
+    private const val guavaConflictVersion = "9999.0-empty-to-avoid-conflict-with-guava"
+    private const val guavaVersion = "30.1-android"
+    const val guava = "com.google.guava:guava:$guavaVersion"
+    const val guavaConflict = "com.google.guava:listenablefuture:$guavaConflictVersion"
 
     // ICal4J
     private const val ical4jVersion = "3.0.9"
     const val ical4j = "org.mnode.ical4j:ical4j:$ical4jVersion"
 
-    // Google
-    const val playServicesAuth = "com.google.android.gms:play-services-auth:17.0.0"
-    const val playApiClient = "com.google.api-client:google-api-client:1.22.0"
-    const val playApiClientAndroid = "com.google.api-client:google-api-client-android:1.22.0"
-    const val playApiDrive = "com.google.android.gms:play-services-drive:17.0.0"
+    // Google ML Kit
+    private const val mlkitBarcodeVersion="16.1.1"
+    private const val mlkitTextVersion="16.1.3"
+    const val mlkitBarcode = "com.google.mlkit:barcode-scanning:$mlkitBarcodeVersion"
+    const val mlkitTextRecognition = "com.google.android.gms:play-services-mlkit-text-recognition:$mlkitTextVersion"
+
+    // Google Mobile Vision
+    private const val visionVersion="20.0.0"
+    const val vision="com.google.android.gms:play-services-vision:$visionVersion"
+
+    // Kotlinx DateTime
+    private const val kotlinxDateTimeVersion = "0.1.1"
+    const val kotlinxDateTime = "org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDateTimeVersion"
 
     // Material
     private const val materialVersion = "1.2.1"
@@ -109,38 +132,26 @@ object Libs
 
     // ViewModel, LiveData
     private const val lifeCycleVersion = "2.3.0"
-    const val lifeCycle = "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
+    const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifeCycleVersion"
     const val viewModel = "androidx.lifecycle:lifecycle-viewmodel:$lifeCycleVersion"
 
     // ZXING
     private const val zxingVersion = "3.4.1"
     const val zxing = "com.google.zxing:core:$zxingVersion"
     const val zxingAndroid = "com.journeyapps:zxing-android-embedded:3.2.0@aar"
+}
 
-    //Google Mobile Vision
-    private const val visionVersion="20.0.0"
-    const val vision="com.google.android.gms:play-services-vision:$visionVersion"
+object TestLibs
+{
+    private const val runnerVersion = "1.3.0"
+    const val runner = "androidx.test:runner:$runnerVersion"
 
-    //CameraX
-    private const val cameraXVersion = "1.0.0-rc01"
-    private const val cameraXCameraViewVersion = "1.0.0-alpha10"
-    private const val cameraXExtensionsVersion = "1.0.0-alpha10"
-    const val cameraXCamera2 = "androidx.camera:camera-camera2:$cameraXVersion"
-    const val cameraXCore = "androidx.camera:camera-core:$cameraXVersion"
-    const val cameraXLifecycle = "androidx.camera:camera-lifecycle:$cameraXVersion"
-    const val cameraXCameraView = "androidx.camera:camera-view:$cameraXCameraViewVersion"
-    const val cameraXExtensions = "androidx.camera:camera-extensions:$cameraXExtensionsVersion"
+    private const val espressoVersion = "3.3.0"
+    const val espresso = "androidx.test.espresso:espresso-core:$espressoVersion"
 
-    //Google ML Kit
-    private const val mlkitBarcodeVersion="16.1.1"
-    private const val mlkitTextVersion="16.1.3"
-    const val mlkitBarcode = "com.google.mlkit:barcode-scanning:$mlkitBarcodeVersion"
-    const val mlkitTextRecognition = "com.google.android.gms:play-services-mlkit-text-recognition:$mlkitTextVersion"
+    const val junit4 = "junit:junit:4.12"
 
-
-    //guava conflict - listenablefuture
-    private const val guavaConflictVersion = "9999.0-empty-to-avoid-conflict-with-guava"
-    const val guavaConflict = "com.google.guava:listenablefuture:$guavaConflictVersion"
+    const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.6"
 }
 
 object Project

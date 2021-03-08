@@ -4,7 +4,6 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
-    id("com.google.gms.google-services")
     id("dagger.hilt.android.plugin")
 }
 
@@ -43,13 +42,7 @@ android {
 
 dependencies {
     implementation( fileTree( mapOf( "dir" to "libs", "include" to "*.jar" ) ) )
-    implementation( "androidx.appcompat:appcompat:1.1.0" )
-    implementation( "androidx.constraintlayout:constraintlayout:1.1.3" )
-    testImplementation( "junit:junit:4.12" )
-    androidTestImplementation( "androidx.test:runner:1.2.0" )
-    androidTestImplementation( "androidx.test.espresso:espresso-core:3.2.0" )
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
-    coreLibraryDesugaring( "com.android.tools:desugar_jdk_libs:1.0.5" )
 
     implementation( project( Project.core ) )
     implementation( project( Project.evenceDatabase ) )
@@ -59,28 +52,40 @@ dependencies {
     implementation( project( Project.qrCameraView ) )
     implementation( project( Project.qrDialogView ) )
 
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.6")
+    // AppCompat
+    implementation( Libs.appCompat )
+
+    // Camerax core
+    implementation( Libs.cameraXCore )
+
+    // CardView
+    implementation( Libs.cardView )
+    implementation( Libs.recyclerView )
+
+    // ConstraintLayout
+    implementation( Libs.constraintLayout )
 
     // Coil
     implementation( Libs.coil )
-//    implementation( Libs.coilBase )
+
+    // CoordinatorLayout
+    implementation( Libs.coordinatorLayout )
 
     // Dagger 2
     implementation( Libs.daggerHilt )
     kapt( Libs.daggerHiltCompiler )
 
+    // Desugar
+    coreLibraryDesugaring( Libs.desugar )
+
+    // Guava Conflict
+    implementation( Libs.guavaConflict )
+
     // Kotlin Date-Time
-    api("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
+    api( Libs.kotlinxDateTime )
 
-    // Timber
-    implementation( Libs.timber )
-
-    // RxJava
-    implementation( Libs.rxJava )
-    implementation( Libs.reactiveStreams )
-    implementation( Libs.rxBinding )
-    implementation( Libs.rxReplayingShare )
-
+    // Material widgets
+    implementation( Libs.material )
 
     // Moshi
     implementation( Libs.moshi )
@@ -94,45 +99,31 @@ dependencies {
     implementation( Libs.retrofitScalars )
     implementation( Libs.retrofitRxJava )
 
+    // RxJava
+    implementation( Libs.rxJava )
+    implementation( Libs.reactiveStreams )
+    implementation( Libs.rxBinding )
+    implementation( Libs.rxReplayingShare )
+
     // SQLDelight
     implementation( Libs.sqlDelightAndroidDriver )
 
+    // Timber
+    implementation( Libs.timber )
+
     // ViewModel
-    implementation( "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0" )
-
-
-    // ICal4j
-    implementation( Libs.ical4j )
+    implementation( Libs.viewModel )
+    implementation( Libs.viewModelKtx )
 
     // ZXING
     implementation( Libs.zxing )
     implementation( Libs.zxingAndroid )
 
-    // Google API
-    implementation( Libs.playServicesAuth )
-    implementation( Libs.playApiClient )
-    implementation( Libs.playApiClientAndroid )
-    implementation( Libs.playApiDrive )
-
-    // CardView
-    implementation( Libs.cardView )
-    implementation( Libs.recyclerView )
-
-    //CoordinatorLayout
-    implementation( Libs.coordinatorLayout )
-
-    // ViewModel, LiveData
-    implementation( Libs.viewModel )
-
-    //Material widgets
-    implementation( Libs.material )
-
-    //guavaConflict
-    implementation( Libs.guavaConflict)
-
-    //camerax core.
-    implementation( Libs.cameraXCore )
-
+    // Testing
+    testImplementation( TestLibs.junit4 )
+    androidTestImplementation( TestLibs.runner )
+    androidTestImplementation( TestLibs.espresso )
+    debugImplementation( TestLibs.leakCanary )
 }
 
 repositories {

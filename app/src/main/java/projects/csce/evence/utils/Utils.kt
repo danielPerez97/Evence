@@ -9,11 +9,6 @@ import projects.csce.evence.BaseApplication
 import projects.csce.evence.di.appscope.AppComponent
 import java.time.ZonedDateTime
 
-fun AppCompatActivity.getAppComponent(): AppComponent
-{
-	return (this.application as BaseApplication).injector
-}
-
 fun Context.toastLong(message: String)
 {
 	Toast.makeText(this, message, Toast.LENGTH_LONG).show()
