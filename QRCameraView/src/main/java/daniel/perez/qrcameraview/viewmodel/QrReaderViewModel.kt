@@ -7,8 +7,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import daniel.perez.core.db.Event
 import daniel.perez.core.db.EventOps
 import daniel.perez.core.db.UiNewEvent
-import daniel.perez.core.service.FileManager
-import daniel.perez.core.service.qr.QrBitmapGenerator
 import daniel.perez.qrcameraview.Scanner.QRScanner
 import daniel.perez.qrcameraview.Scanner.TextScanner
 import daniel.perez.qrcameraview.data.SCAN_TYPE

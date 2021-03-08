@@ -4,9 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import coil.ImageLoader
-import daniel.perez.core.plusAssign
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.adapter.CardsAdapter
+import daniel.perez.core.plusAssign
 import daniel.perez.core.service.FileManager
 import daniel.perez.core.service.qr.QrBitmapGenerator
 import daniel.perez.fileselectview.databinding.ActivityFileSelectBinding

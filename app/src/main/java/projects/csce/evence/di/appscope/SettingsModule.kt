@@ -1,6 +1,5 @@
 package projects.csce.evence.di.appscope
 
-import android.app.Activity
 import android.content.Context
 import dagger.Module
 import dagger.Provides

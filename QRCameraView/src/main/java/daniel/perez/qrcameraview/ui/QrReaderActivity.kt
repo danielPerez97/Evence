@@ -23,7 +23,6 @@ import daniel.perez.qrcameraview.R
 import daniel.perez.qrcameraview.data.SCAN_TYPE
 import daniel.perez.qrcameraview.data.ScannedData
 import daniel.perez.qrcameraview.databinding.ActivityQrReaderBinding
-import daniel.perez.qrcameraview.di.QrReaderComponentProvider
 import daniel.perez.qrcameraview.viewmodel.QrReaderViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import javax.inject.Inject

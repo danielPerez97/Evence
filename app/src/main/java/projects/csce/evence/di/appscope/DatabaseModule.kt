@@ -5,15 +5,13 @@ import com.squareup.sqldelight.android.AndroidSqliteDriver
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
+import daniel.perez.core.db.EventOps
+import daniel.perez.core.service.FileManager
 import daniel.perez.evencedb.EvenceDatabase
 import daniel.perez.evencedb.data.EvenceSchema
 import daniel.perez.evencedb.data.createQueryWrapper
-import daniel.perez.core.db.EventOps
-import daniel.perez.core.service.FileManager
 import projects.csce.evence.database.getEventOps
 import javax.inject.Singleton
 

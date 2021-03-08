@@ -17,7 +17,6 @@ import daniel.perez.core.model.Half
 import daniel.perez.core.model.TimeSetEvent
 import daniel.perez.core.model.ViewEvent
 import daniel.perez.generateqrview.databinding.ActivityGenerateQrBinding
-import daniel.perez.generateqrview.di.GenerateQRComponentProvider
 import daniel.perez.ical.Parser.parse
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import timber.log.Timber
