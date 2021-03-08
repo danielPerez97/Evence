@@ -1,7 +1,6 @@
 package daniel.perez.core
 
 import android.content.Context
-import daniel.perez.core.model.ViewCalendarData
 import daniel.perez.core.model.ViewEvent
 
 interface ActivityStarter

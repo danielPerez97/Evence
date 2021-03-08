@@ -1,6 +1,5 @@
 package projects.csce.evence.di.appscope
 
-import dagger.Component
 import daniel.perez.fileselectview.di.FileSelectComponent
 import daniel.perez.generateqrview.di.GenerateQRComponent
 import daniel.perez.qrcameraview.di.QrReaderComponent
@@ -8,7 +7,6 @@ import daniel.perez.qrdialogview.di.QRDialogComponent
 import projects.csce.evence.BaseApplication
 import projects.csce.evence.view.ui.MainActivity
 import projects.csce.evence.view.ui.SettingsActivity
-import javax.inject.Singleton
 
 interface AppComponent
 {

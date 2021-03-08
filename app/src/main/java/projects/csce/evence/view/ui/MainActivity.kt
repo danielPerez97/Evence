@@ -6,7 +6,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.ImageLoader
@@ -15,16 +14,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import daniel.perez.core.*
 import daniel.perez.core.RequestCodes.REQUEST_SAF
 import daniel.perez.core.adapter.CardsAdapter
-import daniel.perez.core.di.ViewModelFactory
 import daniel.perez.core.model.ViewEvent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.functions.Consumer
 import projects.csce.evence.R
 import projects.csce.evence.databinding.ActivityMainBinding
 import projects.csce.evence.service.model.SharedPref
-import projects.csce.evence.utils.getAppComponent
 import projects.csce.evence.viewmodel.MainViewModel
 import timber.log.Timber
 import java.util.concurrent.TimeUnit

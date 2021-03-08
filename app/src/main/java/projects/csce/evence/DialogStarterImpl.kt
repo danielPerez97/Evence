@@ -7,7 +7,6 @@ import daniel.perez.core.DialogStarter
 import daniel.perez.core.model.DateSetEvent
 import daniel.perez.core.model.TimeSetEvent
 import daniel.perez.core.model.ViewEvent
-import daniel.perez.core.service.FileManager
 import daniel.perez.qrdialogview.CalendarDialog
 import daniel.perez.qrdialogview.QRDialog
 import io.reactivex.rxjava3.core.Observable

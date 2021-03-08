@@ -5,13 +5,8 @@ package projects.csce.evence.utils
 import android.content.Context
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import daniel.perez.ical.EventSpec
-import daniel.perez.ical.ICalSpec
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toJavaLocalDateTime
 import projects.csce.evence.BaseApplication
 import projects.csce.evence.di.appscope.AppComponent
-import java.time.ZoneId
 import java.time.ZonedDateTime
 
 fun AppCompatActivity.getAppComponent(): AppComponent

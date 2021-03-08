@@ -1,7 +1,7 @@
 package projects.csce.evence.view.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import projects.csce.evence.databinding.ActivityShareAppBinding
 
 class ShareAppActivity : AppCompatActivity() {
