@@ -2,7 +2,7 @@ package daniel.perez.ical
 
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Objects
+import java.util.*
 
 
 class EventSpec private constructor(builder: Builder)

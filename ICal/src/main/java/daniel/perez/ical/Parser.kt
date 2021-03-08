@@ -1,11 +1,9 @@
 package daniel.perez.ical
 
 import android.net.Uri
-import android.util.Log
 import androidx.core.net.toFile
 import okio.buffer
 import okio.source
-import timber.log.Timber
 import java.io.File
 import java.time.Month
 import java.time.ZonedDateTime

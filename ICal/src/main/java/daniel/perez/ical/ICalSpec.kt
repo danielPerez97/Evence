@@ -1,7 +1,5 @@
 package daniel.perez.ical
 
-import java.util.Objects
-
 
 data class ICalSpec private constructor(val builder: Builder)
 {
