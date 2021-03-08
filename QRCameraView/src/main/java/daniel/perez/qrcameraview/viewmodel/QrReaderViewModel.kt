@@ -3,6 +3,7 @@ package daniel.perez.qrcameraview.viewmodel
 import androidx.lifecycle.ViewModel
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.text.Text
+import dagger.hilt.android.lifecycle.HiltViewModel
 import daniel.perez.core.db.Event
 import daniel.perez.core.db.EventOps
 import daniel.perez.core.db.UiNewEvent
@@ -17,14 +18,11 @@ import daniel.perez.qrcameraview.data.ScannedText
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
 
+@HiltViewModel
 class QrReaderViewModel @Inject constructor(
-        private val fileManager: FileManager,
-        private val generator: QrBitmapGenerator,
         private val qrScanner: QRScanner,
         private val textScanner: TextScanner,
         private val eventOps: EventOps): ViewModel() {
-
-    //fun saveFile(ical: ICalSpec) = fileManager.saveICalFile(ical)
 
     fun liveQRData(): Observable<List<ScannedData>> {
         return qrScanner.qrScannerResult()

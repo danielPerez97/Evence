@@ -26,6 +26,14 @@ object Libs
     const val dagger = "com.google.dagger:dagger:$daggerVersion"
     const val daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
 
+    const val daggerHiltVersion = "2.33-beta"
+    const val daggerHiltGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:$daggerHiltVersion"
+    const val daggerHilt = "com.google.dagger:hilt-android:$daggerHiltVersion"
+    const val daggerHiltViewModel = "androidx.hilt:hilt-lifecycle-viewmodel:$daggerHiltVersion"
+
+    const val daggerHiltCompiler = "com.google.dagger:hilt-compiler:$daggerHiltVersion"
+
+
     // Desugar
     private const val desugarVersion = "1.0.9"
     const val desugar = "com.android.tools:desugar_jdk_libs:$desugarVersion"
@@ -100,8 +108,9 @@ object Libs
     const val timber = "com.jakewharton.timber:timber:$timberVersion"
 
     // ViewModel, LiveData
-    private const val lifeCycleVersion = "2.1.0"
+    private const val lifeCycleVersion = "2.3.0"
     const val lifeCycle = "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
+    const val viewModel = "androidx.lifecycle:lifecycle-viewmodel:$lifeCycleVersion"
 
     // ZXING
     private const val zxingVersion = "3.4.1"

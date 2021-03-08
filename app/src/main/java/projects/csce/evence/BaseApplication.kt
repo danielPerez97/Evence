@@ -2,6 +2,7 @@ package projects.csce.evence
 
 import android.app.Application
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import dagger.hilt.android.HiltAndroidApp
 import daniel.perez.core.service.FileManager
 import daniel.perez.generateqrview.di.GenerateQRComponent
 import daniel.perez.generateqrview.di.GenerateQRComponentProvider
@@ -15,14 +16,13 @@ import timber.log.Timber
 import timber.log.Timber.DebugTree
 import javax.inject.Inject
 
+@HiltAndroidApp
 class BaseApplication : Application(),
         QrReaderComponentProvider,
         GenerateQRComponentProvider,
         QRDialogComponentProvider
 {
     lateinit var injector: AppComponent
-    lateinit var account: GoogleSignInAccount
-    @Inject lateinit var fileManager: FileManager
 
     override fun onCreate() {
         super.onCreate()
@@ -31,12 +31,6 @@ class BaseApplication : Application(),
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
         }
-        injector = DaggerAppComponent.builder()
-                .loginModule( LoginModule( applicationContext ) )
-                .databaseModule( DatabaseModule( applicationContext ) )
-                .networkModule( NetworkModule( applicationContext ) )
-                .build()
-        injector.inject(this)
         SharedPref(applicationContext).setSavedPreferences()
     }
 

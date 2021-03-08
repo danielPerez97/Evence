@@ -59,8 +59,8 @@ dependencies {
     implementation( Libs.coil )
 
     // Dagger
-    implementation( Libs.dagger )
-    kapt( Libs.daggerCompiler )
+    implementation( Libs.daggerHilt )
+    kapt( Libs.daggerHiltCompiler )
 
     //Google Mobile Vision API
     implementation( Libs.vision )

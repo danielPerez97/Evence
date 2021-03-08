@@ -4,25 +4,32 @@ import android.content.Context
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.components.SingletonComponent
 import daniel.perez.evencedb.EvenceDatabase
 import daniel.perez.evencedb.data.EvenceSchema
 import daniel.perez.evencedb.data.createQueryWrapper
 import daniel.perez.core.db.EventOps
 import daniel.perez.core.service.FileManager
 import projects.csce.evence.database.getEventOps
+import javax.inject.Singleton
 
 @Module
-class DatabaseModule(private val appContext: Context)
+@InstallIn(SingletonComponent::class)
+class DatabaseModule
 {
-    private val db: EvenceDatabase
-    init {
-        val driver = AndroidSqliteDriver(EvenceSchema, appContext, "evence.db")
-        db = createQueryWrapper(driver)
-    }
-
     @Provides
-    fun provideDatabase(fileManager: FileManager): EventOps
+    @Singleton
+    fun provideDatabase(
+            @ApplicationContext appContext: Context,
+            fileManager: FileManager
+    ): EventOps
     {
+        val driver = AndroidSqliteDriver(EvenceSchema, appContext, "evence.db")
+        val db: EvenceDatabase = createQueryWrapper(driver)
         return appContext.getEventOps( db.eventQueries, fileManager )
     }
 }

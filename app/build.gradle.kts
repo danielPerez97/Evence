@@ -5,6 +5,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("com.google.gms.google-services")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -65,8 +66,8 @@ dependencies {
 //    implementation( Libs.coilBase )
 
     // Dagger 2
-    implementation( Libs.dagger )
-    kapt( Libs.daggerCompiler )
+    implementation( Libs.daggerHilt )
+    kapt( Libs.daggerHiltCompiler )
 
     // Kotlin Date-Time
     api("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
@@ -96,6 +97,10 @@ dependencies {
     // SQLDelight
     implementation( Libs.sqlDelightAndroidDriver )
 
+    // ViewModel
+    implementation( "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0" )
+
+
     // ICal4j
     implementation( Libs.ical4j )
 
@@ -117,7 +122,7 @@ dependencies {
     implementation( Libs.coordinatorLayout )
 
     // ViewModel, LiveData
-    implementation( Libs.lifeCycle )
+    implementation( Libs.viewModel )
 
     //Material widgets
     implementation( Libs.material )

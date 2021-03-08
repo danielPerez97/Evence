@@ -10,9 +10,9 @@ import android.view.WindowManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.mlkit.vision.barcode.Barcode
+import dagger.hilt.android.AndroidEntryPoint
 import daniel.perez.core.*
 import daniel.perez.core.db.UiNewEvent
 import daniel.perez.core.db.toViewEvent
@@ -28,7 +28,9 @@ import daniel.perez.qrcameraview.viewmodel.QrReaderViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
-class QrReaderActivity : BaseActivity(), DialogClosable {
+@AndroidEntryPoint
+class QrReaderActivity : BaseActivity(), DialogClosable
+{
     private lateinit var binding: ActivityQrReaderBinding
     private lateinit var viewModel: QrReaderViewModel
     private lateinit var overlays : Overlays
@@ -40,7 +42,6 @@ class QrReaderActivity : BaseActivity(), DialogClosable {
     private var flashOn = false
     private var scanOn = true
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var fileManager: FileManager
     @Inject lateinit var dialogStarter: DialogStarter
     @Inject lateinit var cameraHandler: CameraHandler
@@ -51,14 +52,13 @@ class QrReaderActivity : BaseActivity(), DialogClosable {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as QrReaderComponentProvider).getQrReaderComponent().inject(this)
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
         binding = ActivityQrReaderBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(QrReaderViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(QrReaderViewModel::class.java)
         intentActions = IntentActions(this)
         barcodeTypes = BarcodeTypes(this)
 

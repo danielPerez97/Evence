@@ -6,16 +6,19 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.lifecycle.ViewModelProviders
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.ImageLoader
 import com.jakewharton.rxbinding4.widget.textChanges
+import dagger.hilt.android.AndroidEntryPoint
 import daniel.perez.core.*
 import daniel.perez.core.RequestCodes.REQUEST_SAF
 import daniel.perez.core.adapter.CardsAdapter
 import daniel.perez.core.di.ViewModelFactory
 import daniel.perez.core.model.ViewEvent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.functions.Consumer
 import projects.csce.evence.R
@@ -27,6 +30,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity()
 {
     private lateinit var currentEvent: ViewEvent
@@ -34,7 +38,6 @@ class MainActivity : BaseActivity()
     private lateinit var binding: ActivityMainBinding
     private lateinit var eventsAdapter: CardsAdapter
 
-    @Inject lateinit var factory: ViewModelFactory
     @Inject lateinit var dialogStarter: DialogStarter
     @Inject lateinit var activityStarter: ActivityStarter
     @Inject lateinit var sharedPref: SharedPref
@@ -43,9 +46,9 @@ class MainActivity : BaseActivity()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
-        setTheme(R.style.AppTheme)
-        this.getAppComponent().inject(this)
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        setTheme(R.style.AppTheme)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewSetup()
@@ -59,7 +62,6 @@ class MainActivity : BaseActivity()
         //apply custom toolbar
         setSupportActionBar(binding.toolbarMain)
 
-        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
         eventsAdapter = CardsAdapter()
 
         //handle drawer

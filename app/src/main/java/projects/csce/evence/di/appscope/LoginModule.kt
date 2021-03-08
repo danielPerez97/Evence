@@ -6,22 +6,22 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import projects.csce.evence.R
 import javax.inject.Singleton
 
 @Module
-class LoginModule(private val appContext: Context)
+@InstallIn(SingletonComponent::class)
+class LoginModule
 {
-	@Provides
-	@Singleton
-	fun provideContext(): Context
-	{
-		return appContext
-	}
 
 	@Provides
 	@Singleton
-	fun provideSignInOptions(): GoogleSignInOptions
+	fun provideSignInOptions(
+			@ApplicationContext appContext: Context
+	): GoogleSignInOptions
 	{
 		return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 				.requestIdToken(appContext.getString(R.string.default_web_client_id))
@@ -31,7 +31,10 @@ class LoginModule(private val appContext: Context)
 
 	@Provides
 	@Singleton
-	fun provideSignInClient(signInOptions: GoogleSignInOptions): GoogleSignInClient
+	fun provideSignInClient(
+			@ApplicationContext appContext: Context,
+			signInOptions: GoogleSignInOptions
+	): GoogleSignInClient
 	{
 		return GoogleSignIn.getClient(appContext, signInOptions)
 	}
