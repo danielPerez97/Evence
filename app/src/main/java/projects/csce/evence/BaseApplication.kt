@@ -17,35 +17,17 @@ import timber.log.Timber.DebugTree
 import javax.inject.Inject
 
 @HiltAndroidApp
-class BaseApplication : Application(),
-        QrReaderComponentProvider,
-        GenerateQRComponentProvider,
-        QRDialogComponentProvider
+class BaseApplication : Application()
 {
-    lateinit var injector: AppComponent
-
-    override fun onCreate() {
+    override fun onCreate()
+    {
         super.onCreate()
 
         // Setup Timber
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG)
+        {
             Timber.plant(DebugTree())
         }
         SharedPref(applicationContext).setSavedPreferences()
-    }
-
-    override fun getQrReaderComponent(): QrReaderComponent
-    {
-        return injector.provideQrReaderFactory().create()
-    }
-
-    override fun provideGenerateQRComponent(): GenerateQRComponent
-    {
-        return injector.provideGenerateQrFactory().create()
-    }
-
-    override fun provideQrDialogComponent(): QRDialogComponent
-    {
-        return injector.providerQrDialogFactory().create()
     }
 }
