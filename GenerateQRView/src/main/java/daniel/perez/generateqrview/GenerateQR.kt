@@ -7,8 +7,8 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxbinding4.view.clicks
+import dagger.hilt.android.AndroidEntryPoint
 import daniel.perez.core.*
 import daniel.perez.core.db.UiNewEvent
 import daniel.perez.core.db.toViewEvent
@@ -25,6 +25,7 @@ import java.io.File
 import java.time.LocalDateTime
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class GenerateQR : BaseActivity(), DialogClosable, AdapterView.OnItemSelectedListener
 {
     private lateinit var viewModel: GenerateQrViewModel
@@ -34,20 +35,16 @@ class GenerateQR : BaseActivity(), DialogClosable, AdapterView.OnItemSelectedLis
     private var endTime = TimeSetEvent(0, 0, Half.AM)
     private var startDate = DateSetEvent(1, 31, 1999)
     private var endDate = DateSetEvent(1, 31, 1999)
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var dialogStarter: DialogStarter
     @Inject lateinit var activityResultActions: ActivityResultActions
 
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?)
     {
-        (application as GenerateQRComponentProvider)
-                .provideGenerateQRComponent()
-                .inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityGenerateQrBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(GenerateQrViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(GenerateQrViewModel::class.java)
 
         if (intent != null && intent.getStringExtra("FILE_PATH") != null)
         {

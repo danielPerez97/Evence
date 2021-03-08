@@ -6,27 +6,23 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.AndroidEntryPoint
 import projects.csce.evence.R
 import projects.csce.evence.databinding.ActivitySettingsBinding
 import projects.csce.evence.service.model.SharedPref
-import projects.csce.evence.utils.getAppComponent
 import javax.inject.Inject
 
-
-class SettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
-    lateinit var binding: ActivitySettingsBinding
+@AndroidEntryPoint
+class SettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
+{
+    @Inject lateinit var sharedPref:SharedPref
     private var isDark: Int = -99
     private var isDayMonthYear = false
+    lateinit var binding: ActivitySettingsBinding
 
-    @Inject
-    lateinit var sharedPref:SharedPref
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
-        getAppComponent().inject(this)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -43,7 +39,8 @@ class SettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         setSavedSetting()
     }
 
-    private fun setSavedSetting(){
+    private fun setSavedSetting()
+    {
         isDark = sharedPref.loadIntValue(getString(R.string.saved_dark_mode_setting), DarkModeOptions.LIGHT.ordinal)
         when (isDark) {
             DarkModeOptions.LIGHT.ordinal ->

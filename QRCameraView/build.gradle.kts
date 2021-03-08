@@ -4,6 +4,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -50,8 +51,8 @@ dependencies {
     implementation( project( Project.core ) )
 
     // Dagger
-    implementation( Libs.dagger )
-    kapt( Libs.daggerCompiler )
+    implementation( Libs.daggerHilt )
+    kapt( Libs.daggerHiltCompiler )
 
     // CardView
     implementation( Libs.cardView )
@@ -64,7 +65,7 @@ dependencies {
     implementation( Libs.material )
 
     // LifeCycle
-    implementation( Libs.lifeCycle )
+    implementation( Libs.viewModel )
 
     // RxJava
     implementation( Libs.rxJava )

@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Environment
 import androidx.core.content.FileProvider
 import androidx.core.net.toFile
+import dagger.hilt.android.qualifiers.ApplicationContext
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.db.Event
 import daniel.perez.core.service.qr.QrBitmapGenerator
@@ -18,9 +19,10 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import javax.inject.Inject
 
-class FileManager(
-		private val context: Context,
+class FileManager @Inject constructor(
+		@ApplicationContext private val context: Context,
 		private val qrBitmapGenerator: QrBitmapGenerator
 )
 {

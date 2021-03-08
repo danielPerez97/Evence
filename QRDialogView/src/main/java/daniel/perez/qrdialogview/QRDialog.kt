@@ -16,36 +16,33 @@ import daniel.perez.core.BaseActivity
 import daniel.perez.core.DialogClosable
 import daniel.perez.core.RequestCodes
 import daniel.perez.core.model.ViewEvent
-import daniel.perez.core.service.FileManager
 import daniel.perez.qrdialogview.databinding.DialogBoxQrBinding
-import daniel.perez.qrdialogview.di.QRDialogComponentProvider
-import javax.inject.Inject
 
-class QRDialog(val context: Context, var event: ViewEvent) {
-    private val dialog: Dialog
-    private val binding: DialogBoxQrBinding
-    @Inject lateinit var imageLoader: ImageLoader
-    @Inject lateinit var fileManager: FileManager
-    @Inject lateinit var activityStarter: ActivityStarter
+class QRDialog(
+        private val context: Context,
+        private val event: ViewEvent,
+        private val imageLoader: ImageLoader,
+        private val activityStarter: ActivityStarter
+        )
+{
+    private val binding: DialogBoxQrBinding = DialogBoxQrBinding.inflate(LayoutInflater.from(context)).apply {
+        qrDialogEventTitleTextview.text = event.title
+        qrDialogEventStartDateTextview.text = event.startDatePretty()
+        qrDialogEventStartTimeTextview.text = event.startDateTime.toLocalTime().toString()
+        qrDialogEventLocationTextview.text = event.location
+        qrDialogQrImageview.load(event.imageFileUri, imageLoader)
+    }
+
+    private val dialog: Dialog = Dialog(context).apply {
+        setContentView(binding.root)
+        window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        setCancelable(true)
+        setCanceledOnTouchOutside(true)
+        window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT)
+        show()
+    }
 
     init {
-        (context.applicationContext as QRDialogComponentProvider)
-                .provideQrDialogComponent()
-                .inject(this)
-        binding = DialogBoxQrBinding.inflate(LayoutInflater.from(context))
-        binding.qrDialogEventTitleTextview.text = event.title
-        binding.qrDialogEventStartDateTextview.text = event.startDatePretty()
-        binding.qrDialogEventStartTimeTextview.text = event.startDateTime.toLocalTime().toString()
-        binding.qrDialogEventLocationTextview.text = event.location
-        binding.qrDialogQrImageview.load(event.imageFileUri, imageLoader)
-        dialog = Dialog(context)
-        dialog.setContentView(binding.root)
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.setCancelable(true)
-        dialog.setCanceledOnTouchOutside(true)
-        dialog?.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT)
-        dialog.show()
-        
         setupClicks()
     }
 

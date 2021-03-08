@@ -1,6 +1,8 @@
 package projects.csce.evence.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import daniel.perez.core.db.Event
 import daniel.perez.core.db.EventOps
 import daniel.perez.core.db.toViewEvent
@@ -9,9 +11,12 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class MainViewModel @Inject internal constructor(
-        private val eventOps: EventOps
+@HiltViewModel
+class MainViewModel @Inject constructor(
+        val handle: SavedStateHandle,
+        @Singleton private val eventOps: EventOps
 ) : ViewModel()
 {
     private val searchTextSubject: PublishSubject<String> = PublishSubject.create()

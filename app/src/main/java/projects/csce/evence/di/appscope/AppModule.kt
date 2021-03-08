@@ -1,7 +1,11 @@
 package projects.csce.evence.di.appscope
 
+import coil.ImageLoader
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.components.SingletonComponent
 import daniel.perez.core.ActivityResultActions
 import daniel.perez.core.DialogStarter
 import daniel.perez.core.ActivityStarter
@@ -13,12 +17,13 @@ import projects.csce.evence.ActivityStarterImpl
 import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 class AppModule
 {
     @Provides @Singleton
-    fun provideDialogStarter(): DialogStarter
+    fun provideDialogStarter(@Singleton imageLoader: ImageLoader, @Singleton activityStarter: ActivityStarter ): DialogStarter
     {
-        return DialogStarterImpl()
+        return DialogStarterImpl(imageLoader, activityStarter)
     }
 
     @Provides @Singleton
