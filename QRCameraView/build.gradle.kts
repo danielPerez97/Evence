@@ -57,6 +57,8 @@ dependencies {
     // CardView
     implementation( Libs.cardView )
 
+    implementation("com.google.guava:guava:30.1-android")
+
     // Layouts
     implementation( Libs.constraintLayout )
     implementation( Libs.coordinatorLayout )
