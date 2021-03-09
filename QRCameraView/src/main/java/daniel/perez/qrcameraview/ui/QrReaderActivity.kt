@@ -41,7 +41,6 @@ class QrReaderActivity : BaseActivity(), DialogClosable
     private var flashOn = false
     private var scanOn = true
 
-    @Inject lateinit var fileManager: FileManager
     @Inject lateinit var dialogStarter: DialogStarter
     @Inject lateinit var cameraHandler: CameraHandler
 

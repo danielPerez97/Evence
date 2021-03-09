@@ -2,7 +2,6 @@ package projects.csce.evence.di.appscope
 
 import daniel.perez.fileselectview.di.FileSelectComponent
 import daniel.perez.generateqrview.di.GenerateQRComponent
-import daniel.perez.qrcameraview.di.QrReaderComponent
 import daniel.perez.qrdialogview.di.QRDialogComponent
 import projects.csce.evence.BaseApplication
 import projects.csce.evence.view.ui.MainActivity
@@ -16,6 +15,5 @@ interface AppComponent
 
 	fun provideFileSelectFactory(): FileSelectComponent.Factory
 	fun provideGenerateQrFactory(): GenerateQRComponent.Factory
-	fun provideQrReaderFactory(): QrReaderComponent.Factory
 	fun providerQrDialogFactory(): QRDialogComponent.Factory
 }
