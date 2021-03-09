@@ -1,6 +1,7 @@
 package daniel.perez.core.db
 
 import daniel.perez.core.model.ViewEvent
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import java.time.LocalDateTime
 
@@ -25,4 +26,9 @@ interface EventOps
     fun icsText(event: Event): Observable<String>
 
     fun icsText(event: ViewEvent): Observable<String>
+
+    /**
+     * Method to delete by an id, returns the number of rows affected by an update or delete.
+     */
+    fun deleteById(id: Long): Completable
 }

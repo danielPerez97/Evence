@@ -9,20 +9,21 @@ import android.graphics.drawable.ColorDrawable
 import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.WindowManager
+import android.widget.Toast
 import coil.ImageLoader
 import coil.load
-import daniel.perez.core.ActivityStarter
-import daniel.perez.core.BaseActivity
-import daniel.perez.core.DialogClosable
-import daniel.perez.core.RequestCodes
+import daniel.perez.core.*
+import daniel.perez.core.db.EventOps
 import daniel.perez.core.model.ViewEvent
 import daniel.perez.qrdialogview.databinding.DialogBoxQrBinding
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 class QRDialog(
         private val context: Context,
         private val event: ViewEvent,
         private val imageLoader: ImageLoader,
-        private val activityStarter: ActivityStarter
+        private val activityStarter: ActivityStarter,
+        private val eventOps: EventOps
         )
 {
     private val binding: DialogBoxQrBinding = DialogBoxQrBinding.inflate(LayoutInflater.from(context)).apply {
@@ -31,6 +32,14 @@ class QRDialog(
         qrDialogEventStartTimeTextview.text = event.startDateTime.toLocalTime().toString()
         qrDialogEventLocationTextview.text = event.location
         qrDialogQrImageview.load(event.imageFileUri, imageLoader)
+        deleteBtn.setOnClickListener {
+            eventOps.deleteById(event.id)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        context.toastShort( "Successfully deleted ${event.title}" )
+                        closeDialog()
+                    }
+        }
     }
 
     private val dialog: Dialog = Dialog(context).apply {

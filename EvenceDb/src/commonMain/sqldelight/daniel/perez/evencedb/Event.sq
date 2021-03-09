@@ -34,3 +34,6 @@ SELECT * FROM Event ORDER BY datetime(start_time) ASC;
 
 getEventsSortedLatest:
 SELECT * FROM Event ORDER BY datetime(start_time) DESC;
+
+deleteById:
+DELETE FROM Event WHERE _id = ?;

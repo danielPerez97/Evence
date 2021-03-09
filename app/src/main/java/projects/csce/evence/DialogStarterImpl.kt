@@ -4,6 +4,7 @@ import coil.ImageLoader
 import daniel.perez.core.ActivityStarter
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.DialogStarter
+import daniel.perez.core.db.EventOps
 import daniel.perez.core.model.DateSetEvent
 import daniel.perez.core.model.TimeSetEvent
 import daniel.perez.core.model.ViewEvent
@@ -15,12 +16,13 @@ import javax.inject.Singleton
 
 class DialogStarterImpl @Inject constructor(
         @Singleton val imageLoader: ImageLoader,
-        @Singleton val activityStarter: ActivityStarter
+        @Singleton val activityStarter: ActivityStarter,
+        @Singleton val eventOps: EventOps
 ): DialogStarter
 {
     override fun startQrDialog(activity: BaseActivity, data: ViewEvent)
     {
-        QRDialog(activity, data, imageLoader, activityStarter)
+        QRDialog(activity, data, imageLoader, activityStarter, eventOps)
     }
 
     override fun startTimeDialog(activity: BaseActivity): Observable<TimeSetEvent>
