@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
-class CameraHandler @Inject constructor(@ActivityContext private val context: Context,
+class CameraHandler constructor(@ActivityContext private val context: Context,
                                         private val qrScanner: QRScanner,
                                         private val textScanner: TextScanner) {
 
