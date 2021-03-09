@@ -20,9 +20,12 @@ import javax.inject.Singleton
 class AppModule
 {
     @Provides @Singleton
-    fun provideDialogStarter(@Singleton imageLoader: ImageLoader, @Singleton activityStarter: ActivityStarter ): DialogStarter
+    fun provideDialogStarter(
+            @Singleton imageLoader: ImageLoader,
+            @Singleton activityStarter: ActivityStarter,
+            @Singleton eventOps: EventOps ): DialogStarter
     {
-        return DialogStarterImpl(imageLoader, activityStarter)
+        return DialogStarterImpl(imageLoader, activityStarter, eventOps)
     }
 
     @Provides @Singleton

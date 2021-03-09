@@ -14,7 +14,9 @@ import daniel.perez.core.service.FileManager
 import daniel.perez.evencedb.EventQueries
 import daniel.perez.ical.EventSpec
 import daniel.perez.ical.ICalSpec
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toKotlinLocalDateTime
 import java.io.File
@@ -115,6 +117,11 @@ private class EventOpsImpl(
                 .asObservable()
                 .mapToOne()
                 .map { it.toICalSpec().text() }
+    }
+
+    override fun deleteById(id: Long): Completable
+    {
+        return Completable.fromAction { queries.deleteById(id) }
     }
 
     private fun daniel.perez.evencedb.Event.toEvent(): Event
