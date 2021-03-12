@@ -119,9 +119,9 @@ private class EventOpsImpl(
                 .map { it.toICalSpec().text() }
     }
 
-    override fun deleteById(id: Long): Completable
+    override fun deleteById(id: Long)
     {
-        return Completable.fromAction { queries.deleteById(id) }
+        queries.deleteById(id)
     }
 
     private fun daniel.perez.evencedb.Event.toEvent(): Event

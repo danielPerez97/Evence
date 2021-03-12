@@ -12,11 +12,16 @@ import android.view.WindowManager
 import android.widget.Toast
 import coil.ImageLoader
 import coil.load
+import com.jakewharton.rxbinding4.view.clicks
 import daniel.perez.core.*
 import daniel.perez.core.db.EventOps
 import daniel.perez.core.model.ViewEvent
 import daniel.perez.qrdialogview.databinding.DialogBoxQrBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 class QRDialog(
         private val context: Context,
@@ -26,20 +31,14 @@ class QRDialog(
         private val eventOps: EventOps
         )
 {
+    private val disposables = CompositeDisposable()
+
     private val binding: DialogBoxQrBinding = DialogBoxQrBinding.inflate(LayoutInflater.from(context)).apply {
         qrDialogEventTitleTextview.text = event.title
         qrDialogEventStartDateTextview.text = event.startDatePretty()
         qrDialogEventStartTimeTextview.text = event.startDateTime.toLocalTime().toString()
         qrDialogEventLocationTextview.text = event.location
         qrDialogQrImageview.load(event.imageFileUri, imageLoader)
-        deleteBtn.setOnClickListener {
-            eventOps.deleteById(event.id)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        context.toastShort( "Successfully deleted ${event.title}" )
-                        closeDialog()
-                    }
-        }
     }
 
     private val dialog: Dialog = Dialog(context).apply {
@@ -64,6 +63,17 @@ class QRDialog(
             activityStarter.startEditQr(context, event)
             closeDialog()
         }
+
+        disposables += binding.deleteBtn.clicks()
+                .map { event.id }
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .flatMap { id ->
+                    Observable.just(Unit)
+                            .map { eventOps.deleteById(id) }
+                }
+                .observeOn( AndroidSchedulers.mainThread() )
+                .subscribe { closeDialog() }
+
     }
 
     private fun save() {
@@ -114,6 +124,8 @@ class QRDialog(
         {
             dialog.dismiss()
         }
+
+        disposables.dispose()
     }
 
     companion object {

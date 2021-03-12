@@ -14,6 +14,11 @@ class GenerateQrViewModel @Inject internal constructor(private val eventOps: Eve
     fun saveEvent(event: UiNewEvent): Observable<Event>
     {
         return eventOps.insertEvent( event )
-                .flatMap { eventOps.getEventById(it) }
+                .flatMap {
+                    // Take one so it completes the Observable. Allows you to hit the delete button
+                    // and not error out because this Observable tries to update the affected row.
+                    eventOps.getEventById(it)
+                            .take(1)
+                }
     }
 }

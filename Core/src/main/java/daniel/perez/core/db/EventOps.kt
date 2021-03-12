@@ -27,8 +27,5 @@ interface EventOps
 
     fun icsText(event: ViewEvent): Observable<String>
 
-    /**
-     * Method to delete by an id, returns the number of rows affected by an update or delete.
-     */
-    fun deleteById(id: Long): Completable
+    fun deleteById(id: Long)
 }
