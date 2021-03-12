@@ -57,7 +57,8 @@ class GenerateQR : BaseActivity(), DialogClosable, AdapterView.OnItemSelectedLis
         ArrayAdapter.createFromResource(this, R.array.event_recurrence_options_list, R.layout.spinner_text)
                 .also { adapter ->
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    binding.recurrenceSpinner.adapter = adapter}
+                    binding.recurrenceSpinner.adapter = adapter
+                }
         binding.recurrenceSpinner.onItemSelectedListener = this
         disposables += binding.startDateEditText.clicks().subscribe { startDateDialog() }
         binding.startTimeEditText.clicks().subscribe { startTimeDialog() }
