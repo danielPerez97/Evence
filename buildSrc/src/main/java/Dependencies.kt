@@ -35,10 +35,10 @@ object Libs
     const  val coordinatorLayout = "androidx.coordinatorlayout:coordinatorlayout:$coordinatorLayoutVersion"
 
     // Dagger
-    private const val daggerVersion = "2.31.2"
+    private const val daggerVersion = "2.35.1"
     const val dagger = "com.google.dagger:dagger:$daggerVersion"
     const val daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
-    const val daggerHiltVersion = "2.33-beta"
+    const val daggerHiltVersion = "2.35.1"
     const val daggerHiltGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:$daggerHiltVersion"
     const val daggerHilt = "com.google.dagger:hilt-android:$daggerHiltVersion"
     const val daggerHiltCompiler = "com.google.dagger:hilt-compiler:$daggerHiltVersion"
@@ -158,7 +158,7 @@ object Project
 {
     const val sdkVersion = 30
     const val buildToolsVerion = "30.0.0"
-    const val kotlinVersion = "1.4.21"
+    const val kotlinVersion = "1.5.0"
     const val sqlDelightVersion = "1.4.3"
     const val core = ":Core"
     const val ical = ":ICal"
