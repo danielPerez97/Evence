@@ -7,14 +7,14 @@ plugins {
 }
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion(Evence.compileSdkVersion)
     buildToolsVersion = Evence.buildToolsVersion
 
     defaultConfig {
         minSdkVersion( Evence.minSdkVersion )
         targetSdkVersion( Evence.targetSdkVersion )
-        versionCode = 1
-        versionName = "1.0"
+//        versionCode = 1
+//        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
