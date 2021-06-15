@@ -53,7 +53,10 @@ class MainActivity : BaseActivity()
 
     private fun viewSetup()
     {
-        binding.qrBtn.setOnClickListener { activityStarter.startGenerateQr(this) }
+        binding.qrBtn.setOnClickListener {
+            activityStarter.startNewEventActivity(this)
+            /* activityStarter.startGenerateQr(this) */
+        }
 
         //apply custom toolbar
         setSupportActionBar(binding.toolbarMain)

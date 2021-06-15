@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import coil.ImageLoader
+import dagger.hilt.android.AndroidEntryPoint
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.adapter.CardsAdapter
 import daniel.perez.core.plusAssign
@@ -13,6 +14,7 @@ import daniel.perez.fileselectview.databinding.ActivityFileSelectBinding
 import daniel.perez.fileselectview.di.FileSelectComponentProvider
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class FileSelectActivity : BaseActivity() {
     @Inject lateinit var fileManager: FileManager
     @Inject lateinit var generator: QrBitmapGenerator
