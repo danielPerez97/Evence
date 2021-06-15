@@ -232,18 +232,16 @@ object Compose
     const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
     const val foundation = "androidx.compose.foundation:foundation:$version"
     const val material = "androidx.compose.material:material:$version"
+    const val rxJavaCompose = "androidx.compose.runtime:runtime-rxjava3:$version"
 
     private const val activityComposeVersion = "1.3.0-beta01"
     const val activityCompose = "androidx.activity:activity-compose:$activityComposeVersion"
 
-    private const val constraintLayoutComposeVersion = "1.0.0-alpha03"
+    private const val constraintLayoutComposeVersion = "1.0.0-alpha07"
     const val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:$constraintLayoutComposeVersion"
 
-    private const val lifecycleViewModelVersion = "1.0.0-alpha02"
+    private const val lifecycleViewModelVersion = "1.0.0-alpha06"
     const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleViewModelVersion"
-
-    private const val rxjavaComposeVersion = "1.0.0-beta01"
-    const val rxJavaCompose = "androidx.compose.runtime:runtime-rxjava3:$rxjavaComposeVersion"
 
 
 }
