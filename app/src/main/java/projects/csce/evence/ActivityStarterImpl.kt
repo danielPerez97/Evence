@@ -6,6 +6,7 @@ import daniel.perez.core.ActivityStarter
 import daniel.perez.core.model.ViewEvent
 import daniel.perez.core.service.FileManager
 import daniel.perez.generateqrview.GenerateQR
+import daniel.perez.generateqrview.compose.NewEventActivity
 import daniel.perez.qrcameraview.ui.QrReaderActivity
 import projects.csce.evence.view.ui.AboutActivity
 import projects.csce.evence.view.ui.SecondActivity
@@ -19,6 +20,12 @@ class ActivityStarterImpl @Inject constructor(private val fileManager: FileManag
     {
         val generateQRActivity = Intent(activity, GenerateQR::class.java)
         activity.startActivity(generateQRActivity)
+    }
+
+    override fun startNewEventActivity(activity: Context)
+    {
+        val intent = Intent(activity, NewEventActivity::class.java)
+        activity.startActivity(intent)
     }
 
     override fun startEditQr(activity: Context, ical: ViewEvent)

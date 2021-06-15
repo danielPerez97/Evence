@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion( Evence.compileSdkVersion )
+    compileSdk = Evence.compileSdkVersion
     buildToolsVersion = Evence.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion( Evence.minSdkVersion )
-        targetSdkVersion( Evence.targetSdkVersion )
+        minSdk = Evence.minSdkVersion
+        targetSdk = Evence.targetSdkVersion
 //        versionCode = 1
 //        versionName = "1.0"
 
@@ -22,10 +22,13 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
+//        release {
+//            isMinifyEnabled = false
+//            proguardFiles(
+//                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro"
+//            )
+//        }
     }
     buildFeatures {
         viewBinding = true
@@ -40,54 +43,55 @@ android {
 dependencies {
     implementation( fileTree( mapOf( "dir" to "libs", "include" to "*.jar"  ) ) )
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
-    implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.appcompat:appcompat:1.2.0")
-    testImplementation("junit:junit:4.12")
-    androidTestImplementation("androidx.test.ext:junit:1.1.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
-    coreLibraryDesugaring( "com.android.tools:desugar_jdk_libs:1.0.5" )
+
+    implementation( Libs.AndroidX.appCompat )
+
+    coreLibraryDesugaring( Libs.desugar )
 
     implementation( project( Project.ical ) )
     implementation( project( Project.core ) )
 
     // Dagger
-    implementation( Libs.daggerHilt )
-    kapt( Libs.daggerHiltCompiler )
+    implementation( Libs.Google.hiltAndroid )
+    kapt( Libs.Google.hiltCompiler )
 
     // CardView
-    implementation( Libs.cardView )
+    implementation( Libs.AndroidX.cardView )
 
-    implementation("com.google.guava:guava:30.1-android")
+    implementation( Libs.guava )
+
+    // KTX
+    implementation( Libs.AndroidX.coreKtx )
 
     // Layouts
-    implementation( Libs.constraintLayout )
-    implementation( Libs.coordinatorLayout )
+    implementation( Libs.AndroidX.constraintLayout )
+    implementation( Libs.AndroidX.coordinatorLayout )
 
     //material
-    implementation( Libs.material )
+    implementation( Libs.AndroidX.material )
 
     // LifeCycle
-    implementation( Libs.viewModel )
+    implementation( Libs.AndroidX.Lifecycle.viewModel )
 
     // RxJava
-    implementation( Libs.rxJava )
-    implementation( Libs.reactiveStreams )
-    implementation( Libs.rxBinding )
-    implementation( Libs.rxReplayingShare )
+    implementation( Libs.ReactiveX.rxJava )
+    implementation( Libs.AndroidX.reactiveStreams )
+    implementation( Libs.JakeWharton.rxBinding )
+    implementation( Libs.JakeWharton.rxReplayingShare )
 
     //CameraX
-    implementation( Libs.cameraXCamera2 )
-    implementation( Libs.cameraXCameraView)
-    implementation( Libs.cameraXLifecycle )
-    implementation( Libs.cameraXCore )
-    implementation( Libs.cameraXExtensions )
+    implementation( Libs.AndroidX.Camera.cameraXCamera2 )
+    implementation( Libs.AndroidX.Camera.cameraXCameraView)
+    implementation( Libs.AndroidX.Camera.cameraXLifecycle )
+    implementation( Libs.AndroidX.Camera.cameraXCore )
+    implementation( Libs.AndroidX.Camera.cameraXExtensions )
 
     //ML kit barcode
-    implementation( Libs.mlkitBarcode )
+    implementation( Libs.Google.mlkitBarcode )
 
     //ml kit text
-    implementation( Libs.mlkitTextRecognition )
+    implementation( Libs.Google.mlkitTextRecognition )
 
     // Timber
-    implementation ( Libs.timber )
+    implementation ( Libs.JakeWharton.timber )
 }

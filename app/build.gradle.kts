@@ -20,12 +20,12 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-//        getByName("debug") {
-//            signingConfig( signing )
+//        release {
+//            isMinifyEnabled = false
+//            proguardFiles(
+//                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro"
+//            )
 //        }
     }
     compileOptions {
@@ -53,27 +53,27 @@ dependencies {
     implementation( project( Project.qrDialogView ) )
 
     // AppCompat
-    implementation( Libs.appCompat )
+    implementation( Libs.AndroidX.appCompat )
 
     // Camerax core
-    implementation( Libs.cameraXCore )
+    implementation( Libs.AndroidX.Camera.cameraXCore )
 
     // CardView
-    implementation( Libs.cardView )
-    implementation( Libs.recyclerView )
+    implementation( Libs.AndroidX.cardView )
+    implementation( Libs.AndroidX.recyclerView )
 
     // ConstraintLayout
-    implementation( Libs.constraintLayout )
+    implementation( Libs.AndroidX.constraintLayout )
 
     // Coil
     implementation( Libs.coil )
 
     // CoordinatorLayout
-    implementation( Libs.coordinatorLayout )
+    implementation( Libs.AndroidX.coordinatorLayout )
 
     // Dagger 2
-    implementation( Libs.daggerHilt )
-    kapt( Libs.daggerHiltCompiler )
+    implementation( Libs.Google.hiltAndroid )
+    kapt( Libs.Google.hiltCompiler )
 
     // Desugar
     coreLibraryDesugaring( Libs.desugar )
@@ -82,42 +82,42 @@ dependencies {
     implementation( Libs.guavaConflict )
 
     // Kotlin Date-Time
-    api( Libs.kotlinxDateTime )
+    api( Libs.Kotlin.kotlinxDateTime )
 
     // Material widgets
-    implementation( Libs.material )
+    implementation( Libs.AndroidX.material )
 
     // Moshi
-    implementation( Libs.moshi )
+    implementation( Libs.SquareUp.moshi )
 
     // OkHttp
-    implementation( Libs.okhttp )
+    implementation( Libs.SquareUp.okhttp )
 
     // Retrofit
-    implementation( Libs.retrofit )
-    implementation( Libs.retrofitMoshi )
-    implementation( Libs.retrofitScalars )
-    implementation( Libs.retrofitRxJava )
+    implementation( Libs.SquareUp.retrofit )
+    implementation( Libs.SquareUp.retrofitMoshi )
+    implementation( Libs.SquareUp.retrofitScalars )
+    implementation( Libs.SquareUp.retrofitRxJava )
 
     // RxJava
-    implementation( Libs.rxJava )
-    implementation( Libs.reactiveStreams )
-    implementation( Libs.rxBinding )
-    implementation( Libs.rxReplayingShare )
+    implementation( Libs.ReactiveX.rxJava )
+    implementation( Libs.AndroidX.reactiveStreams )
+    implementation( Libs.JakeWharton.rxBinding )
+    implementation( Libs.JakeWharton.rxReplayingShare )
 
     // SQLDelight
-    implementation( Libs.sqlDelightAndroidDriver )
+    implementation( Libs.SquareUp.sqlDelightAndroidDriver )
 
     // Timber
-    implementation( Libs.timber )
+    implementation( Libs.JakeWharton.timber )
 
     // ViewModel
-    implementation( Libs.viewModel )
-    implementation( Libs.viewModelKtx )
+    implementation( Libs.AndroidX.Lifecycle.viewModel )
+    implementation( Libs.AndroidX.Lifecycle.viewModelKtx )
 
     // ZXING
-    implementation( Libs.zxing )
-    implementation( Libs.zxingAndroid )
+    implementation( Libs.Google.zxing )
+    implementation( Libs.Google.zxingAndroid )
 
     // Testing
     testImplementation( TestLibs.junit4 )

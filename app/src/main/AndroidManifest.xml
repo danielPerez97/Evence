@@ -16,6 +16,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".view.ui.ShareAppActivity"/>
         <activity android:name="daniel.perez.generateqrview.GenerateQR" />
+        <activity android:name="daniel.perez.generateqrview.compose.NewEventActivity" />
         <activity
             android:name=".view.ui.SplashscreenActivity"
             android:theme="@style/splashscreen">

@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion( Evence.compileSdkVersion )
+    compileSdk = Evence.compileSdkVersion
     buildToolsVersion = Evence.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion( Evence.minSdkVersion )
-        targetSdkVersion( Evence.targetSdkVersion )
+        minSdk = Evence.minSdkVersion
+        targetSdk = Evence.targetSdkVersion
 //        versionCode = 1
 //        versionName = "1.0"
 
@@ -21,10 +21,13 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
+//        release {
+//            isMinifyEnabled = false
+//            proguardFiles(
+//                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro"
+//            )
+//        }
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
@@ -42,47 +45,45 @@ android {
 dependencies {
     implementation( fileTree( mapOf( "dir" to "libs", "include" to "*.jar"  ) ) )
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
-    implementation("androidx.core:core-ktx:1.3.0")
-    implementation("androidx.appcompat:appcompat:1.1.0")
-    testImplementation("junit:junit:4.12")
-    androidTestImplementation("androidx.test.ext:junit:1.1.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
 
     implementation( project(Project.ical) )
 
     coreLibraryDesugaring( Libs.desugar )
 
     // CardView
-    implementation( Libs.cardView )
+    implementation( Libs.AndroidX.cardView )
 
     // Coil
     implementation( Libs.coil )
 
     // Dagger
-    implementation( Libs.daggerHilt )
-    kapt( Libs.daggerHiltCompiler )
+    implementation( Libs.Google.hiltAndroid )
+    kapt( Libs.Google.hiltCompiler )
 
-    //Google Mobile Vision API
-    implementation( Libs.vision )
+    // Google Mobile Vision API
+    implementation( Libs.Google.vision )
 
-    implementation( Libs.material )
-    implementation( Libs.coordinatorLayout)
+    implementation( Libs.AndroidX.material )
+    implementation( Libs.AndroidX.coordinatorLayout )
+
+    // KTX
+    implementation( Libs.AndroidX.coreKtx )
 
     // Okio
-    implementation( Libs.okio )
+    implementation( Libs.SquareUp.okio )
 
     // RecyclerView
-    implementation( Libs.recyclerView )
+    implementation( Libs.AndroidX.recyclerView )
 
     // RxJava
-    implementation( Libs.rxJava )
-    implementation( Libs.rxAndroid )
+    implementation( Libs.ReactiveX.rxJava )
+    implementation( Libs.ReactiveX.rxAndroid )
 
     // Timber
-    implementation( Libs.timber )
+    implementation( Libs.JakeWharton.timber )
 
     // ZXING
-    implementation( Libs.zxing )
-    implementation( Libs.zxingAndroid )
+    implementation( Libs.Google.zxing )
+    implementation( Libs.Google.zxingAndroid )
 
 }
