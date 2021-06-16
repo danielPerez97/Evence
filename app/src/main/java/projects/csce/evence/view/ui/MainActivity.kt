@@ -54,8 +54,8 @@ class MainActivity : BaseActivity()
     private fun viewSetup()
     {
         binding.qrBtn.setOnClickListener {
-            activityStarter.startNewEventActivity(this)
-            /* activityStarter.startGenerateQr(this) */
+//            activityStarter.startNewEventActivity(this)
+            activityStarter.startGenerateQr(this)
         }
 
         //apply custom toolbar

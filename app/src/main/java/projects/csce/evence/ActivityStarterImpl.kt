@@ -31,7 +31,7 @@ class ActivityStarterImpl @Inject constructor(private val fileManager: FileManag
     override fun startEditQr(activity: Context, ical: ViewEvent)
     {
         val intent = Intent(activity, GenerateQR::class.java)
-//        intent.putExtra("FILE_PATH", fileManager.getFilePath(ical.fileName))
+        intent.putExtra("EVENT_ID", ical.id)
         activity.startActivity(intent)
     }
 

@@ -199,7 +199,7 @@
     </com.google.android.material.bottomappbar.BottomAppBar>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_btn"
+        android:id="@+id/finish_button"
         style="@style/FAB"
         android:layout_gravity="bottom|center"
         android:src="@drawable/ic_check_white_36dp"
