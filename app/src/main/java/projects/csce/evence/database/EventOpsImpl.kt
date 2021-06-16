@@ -14,9 +14,7 @@ import daniel.perez.core.service.FileManager
 import daniel.perez.evencedb.EventQueries
 import daniel.perez.ical.EventSpec
 import daniel.perez.ical.ICalSpec
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toKotlinLocalDateTime
 import java.io.File
@@ -61,6 +59,34 @@ private class EventOpsImpl(
                 endTime.toKotlinLocalDateTime(),
                 recurrenceRule
         )
+    }
+
+    override fun updateEvent(id: Long, event: UiNewEvent): Observable<Long>
+    {
+        return updateEvent(id, event.title, event.description, event.location, event.end, event.start)
+    }
+
+    override fun updateEvent(
+        id: Long,
+        title: String,
+        description: String,
+        location: String,
+        startTime: LocalDateTime,
+        endTime: LocalDateTime
+    ): Observable<Long>
+    {
+        return queries.transactionWithResult {
+            queries.upsert(
+                _id = id,
+                id = id,
+                title = title,
+                description = description,
+                location = location,
+                start_time = startTime.toKotlinLocalDateTime(),
+                end_time = endTime.toKotlinLocalDateTime()
+            )
+            queries.lastInsertRowID().asObservable().mapToOne()
+        }
     }
 
     override fun selectAll(): Observable<List<Event>>

@@ -37,3 +37,17 @@ SELECT * FROM Event ORDER BY datetime(start_time) DESC;
 
 deleteById:
 DELETE FROM Event WHERE _id = ?;
+
+upsert {
+  UPDATE Event
+  SET title = :title,
+      description = :description,
+      location = :location,
+      start_time = :start_time,
+      end_time = :end_time
+
+  WHERE _id = :id;
+
+  INSERT OR IGNORE INTO Event (_id, title, description, location, start_time, end_time)
+  VALUES (:_id, :title, :description, :location, :start_time, :end_time);
+}

@@ -36,6 +36,7 @@ class GenerateQR : BaseActivity(), DialogClosable, AdapterView.OnItemSelectedLis
     private var endDate = DateSetEvent(1, 31, 1999)
     @Inject lateinit var dialogStarter: DialogStarter
     @Inject lateinit var activityResultActions: ActivityResultActions
+    private var isEditing = false
 
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?)
@@ -45,13 +46,17 @@ class GenerateQR : BaseActivity(), DialogClosable, AdapterView.OnItemSelectedLis
         setContentView(binding.root)
         viewModel = ViewModelProvider(this).get(GenerateQrViewModel::class.java)
 
-        if (intent != null && intent.getStringExtra("FILE_PATH") != null)
+        if (intent != null && intent.getLongExtra("EVENT_ID", -1L) != -1L)
         {
-            val file = File(intent.getStringExtra("FILE_PATH"))
-            val ical = parse(file)
-//            currentEvent = ical
-            Timber.i(ical.events[0].toString())
-            fillInFields()
+            isEditing = true
+            val id = intent.getLongExtra("EVENT_ID", -1)
+            disposables += viewModel.getEvent(id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    currentEvent = it
+                    Timber.i(it.toString())
+                    fillInFields()
+                }
         }
 
         ArrayAdapter.createFromResource(this, R.array.event_recurrence_options_list, R.layout.spinner_text)
@@ -64,7 +69,14 @@ class GenerateQR : BaseActivity(), DialogClosable, AdapterView.OnItemSelectedLis
         binding.startTimeEditText.clicks().subscribe { startTimeDialog() }
         binding.endDateEditText.clicks().subscribe { endDateDialog() }
         binding.endTimeEditText.clicks().subscribe { endTimeDialog() }
-        binding.addBtn.clicks().subscribe { saveEvent() }
+        binding.finishButton.clicks().subscribe {
+            if(!isEditing) {
+                saveEvent()
+            }
+            else {
+                updateEvent()
+            }
+        }
     }
 
 
@@ -120,6 +132,20 @@ class GenerateQR : BaseActivity(), DialogClosable, AdapterView.OnItemSelectedLis
                     currentEvent = it.toViewEvent()
                     dialogStarter.startQrDialog(this, it.toViewEvent())
                 }
+    }
+
+    private fun updateEvent()
+    {
+        if (!areValidFields()) {
+            return
+        }
+        val uiNewEvent: UiNewEvent = extractEventFromUi()
+        disposables += viewModel.updateEvent(currentEvent.id, uiNewEvent)
+            .observeOn( AndroidSchedulers.mainThread() )
+            .subscribe {
+                currentEvent = it.toViewEvent()
+                dialogStarter.startQrDialog(this, it.toViewEvent())
+            }
     }
 
     private fun extractEventFromUi(): UiNewEvent

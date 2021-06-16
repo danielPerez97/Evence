@@ -34,8 +34,6 @@ class QrReaderActivity : BaseActivity(), DialogClosable
     private lateinit var viewModel: QrReaderViewModel
     private lateinit var overlays : Overlays
     private lateinit var adapter: ScannedQrAdapter
-    private lateinit var intentActions: IntentActions
-    private lateinit var barcodeTypes: BarcodeTypes
     private var scannedData: List<ScannedData> = emptyList()
     private var currentScanType: SCAN_TYPE = SCAN_TYPE.BARCODE
     private var flashOn = false
@@ -43,6 +41,8 @@ class QrReaderActivity : BaseActivity(), DialogClosable
 
     @Inject lateinit var dialogStarter: DialogStarter
     @Inject lateinit var cameraHandler: CameraHandler
+    @Inject lateinit var intentActions: IntentActions
+    @Inject lateinit var barcodeTypes: BarcodeTypes
 
     companion object {
         private const val REQUEST_CAMERA_PERMISSIONS = 10
@@ -57,8 +57,6 @@ class QrReaderActivity : BaseActivity(), DialogClosable
         binding = ActivityQrReaderBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this).get(QrReaderViewModel::class.java)
-        intentActions = IntentActions(this)
-        barcodeTypes = BarcodeTypes(this)
 
         if (allPermissionsGranted()) {
             cameraHandler.openCamera(this, binding.previewView)
