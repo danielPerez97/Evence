@@ -103,6 +103,16 @@ class GenerateQR : BaseActivity(), DialogClosable, AdapterView.OnItemSelectedLis
         //if end date is empty, set it to be the same as start date
         if (binding.endDateTextView.text.toString().equals(getString(R.string.select_date))) {
             endDate = startDate
+        } else {
+            if (endDate.year >= startDate.year
+                    && endDate.month >= startDate.month
+                    && endDate.dayOfMonth >= startDate.dayOfMonth
+                    && endTime.hour >= startTime.hour
+                    && endTime.minute >= startTime.minute) {
+                return true
+            }
+            applicationContext.snackbarShort(binding.startDateTextView, getString(R.string.enter_valid_end_date_time))
+            return false
         }
 
         return true
