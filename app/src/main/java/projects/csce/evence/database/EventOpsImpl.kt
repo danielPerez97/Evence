@@ -76,8 +76,7 @@ private class EventOpsImpl(
     ): Observable<Long>
     {
         return queries.transactionWithResult {
-            queries.upsert(
-                _id = id,
+            queries.update(
                 id = id,
                 title = title,
                 description = description,
@@ -85,7 +84,7 @@ private class EventOpsImpl(
                 start_time = startTime.toKotlinLocalDateTime(),
                 end_time = endTime.toKotlinLocalDateTime()
             )
-            queries.lastInsertRowID().asObservable().mapToOne()
+            return@transactionWithResult Observable.just(id)
         }
     }
 

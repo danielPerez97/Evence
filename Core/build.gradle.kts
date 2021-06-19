@@ -39,6 +39,11 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = Compose.version
+        kotlinCompilerVersion = "1.5.10"
     }
 }
 
@@ -52,6 +57,12 @@ dependencies {
 
     // CardView
     implementation( Libs.AndroidX.cardView )
+
+    // Compose
+    implementation( Compose.foundation )
+    implementation( Compose.material )
+    implementation( Compose.ui )
+    implementation( Compose.uiTooling )
 
     // Coil
     implementation( Libs.coil )

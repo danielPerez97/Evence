@@ -7,12 +7,14 @@ import daniel.perez.core.model.ViewEvent
 import daniel.perez.core.service.FileManager
 import daniel.perez.generateqrview.GenerateQR
 import daniel.perez.generateqrview.compose.NewEventActivity
+import daniel.perez.licensesview.LicensesActivity
 import daniel.perez.qrcameraview.ui.QrReaderActivity
 import projects.csce.evence.view.ui.AboutActivity
 import projects.csce.evence.view.ui.SecondActivity
 import projects.csce.evence.view.ui.SettingsActivity
 import projects.csce.evence.view.ui.ShareAppActivity
 import javax.inject.Inject
+
 
 class ActivityStarterImpl @Inject constructor(private val fileManager: FileManager): ActivityStarter
 {
@@ -63,5 +65,11 @@ class ActivityStarterImpl @Inject constructor(private val fileManager: FileManag
     {
         val aboutActivity = Intent(activity, AboutActivity::class.java)
         activity.startActivity(aboutActivity)
+    }
+
+    override fun startLicenseActivity(activity: Context)
+    {
+        val licenseActivity = Intent(activity, LicensesActivity::class.java)
+        activity.startActivity(licenseActivity)
     }
 }
