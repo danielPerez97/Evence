@@ -91,13 +91,16 @@ object Libs
 
         object Lifecycle
         {
+            // Runtime-KTX
+            const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
+
             // ViewModel
             private const val lifeCycleVersion = "2.3.0"
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifeCycleVersion"
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel:$lifeCycleVersion"
 
             // ViewModel Compose
-            private const val viewModelComposeVersion = "1.0.0-alpha06"
+            private const val viewModelComposeVersion = "1.0.0-alpha07"
             const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:$viewModelComposeVersion"
         }
 
@@ -223,25 +226,33 @@ object Project
     const val qrCameraView = ":QRCameraView"
     const val qrDialogView = ":QRDialogView"
     const val evenceDatabase = ":EvenceDb"
+    const val licensesView = ":licensesview"
 }
 
 object Compose
 {
-    const val version = "1.0.0-beta08"
+    const val version = "1.0.0-beta09"
     const val ui = "androidx.compose.ui:ui:$version"
     const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
     const val foundation = "androidx.compose.foundation:foundation:$version"
     const val material = "androidx.compose.material:material:$version"
     const val rxJavaCompose = "androidx.compose.runtime:runtime-rxjava3:$version"
 
-    private const val activityComposeVersion = "1.3.0-beta01"
+    private const val activityComposeVersion = "1.3.0-beta02"
     const val activityCompose = "androidx.activity:activity-compose:$activityComposeVersion"
 
-    private const val constraintLayoutComposeVersion = "1.0.0-alpha07"
+    private const val constraintLayoutComposeVersion = "1.0.0-alpha08"
     const val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:$constraintLayoutComposeVersion"
 
     private const val lifecycleViewModelVersion = "1.0.0-alpha06"
     const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleViewModelVersion"
 
 
+}
+
+object Coroutines
+{
+    private const val coroutinesVersion = "1.5.0"
+    const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+    const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
 }

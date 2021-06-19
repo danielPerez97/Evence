@@ -20,4 +20,6 @@ interface ActivityStarter
     fun startShareAppActivity(activity: Context)
 
     fun startAboutActivity(activity: Context)
+
+    fun startLicenseActivity(activity: Context)
 }

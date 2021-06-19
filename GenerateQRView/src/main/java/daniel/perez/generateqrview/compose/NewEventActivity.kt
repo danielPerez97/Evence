@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -23,7 +22,6 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -31,8 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import daniel.perez.core.BaseActivity
-
-val evenceBlue = Color(android.graphics.Color.parseColor("#2196F3"))
+import daniel.perez.core.compose.Footer
+import daniel.perez.core.compose.Header
+import daniel.perez.core.compose.evenceBlue
 
 class NewEventActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,13 +49,13 @@ class NewEventActivity : BaseActivity() {
 fun ComposeFormView() {
     ConstraintLayout(Modifier.background(Color.White).fillMaxSize()) {
         val (header, body, footer) = createRefs()
-        Header( modifier = Modifier.constrainAs(header) {
+        Header( "Create an Event!", modifier = Modifier.constrainAs(header) {
             top.linkTo(parent.top)
         })
         Body( modifier = Modifier.constrainAs(body) {
             top.linkTo(header.bottom)
         } )
-        Footer( modifier = Modifier.constrainAs(footer) {
+        Footer( "Generate QR Code", modifier = Modifier.constrainAs(footer) {
             bottom.linkTo(parent.bottom)
         } )
     }
@@ -145,36 +144,4 @@ fun EvenceTextField(
         )
     }
 
-}
-
-@Composable
-fun Header(modifier: Modifier = Modifier) {
-    Bar("Create an Event!", modifier = modifier)
-}
-
-@Composable
-fun Footer(modifier: Modifier = Modifier) {
-    Bar("Generate QR Code", modifier = modifier)
-}
-
-@Composable
-fun Bar(
-    text: String,
-    modifier: Modifier = Modifier,
-    textColor: Color = Color.White
-) {
-    Row(
-        modifier = modifier
-            .background(evenceBlue)
-            .height(60.dp)
-            .fillMaxWidth(1f)
-            .offset(10.dp)
-
-        ) {
-        Text(
-            text = text,
-            color = textColor,
-            modifier = Modifier.align(Alignment.CenterVertically)
-        )
-    }
 }

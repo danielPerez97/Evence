@@ -51,6 +51,7 @@ dependencies {
     implementation( project( Project.ical ) )
     implementation( project( Project.qrCameraView ) )
     implementation( project( Project.qrDialogView ) )
+    implementation( project( Project.licensesView ) )
 
     // AppCompat
     implementation( Libs.AndroidX.appCompat )
