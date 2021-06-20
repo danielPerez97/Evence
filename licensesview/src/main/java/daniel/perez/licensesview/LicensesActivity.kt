@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,53 +23,65 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import dagger.hilt.android.AndroidEntryPoint
 import daniel.perez.core.compose.Header
+import daniel.perez.licensesview.data.License
 import daniel.perez.licensesview.ui.theme.EvenceTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class LicensesActivity : ComponentActivity()
 {
+    @Inject
+    lateinit var retriever: LicenseRetriever
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        val viewModel: LicensesViewModel by viewModels()
+
+        val dataLambda: () -> Flow<List<License>> = { flow { emit(retriever.getLicenses()) } }
         setContent {
-            LicensesScreen(object: LicensesData {
-                override fun getLicenses(): Flow<List<License>> = viewModel.licenses()
-            })
+            LicensesScreen(
+                dataLambda,
+                onClick = {
+
+                }
+            )
         }
     }
 }
 
 @Composable
-fun LicensesScreen(licensesData: LicensesData)
+fun LicensesScreen(
+    licensesData: () -> Flow<List<License>>,
+    onClick: (License) -> Unit
+)
 {
-    val licenses = licensesData.getLicenses().collectAsState(initial = emptyList())
+    val licenses = licensesData().collectAsState(initial = emptyList())
 
     EvenceTheme {
         Surface(color = MaterialTheme.colors.background) {
             Scaffold(
                 topBar = { Header(text = "Evence") }
             ) {
-                Column {
+                Column(
+                    modifier = Modifier.padding(it)
+                ) {
                     MessageCard()
                     LicensesList(
-                        licenses = listOf(
-                            License("Example Project", "GPL"),
-                            License("Example Project", "GPL"),
-                            License("Example Project", "GPL"),
-                            License("Example Project", "GPL"),
-                            License("Example Project", "GPL"),
-                            License("Example Project", "GPL"),
-                            License("Example Project", "GPL")
-                        ),
-                        modifier = Modifier.padding(top = 12.dp)
+                        licenses = licenses.value,
+                        modifier = Modifier.padding(top = 12.dp),
+                        onClick = onClick
                     )
                 }
             }
@@ -81,23 +93,10 @@ fun LicensesScreen(licensesData: LicensesData)
 @Preview
 fun LicensesScreenPreview()
 {
-    LicensesScreen( object: LicensesData {
-        override fun getLicenses(): Flow<List<License>>
-        {
-            return flow {
-                val list = listOf(
-                    License("Example Project", "GPL"),
-                    License("Example Project", "GPL"),
-                    License("Example Project", "GPL"),
-                    License("Example Project", "GPL"),
-                    License("Example Project", "GPL"),
-                    License("Example Project", "GPL"),
-                    License("Example Project", "GPL")
-                )
-                emit(list)
-            }
-        }
-    })
+    LicensesScreen(
+        licensesData = {  return@LicensesScreen flow { emit(emptyList()) } },
+        onClick = {  }
+    )
 }
 
 @Composable
@@ -106,7 +105,7 @@ fun MessageCard()
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 16.dp),
+            .padding(top = 16.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -130,42 +129,63 @@ fun MessageCard()
 @Composable
 fun LicensesList(
     licenses: List<License>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (License) -> Unit
 )
 {
-    LazyColumn(
-        modifier = modifier
-    ) {
+    LazyColumn(modifier = modifier) {
         items(licenses) { license ->
-            LicenseItem(license = license)
+            LicenseItem(license = license, onClick = onClick)
+            Divider()
         }
     }
 }
 
 @Composable
-fun LicenseItem(license: License)
+fun LicenseItem(
+    license: License,
+    onClick: (License) -> Unit
+)
 {
     ConstraintLayout(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
+            .clickable { onClick(license) },
     ) {
         val (projectName, licenseConstraint) = createRefs()
+        createHorizontalChain(projectName, licenseConstraint)
 
         Text(
-            text = license.projectName,
+            text = license.artifactId.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
             modifier = Modifier.constrainAs(projectName) {
-                start.linkTo(parent.start, margin = 16.dp)
+                start.linkTo(parent.start, margin = 12.dp)
+                top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
+
+                width = Dimension.percent(0.6f)
             },
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Start,
         )
 
-        Divider()
-
         Text(
-            text = license.licenseType,
+            text = when {
+                license.spdxLicenses?.first()?.name != null -> license.spdxLicenses.first().name
+                license.unknownLicenses?.first()?.name != null -> license.unknownLicenses.first().name
+                else -> { throw Exception("Could not find license") }
+            },
             modifier = Modifier.constrainAs(licenseConstraint) {
-                end.linkTo(parent.end, margin = 16.dp)
-            }
+                end.linkTo(parent.end, margin = 12.dp)
+                top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
+
+                width = Dimension.percent(0.4f)
+            },
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.End,
         )
     }
 }

@@ -5,6 +5,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("app.cash.licensee")
 }
 
 android {
@@ -37,6 +38,20 @@ android {
     }
     buildFeatures {
         viewBinding = true
+    }
+}
+
+licensee {
+    allow("Apache-2.0")
+    allow("CC0-1.0")
+    allowUrl("https://developer.android.com/studio/terms.html")
+    allowUrl("https://developers.google.com/ml-kit/terms")
+    allowUrl("http://www.gnu.org/software/classpath/license.html")
+    allowUrl("http://opensource.org/licenses/MIT")
+    allowUrl("http://www.apache.org/license/LICENSE-2.0.txt")
+    allowUrl("https://github.com/journeyapps/zxing-android-embedded/blob/master/COPYING")
+    ignoreDependencies("io.coil-kt") {
+        because("Uses Apache 2.0")
     }
 }
 

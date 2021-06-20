@@ -1,15 +1,20 @@
 package daniel.perez.licensesview
 
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import daniel.perez.licensesview.data.License
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class LicensesViewModel: ViewModel()
+@HiltViewModel
+class LicensesViewModel @Inject constructor(): ViewModel()
 {
-    fun licenses(): Flow<List<License>>
+    fun licenses(retriever: LicenseRetriever): Flow<List<License>>
     {
         return flow {
-            emit(listOf(License("AppCompat", "GPL") ))
+            emit(retriever.getLicenses())
         }
     }
+
 }
