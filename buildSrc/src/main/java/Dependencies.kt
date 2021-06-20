@@ -134,7 +134,7 @@ object Libs
         // ZXING
         private const val zxingVersion = "3.4.1"
         const val zxing = "com.google.zxing:core:$zxingVersion"
-        const val zxingAndroid = "com.journeyapps:zxing-android-embedded:3.2.0@aar"
+        const val zxingAndroid = "com.journeyapps:zxing-android-embedded:4.2.0"
     }
 
     object Kotlin

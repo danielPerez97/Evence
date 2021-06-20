@@ -44,6 +44,7 @@ android {
 
 dependencies {
     implementation( project( Project.core ) )
+
     implementation( Libs.AndroidX.coreKtx )
     implementation( Libs.AndroidX.appCompat )
     implementation( Libs.AndroidX.Lifecycle.lifecycleRuntimeKtx )
@@ -58,4 +59,8 @@ dependencies {
     implementation( Coroutines.coroutinesAndroid )
     implementation( Libs.Google.hiltAndroid )
     kapt( Libs.Google.hiltCompiler )
+
+    implementation( Libs.SquareUp.okio )
+    implementation( Libs.SquareUp.moshi )
+    kapt( Libs.SquareUp.moshiCodegen )
 }

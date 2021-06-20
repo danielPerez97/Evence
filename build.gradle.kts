@@ -15,6 +15,7 @@ buildscript {
         classpath("com.android.tools.build:gradle:7.0.0-beta03")
         classpath("com.squareup.sqldelight:gradle-plugin:${Libs.SquareUp.sqlDelightVersion}")
         classpath("com.google.dagger:hilt-android-gradle-plugin:${Libs.Google.daggerHiltVersion}")
+        classpath( "app.cash.licensee:licensee-gradle-plugin:1.0.2" )
         classpath("com.github.ben-manes:gradle-versions-plugin:0.39.0")
     }
 }
