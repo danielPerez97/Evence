@@ -25,6 +25,7 @@ import daniel.perez.qrcameraview.data.ScannedData
 import daniel.perez.qrcameraview.databinding.ActivityQrReaderBinding
 import daniel.perez.qrcameraview.viewmodel.QrReaderViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -185,6 +186,7 @@ class QrReaderActivity : BaseActivity(), DialogClosable
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CAMERA_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 cameraHandler.openCamera(this, binding.previewView)
@@ -198,6 +200,8 @@ class QrReaderActivity : BaseActivity(), DialogClosable
     private fun setupSubscriptions() {
         disposables.add(viewModel.liveQRData()
                 .subscribe {
+                    Timber.d("Received data from QR Scanner")
+                    Timber.d(it.toString())
                     scannedData = it
                     updateViews()
                 })
