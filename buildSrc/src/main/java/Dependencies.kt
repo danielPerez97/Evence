@@ -108,6 +108,22 @@ object Libs
         {
             const val compose = "androidx.navigation:navigation-compose:2.4.0-alpha02"
         }
+
+        object Test
+        {
+            private const val testVersion = "1.3.0"
+            const val runner = "androidx.test:runner:$testVersion"
+            const val rules = "androidx.test:rules:$testVersion"
+
+            private const val espressoVersion = "3.3.0"
+            const val espressoCore = "androidx.test.espresso:espresso-core:$espressoVersion"
+
+            object Ext
+            {
+                private const val version = "1.1.2"
+                const val junit = "androidx.test.ext:junit-ktx:$version"
+            }
+        }
     }
 
     object Google
@@ -135,6 +151,11 @@ object Libs
         private const val zxingVersion = "3.4.1"
         const val zxing = "com.google.zxing:core:$zxingVersion"
         const val zxingAndroid = "com.journeyapps:zxing-android-embedded:4.2.0"
+    }
+
+    object JUnit
+    {
+        const val junit4 = "junit:junit:4.13.2"
     }
 
     object Kotlin
