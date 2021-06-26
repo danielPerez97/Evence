@@ -27,13 +27,13 @@ class QRScanner() : BaseAnalyzer()
                 .addOnSuccessListener {
                     barcodeSubject.onNext(it)
                     if (it.size !=0) {
-                        Log.d("QrHandler", "scan successful" + it[0].rawValue.toString())
+                        Timber.tag("QrHandler").d("scan successful" + it[0].rawValue.toString())
                     }
                     Timber.i("PROXYYYY width=========" + imageProxy.width + "height==========" +  imageProxy.height )
 
                 }
-                .addOnFailureListener{
-                    Log.e("QRScanner", "scan failed", it)
+                .addOnFailureListener {
+                    Timber.tag("QRScanner").e(it, "scan failed")
                 }
                 .addOnCompleteListener{
                     imageProxy.close()
