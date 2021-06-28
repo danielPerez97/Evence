@@ -16,9 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import daniel.perez.core.*
 import daniel.perez.core.db.UiNewEvent
 import daniel.perez.core.db.toViewEvent
-import daniel.perez.core.service.FileManager
 import daniel.perez.qrcameraview.Camera.CameraHandler
-import daniel.perez.qrcameraview.IntentActions
 import daniel.perez.qrcameraview.R
 import daniel.perez.qrcameraview.data.SCAN_TYPE
 import daniel.perez.qrcameraview.data.ScannedData
@@ -42,8 +40,8 @@ class QrReaderActivity : BaseActivity(), DialogClosable
 
     @Inject lateinit var dialogStarter: DialogStarter
     @Inject lateinit var cameraHandler: CameraHandler
-    @Inject lateinit var intentActions: IntentActions
-    @Inject lateinit var barcodeTypes: BarcodeTypes
+
+    private var barcodeTypes = BarcodeTypes(this)
 
     companion object {
         private const val REQUEST_CAMERA_PERMISSIONS = 10
