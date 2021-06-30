@@ -35,7 +35,7 @@ class QRDialog(
     private val binding: DialogBoxQrBinding = DialogBoxQrBinding.inflate(LayoutInflater.from(context)).apply {
         qrDialogEventTitleTextview.text = event.title
         qrDialogEventStartDateTextview.text = event.startDatePretty()
-        qrDialogEventStartTimeTextview.text = event.startDateTime.toLocalTime().toString()
+        qrDialogEventStartTimeTextview.text = event.startDateTime.toAMPM()
         qrDialogEventLocationTextview.text = event.location
         qrDialogQrImageview.load(event.imageFileUri, imageLoader)
     }
