@@ -23,7 +23,6 @@ import daniel.perez.qrcameraview.data.ScannedData
 import daniel.perez.qrcameraview.databinding.ActivityQrReaderBinding
 import daniel.perez.qrcameraview.viewmodel.QrReaderViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -65,7 +64,7 @@ class QrReaderActivity : BaseActivity(), DialogClosable
         overlays = Overlays(this)
         binding.parentLayout.addView(overlays)
         binding.scanButton.setOnClickListener { onScanClick() }
-        binding.switchScanButton.setOnClickListener { toggleScanMode() }
+        //binding.switchScanButton.setOnClickListener { toggleScanMode() }
         binding.flashButton.setOnClickListener { toggleFlash() }
 
         handleRecyclerView()
@@ -119,7 +118,6 @@ class QrReaderActivity : BaseActivity(), DialogClosable
         binding.scanButton.setImageDrawable(getDrawable(R.drawable.ic_close_white_24dp))
         binding.result.text = "Found ${scannedData.size} QR codes" //todo fix plurality
         binding.flashButton.visibility = View.GONE
-        binding.switchScanButton.visibility = View.GONE
         binding.darkBackground.visibility = View.VISIBLE
     }
 
@@ -129,7 +127,7 @@ class QrReaderActivity : BaseActivity(), DialogClosable
         binding.cameraRecyclerView.visibility = View.GONE
         binding.scanButton.setImageDrawable(getDrawable(R.drawable.ic_search_white_24dp))
         binding.flashButton.visibility = View.VISIBLE
-        binding.switchScanButton.visibility = View.VISIBLE
+        //binding.switchScanButton.visibility = View.VISIBLE
         binding.darkBackground.visibility = View.GONE
     }
 
@@ -145,11 +143,11 @@ class QrReaderActivity : BaseActivity(), DialogClosable
             )
         }
 
-        viewModel.saveEvent(uiNewEvent)
+        disposables.add(viewModel.saveEvent(uiNewEvent)
                 .observeOn( AndroidSchedulers.mainThread() )
                 .subscribe {
                     dialogStarter.startQrDialog(this, it.toViewEvent())
-                }
+                })
     }
 
     private fun toggleFlash() {
@@ -157,26 +155,27 @@ class QrReaderActivity : BaseActivity(), DialogClosable
             cameraHandler.toggleFlash(flashOn)
             flashOn = !flashOn
             if (!flashOn)
-                binding.flashImage.setImageDrawable(getDrawable(R.drawable.ic_flash_off_white_24dp))
+                binding.flashButton.setImageDrawable(getDrawable(R.drawable.ic_flash_off_white_24dp))
             else
-                binding.flashImage.setImageDrawable(getDrawable(R.drawable.ic_flash_on_white_24dp))
+                binding.flashButton.setImageDrawable(getDrawable(R.drawable.ic_flash_on_white_24dp))
             //todo use callback to see if successful or not
         } else {
             toastShort("Device torch not found")
         }
     }
 
-    private fun toggleScanMode() {
-        currentScanType = cameraHandler.switchScanType(currentScanType)
-        when (currentScanType) {
-            SCAN_TYPE.BARCODE -> {
-                binding.switchScanImageview.setImageDrawable(getDrawable(R.drawable.ic_baseline_qr_code_scanner_24))
-            }
-            SCAN_TYPE.TEXT -> {
-                binding.switchScanImageview.setImageDrawable(getDrawable(R.drawable.ic_baseline_scan_text_24))
-            }
-        }
-    }
+    //For future updates
+//    private fun toggleScanMode() {
+//        currentScanType = cameraHandler.switchScanType(currentScanType)
+//        when (currentScanType) {
+//            SCAN_TYPE.BARCODE -> {
+//                binding.switchScanImageview.setImageDrawable(getDrawable(R.drawable.ic_baseline_qr_code_scanner_24))
+//            }
+//            SCAN_TYPE.TEXT -> {
+//                binding.switchScanImageview.setImageDrawable(getDrawable(R.drawable.ic_baseline_scan_text_24))
+//            }
+//        }
+//    }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
@@ -198,8 +197,6 @@ class QrReaderActivity : BaseActivity(), DialogClosable
     private fun setupSubscriptions() {
         disposables.add(viewModel.liveQRData()
                 .subscribe {
-                    Timber.d("Received data from QR Scanner")
-                    Timber.d(it.toString())
                     scannedData = it
                     updateViews()
                 })
