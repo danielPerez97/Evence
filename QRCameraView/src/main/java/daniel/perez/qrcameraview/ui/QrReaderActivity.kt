@@ -115,10 +115,14 @@ class QrReaderActivity : BaseActivity(), DialogClosable
         adapter.setData(scannedData) // todo create child class for scanned data
         overlays.clearOverlays()
         binding.cameraRecyclerView.visibility = View.VISIBLE
-        binding.scanButton.setImageDrawable(getDrawable(R.drawable.ic_close_white_24dp))
-        binding.result.text = "Found ${scannedData.size} QR codes" //todo fix plurality
         binding.flashButton.visibility = View.GONE
         binding.darkBackground.visibility = View.VISIBLE
+        binding.scanButton.setImageDrawable(getDrawable(R.drawable.ic_close_white_24dp))
+
+        if (scannedData.isEmpty())
+            binding.result.text = "No QR code found"
+        else
+            binding.result.text = ""
     }
 
     private fun hideResults() {
