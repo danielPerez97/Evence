@@ -1,59 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ButtonCardView"
-    android:backgroundTint="@color/transparentCardviewBackground"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_entry_cardview"
-    android:orientation="vertical"
+    style="@style/ButtonCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="16dp"
-    android:layout_marginTop="2dp"
-    android:layout_marginBottom="2dp"
     android:layout_marginLeft="16dp"
+    android:layout_marginTop="2dp"
     android:layout_marginRight="16dp"
+    android:layout_marginBottom="2dp"
+    android:backgroundTint="@color/transparentCardviewBackground"
+    android:orientation="vertical"
+    app:cardCornerRadius="16dp"
     app:cardElevation="16dp">
 
     <LinearLayout
         android:id="@+id/list_entry_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
-        android:padding="4dp"
-        >
+        android:orientation="horizontal"
+        android:padding="4dp">
+
         <ImageView
             android:id="@+id/qrIconImageView"
-            android:src="@drawable/ic_border_right_black_24dp"
             android:layout_width="@dimen/events_entry_date_preview_size"
-            android:layout_height="@dimen/events_entry_qr_preview_size"/>
+            android:layout_height="@dimen/events_entry_qr_preview_size"
+            android:src="@drawable/ic_border_right_black_24dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_gravity="center"
-            android:layout_margin="6dp">
+            android:layout_margin="6dp"
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/qr_value_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="QR Display Value"
-                android:textSize="13sp"
                 android:textColor="@color/mainText"
-                />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/qr_type_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:textSize="12sp"
                 android:text="QR Type"
-                />
+                android:textSize="12sp" />
 
         </LinearLayout>
     </LinearLayout>
