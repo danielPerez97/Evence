@@ -10,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import projects.csce.evence.R
 import projects.csce.evence.databinding.ActivitySettingsBinding
 import projects.csce.evence.service.model.SharedPref
+import projects.csce.evence.service.model.SharedPref.DarkModeOptions.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -41,28 +42,26 @@ class SettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
     private fun setSavedSetting()
     {
-        isDark = sharedPref.loadIntValue(getString(R.string.saved_dark_mode_setting), DarkModeOptions.LIGHT.ordinal)
+        isDark = sharedPref.loadIntValue(getString(R.string.saved_dark_mode_setting), LIGHT.ordinal)
         when (isDark) {
-            DarkModeOptions.LIGHT.ordinal ->
-                binding.darkModeSpinner.setSelection(DarkModeOptions.LIGHT.ordinal)
-            DarkModeOptions.DARK.ordinal ->
-                binding.darkModeSpinner.setSelection(DarkModeOptions.DARK.ordinal)
+            LIGHT.ordinal ->
+                binding.darkModeSpinner.setSelection(LIGHT.ordinal)
+            DARK.ordinal ->
+                binding.darkModeSpinner.setSelection(DARK.ordinal)
             else ->
-                binding.darkModeSpinner.setSelection(DarkModeOptions.AUTO.ordinal)
+                binding.darkModeSpinner.setSelection(AUTO.ordinal)
         }
     }
 
-    private fun onBackClicked(){
-        finish()
-    }
+
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
-            DarkModeOptions.LIGHT.ordinal ->
+            LIGHT.ordinal ->
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            DarkModeOptions.DARK.ordinal ->
+            DARK.ordinal ->
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            DarkModeOptions.AUTO.ordinal ->
+            AUTO.ordinal ->
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         }
         sharedPref.saveIntValue(getString(R.string.saved_dark_mode_setting), position)
@@ -72,10 +71,9 @@ class SettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
     }
 
-    enum class DarkModeOptions{
-        LIGHT,
-        DARK,
-        AUTO
+    private fun onBackClicked(){
+        finish()
     }
+
 
 }

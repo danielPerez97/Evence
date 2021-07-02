@@ -152,8 +152,3 @@ fun getScreenHeightPx(context : Context ) : Int{
 fun convertDPtoPX(context : Context, dp : Float) : Int {
         return (dp * (context.resources.displayMetrics.densityDpi / 160f)).toInt()
 }
-
-fun LocalDateTime.toAMPM(): String
-{
-    return this.format(DateTimeFormatter.ofPattern("hh:mm a"))
-}
