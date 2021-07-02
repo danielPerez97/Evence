@@ -4,14 +4,12 @@ package daniel.perez.qrcameraview.Camera
 import android.content.Context
 import android.content.res.Resources
 import android.util.Size
-import androidx.camera.core.Camera
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import com.google.android.material.slider.Slider
 import daniel.perez.qrcameraview.Scanner.BaseAnalyzer
 import daniel.perez.qrcameraview.Scanner.QRScanner
 import daniel.perez.qrcameraview.Scanner.TextScanner
@@ -29,6 +27,7 @@ class CameraHandler constructor(private val context: Context,
     private lateinit var currentAnalyzer: BaseAnalyzer
     private lateinit var lifecycleOwner: LifecycleOwner
     private lateinit var previewView: PreviewView
+    private lateinit var slider: Slider
     var isPortraitMode : Boolean = true
 
     init {
@@ -40,9 +39,10 @@ class CameraHandler constructor(private val context: Context,
         currentAnalyzer = qrScanner
     }
 
-    fun openCamera(lifecycleOwner: LifecycleOwner, previewView: PreviewView) {
+    fun openCamera(lifecycleOwner: LifecycleOwner, previewView: PreviewView, slider: Slider) {
         this.lifecycleOwner = lifecycleOwner
         this.previewView = previewView
+        this.slider = slider
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
         cameraProviderFuture.addListener(Runnable {
             val displayMetrics = Resources.getSystem().displayMetrics
@@ -69,9 +69,16 @@ class CameraHandler constructor(private val context: Context,
                     cameraSelector,
                     imageAnalysis,
                     preview)
+            setupZoomSlider(camera.cameraControl)
             preview.setSurfaceProvider(previewView.createSurfaceProvider(camera.cameraInfo))
             previewView.scaleType = PreviewView.ScaleType.FIT_CENTER
         }, ContextCompat.getMainExecutor(context))
+    }
+
+    fun setupZoomSlider(cameraControl: CameraControl){
+        slider.addOnChangeListener { rangeSlider, value, fromUser ->
+            cameraControl.setLinearZoom(value/100f)
+        }
     }
 
     fun switchScanType(currentMode: SCAN_TYPE) : SCAN_TYPE {
@@ -94,13 +101,13 @@ class CameraHandler constructor(private val context: Context,
     private fun setQrAnalyzer(){
         currentAnalyzer.close()
         currentAnalyzer = qrScanner
-        openCamera(lifecycleOwner,previewView)
+        openCamera(lifecycleOwner,previewView, slider)
     }
 
     private fun setTextAnalyzer(){
         currentAnalyzer.close()
         currentAnalyzer = textScanner
-        openCamera(lifecycleOwner,previewView)
+        openCamera(lifecycleOwner,previewView, slider)
     }
 
     fun toggleFlash(flashOn: Boolean) {
