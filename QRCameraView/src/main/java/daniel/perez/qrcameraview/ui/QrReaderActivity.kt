@@ -57,7 +57,7 @@ class QrReaderActivity : BaseActivity(), DialogClosable
         viewModel = ViewModelProvider(this).get(QrReaderViewModel::class.java)
 
         if (allPermissionsGranted()) {
-            cameraHandler.openCamera(this, binding.previewView)
+            cameraHandler.openCamera(this, binding.previewView, binding.zoomSlider)
         } else
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSIONS)
 
@@ -116,6 +116,7 @@ class QrReaderActivity : BaseActivity(), DialogClosable
         overlays.clearOverlays()
         binding.cameraRecyclerView.visibility = View.VISIBLE
         binding.flashButton.visibility = View.GONE
+        binding.zoomSlider.visibility = View.GONE
         binding.darkBackground.visibility = View.VISIBLE
         binding.scanButton.setImageDrawable(getDrawable(R.drawable.ic_close_white_24dp))
 
@@ -131,6 +132,7 @@ class QrReaderActivity : BaseActivity(), DialogClosable
         binding.cameraRecyclerView.visibility = View.GONE
         binding.scanButton.setImageDrawable(getDrawable(R.drawable.ic_search_white_24dp))
         binding.flashButton.visibility = View.VISIBLE
+        binding.zoomSlider.visibility = View.VISIBLE
         //binding.switchScanButton.visibility = View.VISIBLE
         binding.darkBackground.visibility = View.GONE
     }
@@ -190,7 +192,7 @@ class QrReaderActivity : BaseActivity(), DialogClosable
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CAMERA_PERMISSIONS) {
             if (allPermissionsGranted()) {
-                cameraHandler.openCamera(this, binding.previewView)
+                cameraHandler.openCamera(this, binding.previewView, binding.zoomSlider)
             } else {
                 toastShort("Permissions not granted by the user.")
                 finish()
