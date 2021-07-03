@@ -97,6 +97,11 @@ fun toLocalDateTime(day: Int, month: Int, year: Int, hour: Int, minute: Int) : L
     return LocalDateTime.parse("${date.string()}T${time.string()}")
 }
 
+fun LocalDateTime.toAMPM(): String
+{
+    return this.format(DateTimeFormatter.ofPattern("hh:mm a"))
+}
+
 fun toZeroIfNeg(num : Int) : Int{
     return if(num < 0) 0 else num
 }
@@ -146,4 +151,9 @@ fun getScreenHeightPx(context : Context ) : Int{
 
 fun convertDPtoPX(context : Context, dp : Float) : Int {
         return (dp * (context.resources.displayMetrics.densityDpi / 160f)).toInt()
+}
+
+fun LocalDateTime.toAMPM(): String
+{
+    return this.format(DateTimeFormatter.ofPattern("hh:mm a"))
 }
