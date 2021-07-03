@@ -1,4 +1,4 @@
-package daniel.perez.licensesview.ui.theme
+package daniel.perez.core.compose
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
