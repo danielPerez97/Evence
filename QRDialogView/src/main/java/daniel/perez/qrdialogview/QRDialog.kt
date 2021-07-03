@@ -9,7 +9,6 @@ import android.graphics.drawable.ColorDrawable
 import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.WindowManager
-import android.widget.Toast
 import coil.ImageLoader
 import coil.load
 import com.jakewharton.rxbinding4.view.clicks
@@ -36,7 +35,7 @@ class QRDialog(
     private val binding: DialogBoxQrBinding = DialogBoxQrBinding.inflate(LayoutInflater.from(context)).apply {
         qrDialogEventTitleTextview.text = event.title
         qrDialogEventStartDateTextview.text = event.startDatePretty()
-        qrDialogEventStartTimeTextview.text = event.startDateTime.toLocalTime().toString()
+        qrDialogEventStartTimeTextview.text = event.startDateTime.toAMPM()
         qrDialogEventLocationTextview.text = event.location
         qrDialogQrImageview.load(event.imageFileUri, imageLoader)
     }
@@ -47,6 +46,7 @@ class QRDialog(
         setCancelable(true)
         setCanceledOnTouchOutside(true)
         window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT)
+        Timber.i("=qrdialog context" +  context.toString())
         show()
     }
 
