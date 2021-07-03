@@ -63,6 +63,7 @@ dependencies {
     implementation( Compose.material )
     implementation( Compose.ui )
     implementation( Compose.uiTooling )
+    implementation( Compose.materialAdapter )
 
     // Coil
     implementation( Libs.coil )
