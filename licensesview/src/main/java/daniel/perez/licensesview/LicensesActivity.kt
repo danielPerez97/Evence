@@ -15,6 +15,8 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -68,6 +70,7 @@ class LicensesActivity : AppCompatActivity()
     @Inject
     lateinit var retriever: LicenseRetriever
 
+    @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -104,6 +107,7 @@ class LicensesActivity : AppCompatActivity()
     }
 }
 
+@ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @Composable
 fun LicensesScreen(
@@ -122,9 +126,9 @@ fun LicensesScreen(
 
         Surface(color = MaterialTheme.colors.background) {
             Scaffold(
-                topBar = {
+                bottomBar = {
                     TopAppBar {
-                        Text("Evence")
+                        Text("Open Source")
                     }
                 }
             ) {
@@ -179,6 +183,7 @@ fun MessageCard()
     }
 }
 
+@ExperimentalFoundationApi
 @Composable
 fun LicensesList(
     licenses: List<License>,
@@ -188,8 +193,19 @@ fun LicensesList(
 )
 {
     LazyColumn(state = listState, modifier = modifier) {
-        items(licenses) { license ->
-            LicenseItem(license = license, onClick = onClick)
+        val grouped = licenses.groupBy { it.artifactId[0].uppercase() }
+
+        grouped.forEach { initial, licenses  ->
+            stickyHeader {
+                Header(text = initial, modifier = Modifier.fillParentMaxWidth()
+                    .height(30.dp)
+                    .background(MaterialTheme.colors.secondaryVariant)
+                )
+            }
+
+            items(licenses) { license ->
+                LicenseItem(license = license, onClick = onClick)
+            }
         }
     }
 }
