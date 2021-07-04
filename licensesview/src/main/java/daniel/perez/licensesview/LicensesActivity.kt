@@ -127,23 +127,28 @@ fun LicensesScreen(
         Surface(color = MaterialTheme.colors.background) {
             Scaffold(
                 bottomBar = {
-                    TopAppBar {
-                        Text("Open Source")
+                    TopAppBar(
+                        contentPadding = PaddingValues(horizontal = 16.dp)
+                    ) {
+                        Text("Open Source Licenses",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
             ) {
                 Column(
                     modifier = Modifier.padding(it)
                 ) {
-                    AnimatedVisibility(
-                        visible = showList.value,
-                        enter = slideInHorizontally(initialOffsetX = { with(density) { -40.dp.roundToPx() } })
-                                + expandVertically(expandFrom = Alignment.Top)
-                                + fadeIn(initialAlpha = 0.3f),
-                        exit = slideOutHorizontally() + shrinkVertically() + fadeOut()
-                    ) {
-                        MessageCard()
-                    }
+//                    AnimatedVisibility(
+//                        visible = showList.value,
+//                        enter = slideInHorizontally(initialOffsetX = { with(density) { -40.dp.roundToPx() } })
+//                                + expandVertically(expandFrom = Alignment.Top)
+//                                + fadeIn(initialAlpha = 0.3f),
+//                        exit = slideOutHorizontally() + shrinkVertically() + fadeOut()
+//                    ) {
+//                        MessageCard()
+//                    }
 
                     LicensesList(
                         licenses = licenses.value,
