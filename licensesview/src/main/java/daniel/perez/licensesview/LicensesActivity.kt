@@ -193,7 +193,7 @@ fun LicensesList(
 )
 {
     LazyColumn(state = listState, modifier = modifier) {
-        val grouped = licenses.groupBy { it.artifactId[0].uppercase() }
+        val grouped = licenses.sortedBy { it.artifactId }.groupBy { it.artifactId[0].uppercase() }
 
         grouped.forEach { initial, licenses  ->
             stickyHeader {
