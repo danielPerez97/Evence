@@ -31,7 +31,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import daniel.perez.core.BaseActivity
 import daniel.perez.core.compose.Footer
 import daniel.perez.core.compose.Header
-import daniel.perez.core.compose.evenceBlue
 
 class NewEventActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,18 +82,18 @@ fun Forms( modifier: Modifier = Modifier ) {
         .background(shape = RoundedCornerShape(30.dp), color = Color.White)
     ) {
         Column(modifier = Modifier.padding(10.dp).background(color = Color.Transparent)) {
-            Text("Title", color = evenceBlue, modifier = Modifier.fillMaxWidth())
+            Text("Title", modifier = Modifier.fillMaxWidth())
             EvenceTextField( textChanges = setTitle )
 
             Spacer(modifier = Modifier.height(20.dp))
-            Text("Start date", color = evenceBlue)
+            Text("Start date")
             Row {
                 EvenceTextField(initialText = "Select Date", textChanges = setStartDate)
                 Spacer(Modifier.padding(3.dp))
                 EvenceTextField(initialText = "Select Time", textChanges = setStartTime)
             }
 
-            Text("End date", color = evenceBlue)
+            Text("End date")
             Row {
                 EvenceTextField(initialText = "Select Date", textChanges = setEndDate)
                 Spacer(Modifier.padding(3.dp))
@@ -102,10 +101,10 @@ fun Forms( modifier: Modifier = Modifier ) {
             }
             Spacer(modifier = Modifier.height(20.dp))
 
-            Text("Repeat", color = evenceBlue)
+            Text("Repeat")
             EvenceTextField( textChanges = setRepeating )
 
-            Text("Location", color = evenceBlue )
+            Text("Location")
             EvenceTextField( textChanges = setLocation )
         }
     }
