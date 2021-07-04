@@ -204,7 +204,7 @@ fun LicensesList(
             stickyHeader {
                 Header(text = initial, modifier = Modifier.fillParentMaxWidth()
                     .height(30.dp)
-                    .background(MaterialTheme.colors.secondaryVariant)
+                    .background(MaterialTheme.colors.primary)
                 )
             }
 
