@@ -132,6 +132,7 @@ object Libs
         const val daggerHiltVersion = "2.37"
         const val hiltAndroidGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:$daggerHiltVersion"
         const val hiltAndroid = "com.google.dagger:hilt-android:$daggerHiltVersion"
+        const val hiltAndroidTesting = "com.google.dagger:hilt-android-testing:$daggerHiltVersion"
         const val hiltCompiler = "com.google.dagger:hilt-compiler:$daggerHiltVersion"
 
         // Material Android
@@ -252,12 +253,13 @@ object Project
 
 object Compose
 {
-    const val version = "1.0.0-beta09"
+    const val version = "1.0.0-rc01"
     const val ui = "androidx.compose.ui:ui:$version"
     const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
     const val foundation = "androidx.compose.foundation:foundation:$version"
     const val material = "androidx.compose.material:material:$version"
     const val rxJavaCompose = "androidx.compose.runtime:runtime-rxjava3:$version"
+    const val materialAdapter = "com.google.android.material:compose-theme-adapter:$version"
 
     private const val activityComposeVersion = "1.3.0-beta02"
     const val activityCompose = "androidx.activity:activity-compose:$activityComposeVersion"

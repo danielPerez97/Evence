@@ -58,13 +58,6 @@ dependencies {
     // CardView
     implementation( Libs.AndroidX.cardView )
 
-    // Espresso
-    androidTestImplementation( Libs.JUnit.junit4 )
-    androidTestImplementation( Libs.AndroidX.Test.runner )
-    androidTestImplementation( Libs.AndroidX.Test.espressoCore )
-    androidTestImplementation( Libs.AndroidX.Test.rules )
-    androidTestImplementation( Libs.AndroidX.Test.Ext.junit )
-
     implementation( Libs.guava )
 
 
@@ -102,4 +95,13 @@ dependencies {
 
     // Timber
     implementation ( Libs.JakeWharton.timber )
+
+    // Testing
+    androidTestImplementation( Libs.JUnit.junit4 )
+    androidTestImplementation( Libs.Google.hiltAndroidTesting )
+    kaptAndroidTest( Libs.Google.hiltCompiler )
+    androidTestImplementation( Libs.AndroidX.Test.runner )
+    androidTestImplementation( Libs.AndroidX.Test.espressoCore )
+    androidTestImplementation( Libs.AndroidX.Test.rules )
+    androidTestImplementation( Libs.AndroidX.Test.Ext.junit )
 }
