@@ -9,6 +9,7 @@ private val OnPrimary = Color.White
 private val Secondary = Color(android.graphics.Color.parseColor("#263238"))
 private val SecondaryVariant = Color(android.graphics.Color.parseColor("#263238"))
 private val OnSecondary = Color(android.graphics.Color.parseColor("#2196F3"))
+private val Background = Color(android.graphics.Color.parseColor("#37474F"))
 
 val DarkColorPalette = darkColors(
     primary = Primary,
@@ -16,5 +17,6 @@ val DarkColorPalette = darkColors(
     onPrimary = OnPrimary,
     secondary = Secondary,
     secondaryVariant = SecondaryVariant,
-    onSecondary = OnSecondary
+    onSecondary = OnSecondary,
+    background = Background
 )
