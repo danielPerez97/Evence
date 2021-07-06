@@ -234,7 +234,7 @@ fun LicenseItem(
     Card(
         shape = RoundedCornerShape(3.dp),
         elevation = 8.dp,
-        backgroundColor = MaterialTheme.colors.surface,
+        backgroundColor = Color(android.graphics.Color.parseColor("#263238")),
         modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth()
@@ -244,6 +244,7 @@ fun LicenseItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
+                .background(Color(android.graphics.Color.parseColor("#263238")),)
                 .clickable { onClick?.invoke(license) }
                 .padding(8.dp)
         ) {
