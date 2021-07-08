@@ -31,6 +31,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -38,6 +39,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -127,8 +129,9 @@ fun LicensesScreen(
         Surface(color = MaterialTheme.colors.background) {
             Scaffold(
                 bottomBar = {
-                    TopAppBar(
-                        contentPadding = PaddingValues(horizontal = 16.dp)
+                    BottomAppBar(
+                        contentPadding = PaddingValues(horizontal = 16.dp),
+                        backgroundColor = Color(android.graphics.Color.parseColor("#f5263238"))
                     ) {
                         Text("Open Source Licenses",
                             fontSize = 20.sp,
@@ -204,7 +207,7 @@ fun LicensesList(
             stickyHeader {
                 Header(text = initial, modifier = Modifier.fillParentMaxWidth()
                     .height(30.dp)
-                    .background(MaterialTheme.colors.secondaryVariant)
+                    .background(MaterialTheme.colors.primary)
                 )
             }
 
@@ -230,7 +233,8 @@ fun LicenseItem(
 {
     Card(
         shape = RoundedCornerShape(3.dp),
-        elevation = 12.dp,
+        elevation = 8.dp,
+        backgroundColor = Color(android.graphics.Color.parseColor("#263238")),
         modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth()
@@ -240,6 +244,7 @@ fun LicenseItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
+                .background(Color(android.graphics.Color.parseColor("#263238")),)
                 .clickable { onClick?.invoke(license) }
                 .padding(8.dp)
         ) {
