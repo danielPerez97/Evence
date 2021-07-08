@@ -1,4 +1,4 @@
-package daniel.perez.licensesview.ui.theme
+package daniel.perez.core.compose
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

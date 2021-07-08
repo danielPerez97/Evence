@@ -12,7 +12,7 @@ import okio.source
 import java.lang.reflect.Type
 
 class LicenseRetriever(
-    val moshi: Moshi = Moshi.Builder().build(), val context: Context
+    val moshi: Moshi, val context: Context
     )
 {
     suspend fun getLicenses(): List<License>
