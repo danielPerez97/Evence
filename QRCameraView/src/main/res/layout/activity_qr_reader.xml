@@ -91,7 +91,7 @@
             app:layout_constraintBottom_toTopOf="@+id/scan_button"
             app:layout_constraintTop_toBottomOf="@+id/result"
             app:thumbColor="@color/colorAccent"
-            app:thumbRadius="12dp"
+            app:thumbRadius="10dp"
             app:trackColorActive="@color/colorAccent"
             app:trackColorInactive="@color/grey1"
             app:trackHeight="2dp" />
