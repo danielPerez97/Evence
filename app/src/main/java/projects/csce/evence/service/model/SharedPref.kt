@@ -1,7 +1,6 @@
 package projects.csce.evence.service.model
 
 import android.content.Context
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import daniel.perez.core.model.UiPreference
 import io.reactivex.rxjava3.core.Observable
@@ -30,12 +29,14 @@ class SharedPref(val context : Context ) {
     }
 
     fun setSavedPreferences(){
-        val isDark = loadIntValue(context.getString(R.string.saved_dark_mode_setting), Configuration.UI_MODE_NIGHT_NO)
+        val isDark = loadIntValue(context.getString(R.string.saved_dark_mode_setting), DarkModeOptions.LIGHT.ordinal)
         when (isDark) {
-            Configuration.UI_MODE_NIGHT_YES ->
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            Configuration.UI_MODE_NIGHT_NO ->
+            DarkModeOptions.LIGHT.ordinal ->
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            DarkModeOptions.DARK.ordinal ->
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            DarkModeOptions.AUTO.ordinal ->
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         }
     }
 
@@ -48,5 +49,10 @@ class SharedPref(val context : Context ) {
         return uiPrefProcessor
     }
 
+    enum class DarkModeOptions{
+        LIGHT,
+        DARK,
+        AUTO
+    }
 
 }
