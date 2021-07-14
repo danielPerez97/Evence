@@ -13,4 +13,7 @@
     <string name="license">Drivers License</string>
     <string name="text">Text</string>
     <string name="unknown">Unknown</string>
+    <string name="scan">Scan</string>
+    <string name="scanning">Scanning...</string>
+    <string name="zoom_slider">Zoom slider</string>
 </resources>

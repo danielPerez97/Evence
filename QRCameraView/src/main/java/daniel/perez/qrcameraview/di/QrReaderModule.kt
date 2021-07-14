@@ -5,8 +5,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
-import dagger.hilt.android.qualifiers.ActivityContext
-import daniel.perez.qrcameraview.IntentActions
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ActivityRetainedScoped
+import daniel.perez.qrcameraview.Camera.CameraHandler
 import daniel.perez.qrcameraview.Scanner.QRScanner
 import daniel.perez.qrcameraview.Scanner.TextScanner
 
@@ -15,22 +16,27 @@ import daniel.perez.qrcameraview.Scanner.TextScanner
 class QrReaderModule
 {
     @Provides
+    @ActivityRetainedScoped
     fun provideQrHandler() : QRScanner
     {
         return QRScanner()
     }
 
     @Provides
+    @ActivityRetainedScoped
     fun provideTextScanner() : TextScanner
     {
         return TextScanner()
     }
 
     @Provides
-    fun provideIntentActions(
-            @ActivityContext context: Context
-    ) : IntentActions
+    @ActivityRetainedScoped
+    fun provideCameraHandler(
+        @ApplicationContext context: Context,
+        QRScanner: QRScanner,
+        textScanner: TextScanner) : CameraHandler
     {
-        return IntentActions(context)
+        return CameraHandler(context, QRScanner, textScanner)
     }
+
 }
