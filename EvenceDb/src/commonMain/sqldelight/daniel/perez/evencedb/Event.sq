@@ -20,7 +20,7 @@ lastInsertRowID:
 SELECT last_insert_rowid();
 
 selectAll:
-SELECT * FROM Event ORDER BY date(start_time);
+SELECT * FROM Event;
 
 selectByTitle:
 SELECT * FROM Event WHERE title LIKE ('%' || :title)
@@ -37,12 +37,3 @@ SELECT * FROM Event ORDER BY datetime(start_time) DESC;
 
 deleteById:
 DELETE FROM Event WHERE _id = ?;
-
-update:
-UPDATE Event
-SET title = :title,
-    description = :description,
-    location = :location,
-    start_time = :start_time,
-    end_time = :end_time
-WHERE _id = :id;

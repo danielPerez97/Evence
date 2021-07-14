@@ -1,41 +1,43 @@
 package projects.csce.evence.view.ui
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import dagger.hilt.android.AndroidEntryPoint
-import daniel.perez.core.ActivityStarter
 import projects.csce.evence.databinding.ActivityAboutBinding
-import javax.inject.Inject
 
 
-@AndroidEntryPoint
-class AboutActivity : AppCompatActivity()
-{
-
+class AboutActivity : AppCompatActivity() {
     lateinit var binding: ActivityAboutBinding
-    @Inject lateinit var navigator: ActivityStarter
+    var count : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         binding = ActivityAboutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.cardView.setOnClickListener { navigator.startLicenseActivity(this) }
+        binding.cardView.setOnClickListener { shhhh() }
+        binding.cardView2.setOnClickListener { shhhh() }
 
     }
 
-    fun sendFeedback()
-    {
+    fun sendFeedback(){
         //todo: which email to use?
     }
 
-    fun leaveRating()
-    {
+    fun leaveRating(){
         //todo: open link to playstore page here
     }
 
-    fun shhhh()
-    {
+    fun shhhh(){
+        count++
 
+        if(count == 8)
+            Toast.makeText(this, "Yay! you found it", Toast.LENGTH_SHORT).show()
+        if(count == 18)
+            Toast.makeText(this, "Leave a rating on the Playstore", Toast.LENGTH_SHORT).show()
+        if(count == 30)
+            Toast.makeText(this, "So... um how ya doing?", Toast.LENGTH_SHORT).show()
+        if(count >= 40)
+            Toast.makeText(this, "You can stop now", Toast.LENGTH_SHORT).show()
     }
 }

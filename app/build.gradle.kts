@@ -5,7 +5,6 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
-    id("app.cash.licensee")
 }
 
 android {
@@ -21,12 +20,12 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
-//        release {
-//            isMinifyEnabled = false
-//            proguardFiles(
-//                getDefaultProguardFile("proguard-android-optimize.txt"),
-//                "proguard-rules.pro"
-//            )
+        getByName("release") {
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+//        getByName("debug") {
+//            signingConfig( signing )
 //        }
     }
     compileOptions {
@@ -41,20 +40,6 @@ android {
     }
 }
 
-licensee {
-    allow("Apache-2.0")
-    allow("CC0-1.0")
-    allowUrl("https://developer.android.com/studio/terms.html")
-    allowUrl("https://developers.google.com/ml-kit/terms")
-    allowUrl("http://www.gnu.org/software/classpath/license.html")
-    allowUrl("http://opensource.org/licenses/MIT")
-    allowUrl("http://www.apache.org/license/LICENSE-2.0.txt")
-    allowUrl("https://github.com/journeyapps/zxing-android-embedded/blob/master/COPYING")
-    ignoreDependencies("io.coil-kt") {
-        because("Uses Apache 2.0")
-    }
-}
-
 dependencies {
     implementation( fileTree( mapOf( "dir" to "libs", "include" to "*.jar" ) ) )
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
@@ -66,30 +51,29 @@ dependencies {
     implementation( project( Project.ical ) )
     implementation( project( Project.qrCameraView ) )
     implementation( project( Project.qrDialogView ) )
-    implementation( project( Project.licensesView ) )
 
     // AppCompat
-    implementation( Libs.AndroidX.appCompat )
+    implementation( Libs.appCompat )
 
     // Camerax core
-    implementation( Libs.AndroidX.Camera.cameraXCore )
+    implementation( Libs.cameraXCore )
 
     // CardView
-    implementation( Libs.AndroidX.cardView )
-    implementation( Libs.AndroidX.recyclerView )
+    implementation( Libs.cardView )
+    implementation( Libs.recyclerView )
 
     // ConstraintLayout
-    implementation( Libs.AndroidX.constraintLayout )
+    implementation( Libs.constraintLayout )
 
     // Coil
     implementation( Libs.coil )
 
     // CoordinatorLayout
-    implementation( Libs.AndroidX.coordinatorLayout )
+    implementation( Libs.coordinatorLayout )
 
     // Dagger 2
-    implementation( Libs.Google.hiltAndroid )
-    kapt( Libs.Google.hiltCompiler )
+    implementation( Libs.daggerHilt )
+    kapt( Libs.daggerHiltCompiler )
 
     // Desugar
     coreLibraryDesugaring( Libs.desugar )
@@ -98,42 +82,42 @@ dependencies {
     implementation( Libs.guavaConflict )
 
     // Kotlin Date-Time
-    api( Libs.Kotlin.kotlinxDateTime )
+    api( Libs.kotlinxDateTime )
 
     // Material widgets
-    implementation( Libs.AndroidX.material )
+    implementation( Libs.material )
 
     // Moshi
-    implementation( Libs.SquareUp.moshi )
+    implementation( Libs.moshi )
 
     // OkHttp
-    implementation( Libs.SquareUp.okhttp )
+    implementation( Libs.okhttp )
 
     // Retrofit
-    implementation( Libs.SquareUp.retrofit )
-    implementation( Libs.SquareUp.retrofitMoshi )
-    implementation( Libs.SquareUp.retrofitScalars )
-    implementation( Libs.SquareUp.retrofitRxJava )
+    implementation( Libs.retrofit )
+    implementation( Libs.retrofitMoshi )
+    implementation( Libs.retrofitScalars )
+    implementation( Libs.retrofitRxJava )
 
     // RxJava
-    implementation( Libs.ReactiveX.rxJava )
-    implementation( Libs.AndroidX.reactiveStreams )
-    implementation( Libs.JakeWharton.rxBinding )
-    implementation( Libs.JakeWharton.rxReplayingShare )
+    implementation( Libs.rxJava )
+    implementation( Libs.reactiveStreams )
+    implementation( Libs.rxBinding )
+    implementation( Libs.rxReplayingShare )
 
     // SQLDelight
-    implementation( Libs.SquareUp.sqlDelightAndroidDriver )
+    implementation( Libs.sqlDelightAndroidDriver )
 
     // Timber
-    implementation( Libs.JakeWharton.timber )
+    implementation( Libs.timber )
 
     // ViewModel
-    implementation( Libs.AndroidX.Lifecycle.viewModel )
-    implementation( Libs.AndroidX.Lifecycle.viewModelKtx )
+    implementation( Libs.viewModel )
+    implementation( Libs.viewModelKtx )
 
     // ZXING
-    implementation( Libs.Google.zxing )
-    implementation( Libs.Google.zxingAndroid )
+    implementation( Libs.zxing )
+    implementation( Libs.zxingAndroid )
 
     // Testing
     testImplementation( TestLibs.junit4 )

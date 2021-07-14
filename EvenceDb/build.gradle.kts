@@ -11,22 +11,9 @@ sqldelight {
     }
 }
 
-android {
-    compileSdk = Evence.compileSdkVersion
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = Evence.minSdkVersion
-        targetSdk = Evence.targetSdkVersion
-    }
-
-    configurations {
-        create("androidTestApi")
-        create("androidTestDebugApi")
-        create("androidTestReleaseApi")
-        create("testApi")
-        create("testDebugApi")
-        create("testReleaseApi")
-    }
+repositories {
+    // Needed for kotlinx-datetime
+    maven(url = "https://kotlin.bintray.com/kotlinx/")
 }
 
 kotlin {
@@ -35,7 +22,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib")
-                api( Libs.Kotlin.kotlinxDateTime )
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
             }
         }
 
@@ -52,16 +39,25 @@ kotlin {
                 implementation("org.junit.jupiter:junit-jupiter:5.6.0")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-test-junit5")
-                implementation("com.squareup.sqldelight:sqlite-driver:${Libs.SquareUp.sqlDelightVersion}")
+                implementation("com.squareup.sqldelight:sqlite-driver:${Project.sqlDelightVersion}")
             }
         }
 
         val androidMain by getting {
             dependencies {
-                api( Libs.Kotlin.kotlinxDateTime )
-                api("com.squareup.sqldelight:rxjava3-extensions:${Libs.SquareUp.sqlDelightVersion}")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
+                api("com.squareup.sqldelight:rxjava3-extensions:${Project.sqlDelightVersion}")
             }
         }
+    }
+}
+
+android {
+    compileSdkVersion( Evence.compileSdkVersion )
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    defaultConfig {
+        minSdkVersion( Evence.minSdkVersion )
+        targetSdkVersion( Evence.targetSdkVersion )
     }
 }
 

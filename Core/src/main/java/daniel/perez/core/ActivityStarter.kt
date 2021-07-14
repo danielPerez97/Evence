@@ -7,8 +7,6 @@ interface ActivityStarter
 {
     fun startGenerateQr(activity: Context)
 
-    fun startNewEventActivity(activity: Context)
-
     fun startEditQr(activity: Context, ical: ViewEvent)
 
     fun startQrReader(activity: Context)
@@ -20,6 +18,4 @@ interface ActivityStarter
     fun startShareAppActivity(activity: Context)
 
     fun startAboutActivity(activity: Context)
-
-    fun startLicenseActivity(activity: Context)
 }

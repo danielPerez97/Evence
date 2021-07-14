@@ -1,7 +1,6 @@
 package projects.csce.evence.di.appscope
 
 import coil.ImageLoader
-import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,11 +38,5 @@ class AppModule
     fun provideActivityResultActions(eventOps: EventOps, fileManager: FileManager): ActivityResultActions
     {
         return ActivityResultActionsImpl(eventOps, fileManager)
-    }
-
-    @Provides @Singleton
-    fun provideMoshi(): Moshi
-    {
-        return Moshi.Builder().build()
     }
 }

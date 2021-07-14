@@ -8,82 +8,68 @@ plugins {
 }
 
 android {
-    compileSdk = Evence.compileSdkVersion
+    compileSdkVersion( Evence.compileSdkVersion )
     buildToolsVersion = Evence.buildToolsVersion
 
     defaultConfig {
-        minSdk = Evence.minSdkVersion
-        targetSdk = Evence.targetSdkVersion
-//        versionCode = 1
-//        versionName = "1.0"
+        minSdkVersion( Evence.minSdkVersion )
+        targetSdkVersion( Evence.targetSdkVersion )
+        versionCode = 1
+        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
-//        release {
-//            isMinifyEnabled = false
-//            proguardFiles(
-//                getDefaultProguardFile("proguard-android-optimize.txt"),
-//                "proguard-rules.pro"
-//            )
-//        }
+        getByName("release") {
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
     buildFeatures {
         viewBinding = true
-        compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = Compose.version
-    }
-
 }
 
 dependencies {
     implementation( fileTree( mapOf( "dir" to "libs", "include" to "*.jar"  ) ) )
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
+    implementation("androidx.core:core-ktx:1.3.0")
+    implementation("androidx.appcompat:appcompat:1.1.0")
+    testImplementation("junit:junit:4.12")
+    androidTestImplementation("androidx.test.ext:junit:1.1.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
 
     implementation( project( Project.core ) )
     implementation( project( Project.ical ) )
 
-    // Compose
-    implementation( Compose.foundation )
-    implementation( Compose.ui )
-    implementation( Compose.uiTooling )
-    implementation( Compose.material )
-    implementation( Compose.activityCompose )
-    implementation( Compose.constraintLayoutCompose )
-
     // Dagger
-    implementation( Libs.Google.hiltAndroid )
-    kapt( Libs.Google.hiltCompiler )
+    implementation( Libs.daggerHilt )
+    kapt( Libs.daggerHiltCompiler )
 
     // Desugar
     coreLibraryDesugaring( Libs.desugar )
 
     // Material
-    implementation( Libs.AndroidX.material )
+    implementation( Libs.material )
 
     // Okio
-    implementation( Libs.SquareUp.okio )
+    implementation( Libs.okio )
 
     // RxJava
-    implementation( Libs.ReactiveX.rxAndroid )
-    implementation( Libs.JakeWharton.rxBinding )
-    implementation( Libs.ReactiveX.rxJava )
+    implementation( Libs.rxAndroid )
+    implementation( Libs.rxBinding )
+    implementation( Libs.rxJava )
 
     // Timber
-    implementation( Libs.JakeWharton.timber )
+    implementation( Libs.timber )
 
     // ViewModel
-    implementation( Libs.AndroidX.Lifecycle.viewModel )
+    implementation( Libs.viewModel )
 
 }

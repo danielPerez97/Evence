@@ -97,11 +97,6 @@ fun toLocalDateTime(day: Int, month: Int, year: Int, hour: Int, minute: Int) : L
     return LocalDateTime.parse("${date.string()}T${time.string()}")
 }
 
-fun LocalDateTime.toAMPM(): String
-{
-    return this.format(DateTimeFormatter.ofPattern("hh:mm a"))
-}
-
 fun toZeroIfNeg(num : Int) : Int{
     return if(num < 0) 0 else num
 }
