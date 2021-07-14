@@ -86,10 +86,10 @@ class QrReaderActivity : BaseActivity(), DialogClosable
                 overlays.clearOverlays() //todo rename appropriately
                 when (currentScanType) {
                     SCAN_TYPE.BARCODE -> {
-                        binding.result.text = "Scanning for QR codes"
+
                     }
                     SCAN_TYPE.TEXT -> {
-                        binding.result.text = "Scanning for texts"
+
                     }
                 }
             } else {
@@ -120,10 +120,11 @@ class QrReaderActivity : BaseActivity(), DialogClosable
         binding.darkBackground.visibility = View.VISIBLE
         binding.scanButton.setImageDrawable(getDrawable(R.drawable.ic_close_white_24dp))
 
-        if (scannedData.isEmpty())
-            binding.result.text = "No QR code found"
+        if (scannedData.isEmpty()) {
+            binding.result.visibility = View.VISIBLE
+            binding.result.text = "No QR code found" }
         else
-            binding.result.text = ""
+            binding.result.visibility = View.GONE
     }
 
     private fun hideResults() {
@@ -135,6 +136,7 @@ class QrReaderActivity : BaseActivity(), DialogClosable
         binding.zoomSlider.visibility = View.VISIBLE
         //binding.switchScanButton.visibility = View.VISIBLE
         binding.darkBackground.visibility = View.GONE
+        binding.result.visibility = View.GONE
     }
 
     private fun handleQrEvent(barcode: Barcode) {
