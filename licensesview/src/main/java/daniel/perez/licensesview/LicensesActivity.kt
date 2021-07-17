@@ -15,14 +15,7 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -133,19 +126,9 @@ fun LicensesScreen(
                 Column(
                     modifier = Modifier.padding(it)
                 ) {
-//                    AnimatedVisibility(
-//                        visible = showList.value,
-//                        enter = slideInHorizontally(initialOffsetX = { with(density) { -40.dp.roundToPx() } })
-//                                + expandVertically(expandFrom = Alignment.Top)
-//                                + fadeIn(initialAlpha = 0.3f),
-//                        exit = slideOutHorizontally() + shrinkVertically() + fadeOut()
-//                    ) {
-//                        MessageCard()
-//                    }
 
                     LicensesList(
                         licenses = licenses.value,
-//                        modifier = Modifier.padding(top = 12.dp),
                         onClick = onClick,
                         listState = listState
                     )
@@ -195,11 +178,20 @@ fun LicensesList(
 
         grouped.forEach { initial, licenses  ->
             stickyHeader {
-                Header(text = initial, modifier = Modifier
-                        .fillParentMaxWidth()
-                        .height(30.dp)
-                        .background(MaterialTheme.colors.primary)
-                )
+                Row(
+                  modifier = Modifier.fillMaxWidth()
+                          .background(MaterialTheme.colors.background)
+                ) {
+                    Spacer(modifier = Modifier.padding(PaddingValues(start = 16.dp)))
+                    Text(text = initial)
+                }
+
+//                Header(text = initial, modifier = Modifier
+//                        .fillParentMaxWidth()
+//                        .height(30.dp)
+//                        .background(MaterialTheme.colors.primary)
+//                        .padding(vertical = 30.dp)
+//                )
             }
 
             items(licenses) { license ->
