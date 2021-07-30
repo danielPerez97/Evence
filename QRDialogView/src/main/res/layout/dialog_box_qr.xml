@@ -184,7 +184,7 @@
 
                             <TextView
                                 style="@style/CircularButtonTextView"
-                                android:text="Done" />
+                                android:text="Delete" />
                         </LinearLayout>
 
 
