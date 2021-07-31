@@ -2,8 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/sort_btn"
+        android:icon="@drawable/ic_baseline_sort_24"
+        android:title="@string/sort_by"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/qr_camera_btn"
         android:icon="@drawable/ic_camera_alt_white_24dp"
         android:title="@string/scan_qr"
         app:showAsAction="always"/>
+
 </menu>
