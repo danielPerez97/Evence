@@ -5,6 +5,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.PopupMenu
+import android.widget.Switch
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +31,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity()
+class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener
 {
     private lateinit var currentEvent: ViewEvent
     private lateinit var viewModel: MainViewModel
@@ -72,6 +76,7 @@ class MainActivity : BaseActivity()
         // RecyclerView
         binding.eventsRecyclerView.adapter = eventsAdapter
         binding.eventsRecyclerView.layoutManager = LinearLayoutManager(baseContext)
+
     }
 
     private fun setupSubscriptions()
@@ -139,8 +144,23 @@ class MainActivity : BaseActivity()
     {
         if (item.itemId == R.id.qr_camera_btn) {
             activityStarter.startQrReader(this)
+        } else if (item.itemId == R.id.sort_btn) {
+            handleSort()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun handleSort() {
+        val popupMenu = PopupMenu(this, findViewById(R.id.sort_btn))
+        popupMenu.menuInflater.inflate(R.menu.menu_sort, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.sort_by_creation -> toastShort("sort by creation")
+                R.id.sort_by_date -> toastShort("sort by date")
+            }
+            true
+        }
+        popupMenu.show()
     }
 
     fun startSettingsActivity(view: View?)
@@ -194,5 +214,13 @@ class MainActivity : BaseActivity()
                 Timber.i("Writing file...")
             }
         }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
     }
 }
