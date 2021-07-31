@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/delete_btn"
+        android:id="@+id/close_dialog_btn"
         style="@style/CircularButtonCardView"
         android:layout_width="42dp"
         android:layout_height="42dp"
@@ -21,7 +21,7 @@
             style="@style/CircularButtonImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_delete_24" />
+            android:src="@drawable/ic_close_white_24dp" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -173,18 +173,18 @@
                         <LinearLayout style="@style/CircularButtonAndTextLinearLayout">
 
                             <androidx.cardview.widget.CardView
-                                android:id="@+id/close_dialog_btn"
-                                android:backgroundTint="@color/blue1"
+                                android:id="@+id/delete_btn"
+                                android:backgroundTint="@color/red2"
                                 style="@style/CircularButtonCardView">
 
                                 <ImageView
                                     style="@style/CircularButtonImageView"
-                                    android:src="@drawable/ic_check_white_36dp" />
+                                    android:src="@drawable/ic_baseline_delete_24" />
                             </androidx.cardview.widget.CardView>
 
                             <TextView
                                 style="@style/CircularButtonTextView"
-                                android:text="Done" />
+                                android:text="Delete" />
                         </LinearLayout>
 
 
