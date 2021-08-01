@@ -77,7 +77,6 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener
         // RecyclerView
         binding.eventsRecyclerView.adapter = eventsAdapter
         binding.eventsRecyclerView.layoutManager = LinearLayoutManager(baseContext)
-
     }
 
     private fun setupSubscriptions()
