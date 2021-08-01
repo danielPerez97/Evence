@@ -71,7 +71,7 @@ object Libs
 
         object Compose
         {
-            const val composeVersion = "1.0.0-rc02"
+            const val composeVersion = "1.0.0-beta08"
 
             const val foundation = "androidx.compose.foundation:foundation:$composeVersion"
             const val material = "androidx.compose.material:material:$composeVersion"
