@@ -26,6 +26,7 @@ import projects.csce.evence.R
 import projects.csce.evence.databinding.ActivityMainBinding
 import projects.csce.evence.service.model.SharedPref
 import projects.csce.evence.viewmodel.MainViewModel
+import projects.csce.evence.viewmodel.SortState
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -76,7 +77,6 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener
         // RecyclerView
         binding.eventsRecyclerView.adapter = eventsAdapter
         binding.eventsRecyclerView.layoutManager = LinearLayoutManager(baseContext)
-
     }
 
     private fun setupSubscriptions()
@@ -155,8 +155,14 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener
         popupMenu.menuInflater.inflate(R.menu.menu_sort, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.sort_by_creation -> toastShort("sort by creation")
-                R.id.sort_by_date -> toastShort("sort by date")
+                R.id.sort_by_creation ->
+                {
+                    viewModel.setSortState(SortState.RECENTLY_CREATED)
+                }
+                R.id.sort_by_date ->
+                {
+                    viewModel.setSortState(SortState.BY_DATE_ASCENDING)
+                }
             }
             true
         }

@@ -8,5 +8,6 @@ data class License(
     val artifactId: String,
     val version: String,
     val spdxLicenses: List<SpdxLicense>? = null,
-    val unknownLicenses: List<UnknownLicense>? = null
+    val unknownLicenses: List<UnknownLicense>? = null,
+    val scm: Scm? = null
 )

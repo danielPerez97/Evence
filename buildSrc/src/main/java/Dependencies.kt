@@ -115,7 +115,7 @@ object Libs
             const val runner = "androidx.test:runner:$testVersion"
             const val rules = "androidx.test:rules:$testVersion"
 
-            private const val espressoVersion = "3.3.0"
+            private const val espressoVersion = "3.4.0"
             const val espressoCore = "androidx.test.espresso:espresso-core:$espressoVersion"
 
             object Ext
@@ -129,7 +129,7 @@ object Libs
     object Google
     {
         // Dagger Hilt
-        const val daggerHiltVersion = "2.37"
+        const val daggerHiltVersion = "2.38.1"
         const val hiltAndroidGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:$daggerHiltVersion"
         const val hiltAndroid = "com.google.dagger:hilt-android:$daggerHiltVersion"
         const val hiltAndroidTesting = "com.google.dagger:hilt-android-testing:$daggerHiltVersion"
@@ -218,7 +218,7 @@ object Libs
         const val retrofitScalars = "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
 
         // SQLDelight
-        const val sqlDelightVersion = "1.5.0"
+        const val sqlDelightVersion = "1.5.1"
         const val sqlDelightAndroidDriver = "com.squareup.sqldelight:android-driver:$sqlDelightVersion"
         const val sqlDelightCoroutines = "com.squareup.sqldelight:coroutines-extensions-jvm:$sqlDelightVersion"
     }
@@ -253,7 +253,7 @@ object Project
 
 object Compose
 {
-    const val version = "1.0.0-rc01"
+    const val version = "1.0.0"
     const val ui = "androidx.compose.ui:ui:$version"
     const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
     const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -261,7 +261,7 @@ object Compose
     const val rxJavaCompose = "androidx.compose.runtime:runtime-rxjava3:$version"
     const val materialAdapter = "com.google.android.material:compose-theme-adapter:$version"
 
-    private const val activityComposeVersion = "1.3.0-beta02"
+    private const val activityComposeVersion = "1.3.0"
     const val activityCompose = "androidx.activity:activity-compose:$activityComposeVersion"
 
     private const val constraintLayoutComposeVersion = "1.0.0-alpha08"
