@@ -19,6 +19,10 @@ interface EventOps
 
     fun selectAll(): Observable<List<Event>>
 
+    fun selectAllByDateAscending(): Observable<List<Event>>
+
+    fun selectAllByRecentlyCreated(): Observable<List<Event>>
+
     fun searchByTitle(title: String): Observable<List<Event>>
 
     fun getEventById(id: Long): Observable<Event>

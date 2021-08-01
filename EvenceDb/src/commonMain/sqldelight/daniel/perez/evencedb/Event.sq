@@ -22,6 +22,9 @@ SELECT last_insert_rowid();
 selectAll:
 SELECT * FROM Event ORDER BY date(start_time);
 
+selectAllByRecentlyCreated:
+SELECT * FROM Event ORDER BY _id DESC;
+
 selectByTitle:
 SELECT * FROM Event WHERE title LIKE ('%' || :title)
 OR title LIKE (:title || '%');
