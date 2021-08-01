@@ -149,3 +149,23 @@ repositories {
     // TODO("Keep up with what JetBrains does with this, bintray is getting shut down in May this is going to break our build")
     maven(url = "https://kotlin.bintray.com/kotlinx/")
 }
+
+/**
+ * Used to copy artifacts.json into resources/raw
+ */
+tasks.register<Copy>("copyLicenses") {
+    description = "Copying artifacts.json into res/raw..."
+    from(layout.buildDirectory.dir("reports/licensee/release/artifacts.json"))
+    println(layout.buildDirectory.dir("reports/licensee/release/artifacts.json"))
+    into("src/main/res/raw")
+}
+
+afterEvaluate {
+    tasks.named("assemble") {
+        dependsOn("copyLicenses")
+    }
+
+    tasks.named("copyLicenses") {
+        dependsOn("licensee")
+    }
+}
