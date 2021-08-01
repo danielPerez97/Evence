@@ -62,6 +62,9 @@ class LicensesActivity : AppCompatActivity()
                         with(it)
                         {
                             licenseUrl = when {
+                                scm != null -> {
+                                    scm.url
+                                }
                                 spdxLicenses != null -> {
                                     spdxLicenses.first().url
                                 }
