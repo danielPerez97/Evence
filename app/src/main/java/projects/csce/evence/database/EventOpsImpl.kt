@@ -96,6 +96,19 @@ private class EventOpsImpl(
                 .map { it.toEvent() }
     }
 
+    override fun selectAllByDateAscending(): Observable<List<Event>>
+    {
+        return selectAll()
+    }
+
+    override fun selectAllByRecentlyCreated(): Observable<List<Event>>
+    {
+        return queries.selectAllByRecentlyCreated()
+                .asObservable()
+                .mapToList()
+                .map { it.toEvent() }
+    }
+
     override fun searchByTitle(title: String): Observable<List<Event>>
     {
         return queries.selectByTitle( title )
