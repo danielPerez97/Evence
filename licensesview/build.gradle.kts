@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("de.mannodermaus.android-junit5")
 }
 
 android {
@@ -37,24 +38,24 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Compose.version
+        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
         kotlinCompilerVersion = "1.5.10"
     }
 }
 
 dependencies {
-    implementation( project( Project.core ) )
+    implementation( project( Evence.core ) )
 
     implementation( Libs.AndroidX.coreKtx )
     implementation( Libs.AndroidX.appCompat )
     implementation( Libs.AndroidX.Lifecycle.lifecycleRuntimeKtx )
     implementation( Libs.AndroidX.Lifecycle.viewModelCompose )
     implementation( Libs.Google.materialAndroid )
-    implementation( Compose.ui )
-    implementation( Compose.material )
-    implementation( Compose.uiTooling )
-    implementation( Compose.activityCompose )
-    implementation( Compose.constraintLayoutCompose )
+    implementation( Libs.AndroidX.Compose.ui )
+    implementation( Libs.AndroidX.Compose.material )
+    implementation( Libs.AndroidX.Compose.uiTooling )
+    implementation( Libs.AndroidX.Compose.activityCompose )
+    implementation( Libs.AndroidX.Compose.constraintLayoutCompose )
     implementation( Coroutines.coroutinesCore )
     implementation( Coroutines.coroutinesAndroid )
     implementation( Libs.Google.hiltAndroid )
@@ -63,4 +64,8 @@ dependencies {
     implementation( Libs.SquareUp.okio )
     implementation( Libs.SquareUp.moshi )
     kapt( Libs.SquareUp.moshiCodegen )
+
+    // Testing
+    testImplementation(TestLibs.junit5JupiterApi)
+    testRuntimeOnly(TestLibs.junit5Runtime)
 }

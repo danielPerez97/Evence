@@ -9,12 +9,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion( Evence.compileSdkVersion )
+    compileSdk = Evence.compileSdkVersion
     buildToolsVersion = Evence.buildToolsVersion
     defaultConfig {
         applicationId = "projects.csce.evence"
-        minSdkVersion( Evence.minSdkVersion )
-        targetSdkVersion( Evence.targetSdkVersion )
+        minSdk = Evence.minSdkVersion
+        targetSdk = Evence.targetSdkVersion
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -59,14 +59,14 @@ dependencies {
     implementation( fileTree( mapOf( "dir" to "libs", "include" to "*.jar" ) ) )
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
 
-    implementation( project( Project.core ) )
-    implementation( project( Project.evenceDatabase ) )
-    implementation( project( Project.fileSelectView ) )
-    implementation( project( Project.generateQrView ) )
-    implementation( project( Project.ical ) )
-    implementation( project( Project.qrCameraView ) )
-    implementation( project( Project.qrDialogView ) )
-    implementation( project( Project.licensesView ) )
+    implementation( project( Evence.core ) )
+    implementation( project( Evence.evenceDatabase ) )
+    implementation( project( Evence.fileSelectView ) )
+    implementation( project( Evence.generateQrView ) )
+    implementation( project( Evence.ical ) )
+    implementation( project( Evence.qrCameraView ) )
+    implementation( project( Evence.qrDialogView ) )
+    implementation( project( Evence.licensesView ) )
 
     // AppCompat
     implementation( Libs.AndroidX.appCompat )
