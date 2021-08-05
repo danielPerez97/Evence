@@ -9,12 +9,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion( Evence.compileSdkVersion )
+    compileSdk = Evence.compileSdkVersion
     buildToolsVersion = Evence.buildToolsVersion
     defaultConfig {
         applicationId = "projects.csce.evence"
-        minSdkVersion( Evence.minSdkVersion )
-        targetSdkVersion( Evence.targetSdkVersion )
+        minSdk = Evence.minSdkVersion
+        targetSdk = Evence.targetSdkVersion
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

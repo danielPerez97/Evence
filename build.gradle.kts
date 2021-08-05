@@ -4,7 +4,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        jcenter()
         maven( url = "https://www.jetbrains.com/intellij-repository/releases" )
         maven( url = "https://jetbrains.bintray.com/intellij-third-party-dependencies" )
         maven( url =  "https://plugins.gradle.org/m2/")
@@ -26,7 +25,7 @@ apply(plugin = "com.squareup.sqldelight")
 
 allprojects {
     repositories {
+        mavenCentral()
         google()
-        jcenter()
     }
 }
