@@ -235,6 +235,12 @@ object TestLibs
     const val junit4 = "junit:junit:4.13.2"
 
     const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.7"
+
+    private const val junit5Version = "5.7.1"
+    const val androidJunit5GradlePluginVersion = "1.7.1.1"
+    const val androidJunit5GradlePlugin = "de.mannodermaus.android-junit5"
+    const val junit5JupiterApi = "org.junit.jupiter:junit-jupiter-api:$junit5Version"
+    const val junit5Runtime = "org.junit.jupiter:junit-jupiter-engine:$junit5Version"
 }
 
 object Project
@@ -253,7 +259,7 @@ object Project
 
 object Compose
 {
-    const val version = "1.0.0"
+    const val version = "1.0.1"
     const val ui = "androidx.compose.ui:ui:$version"
     const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
     const val foundation = "androidx.compose.foundation:foundation:$version"

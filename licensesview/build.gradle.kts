@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("de.mannodermaus.android-junit5")
 }
 
 android {
@@ -63,4 +64,8 @@ dependencies {
     implementation( Libs.SquareUp.okio )
     implementation( Libs.SquareUp.moshi )
     kapt( Libs.SquareUp.moshiCodegen )
+
+    // Testing
+    testImplementation(TestLibs.junit5JupiterApi)
+    testRuntimeOnly(TestLibs.junit5Runtime)
 }
