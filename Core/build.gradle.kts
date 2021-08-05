@@ -72,9 +72,6 @@ dependencies {
     implementation( Libs.Google.hiltAndroid )
     kapt( Libs.Google.hiltCompiler )
 
-    // Google Mobile Vision API
-    implementation( Libs.Google.vision )
-
     implementation( Libs.AndroidX.material )
     implementation( Libs.AndroidX.coordinatorLayout )
 

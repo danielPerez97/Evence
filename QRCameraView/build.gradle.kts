@@ -91,7 +91,7 @@ dependencies {
     implementation( Libs.Google.mlkitBarcode )
 
     //ml kit text
-    implementation( Libs.Google.mlkitTextRecognition )
+    //implementation( Libs.Google.mlkitTextRecognition )
 
     // Timber
     implementation ( Libs.JakeWharton.timber )

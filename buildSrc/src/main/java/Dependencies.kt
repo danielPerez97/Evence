@@ -159,11 +159,6 @@ object Libs
         private const val mlkitBarcodeVersion= "16.1.2"
         private const val mlkitTextVersion= "16.2.0"
         const val mlkitBarcode = "com.google.mlkit:barcode-scanning:$mlkitBarcodeVersion"
-        const val mlkitTextRecognition = "com.google.android.gms:play-services-mlkit-text-recognition:$mlkitTextVersion"
-
-        // Mobile Vision
-        private const val visionVersion = "20.1.3"
-        const val vision = "com.google.android.gms:play-services-vision:$visionVersion"
 
         // ZXING
         private const val zxingVersion = "3.4.1"

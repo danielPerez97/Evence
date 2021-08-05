@@ -1,5 +1,5 @@
 package daniel.perez.qrcameraview.Scanner
-
+/**
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
@@ -7,7 +7,14 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
 import timber.log.Timber
 
+
+///FOR FUTURE UPDATES
 class TextScanner() : BaseAnalyzer() {
+*/
+
+class TextScanner() {
+
+    /*
     private val scannedTextSubject: PublishSubject<Text> = PublishSubject.create()
     private val scannedTextBlockSubject: PublishSubject<List<Text.TextBlock>> = PublishSubject.create()
     private val textRecognizer = TextRecognition.getClient()
@@ -36,4 +43,6 @@ class TextScanner() : BaseAnalyzer() {
     fun textBlockResult(): Observable<List<Text.TextBlock>> = scannedTextBlockSubject
 
     override fun close() = recognizer.close()
+
+*/
 }

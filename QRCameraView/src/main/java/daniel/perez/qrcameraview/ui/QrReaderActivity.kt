@@ -208,12 +208,13 @@ class QrReaderActivity : BaseActivity(), DialogClosable
                     scannedData = it
                     updateViews()
                 })
-        disposables.add(viewModel.liveTextData()
+        /*disposables.add(viewModel.liveTextData()
                 //add onerrorhandler
                 .subscribe {
                     scannedData = it
                     updateViews()
                 })
+         */
         disposables.add(adapter.clicks()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { barcode: Barcode? ->
