@@ -42,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Compose.version
+        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
         kotlinCompilerVersion = "1.5.10"
     }
 }
@@ -51,7 +51,7 @@ dependencies {
     implementation( fileTree( mapOf( "dir" to "libs", "include" to "*.jar"  ) ) )
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
 
-    implementation( project(Project.ical) )
+    implementation( project(Evence.ical) )
 
     coreLibraryDesugaring( Libs.desugar )
 
@@ -59,11 +59,11 @@ dependencies {
     implementation( Libs.AndroidX.cardView )
 
     // Compose
-    implementation( Compose.foundation )
-    implementation( Compose.material )
-    implementation( Compose.ui )
-    implementation( Compose.uiTooling )
-    implementation( Compose.materialAdapter )
+    implementation( Libs.AndroidX.Compose.foundation )
+    implementation( Libs.AndroidX.Compose.material )
+    implementation( Libs.AndroidX.Compose.ui )
+    implementation( Libs.AndroidX.Compose.uiTooling )
+    implementation( Libs.AndroidX.Compose.materialAdapter )
 
     // Coil
     implementation( Libs.coil )

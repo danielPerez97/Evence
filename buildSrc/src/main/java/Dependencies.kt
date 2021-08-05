@@ -4,6 +4,15 @@ object Evence
     const val buildToolsVersion = "30.0.2"
     const val targetSdkVersion = 30
     const val minSdkVersion = 26
+
+    const val core = ":Core"
+    const val ical = ":ICal"
+    const val fileSelectView = ":FileSelectView"
+    const val generateQrView = ":GenerateQRView"
+    const val qrCameraView = ":QRCameraView"
+    const val qrDialogView = ":QRDialogView"
+    const val evenceDatabase = ":EvenceDb"
+    const val licensesView = ":licensesview"
 }
 
 object Libs
@@ -71,12 +80,20 @@ object Libs
 
         object Compose
         {
-            const val composeVersion = "1.0.0-beta08"
+            const val version = "1.0.1"
 
-            const val foundation = "androidx.compose.foundation:foundation:$composeVersion"
-            const val material = "androidx.compose.material:material:$composeVersion"
-            const val ui = "androidx.compose.ui:ui:$composeVersion"
-            const val uiTooling = "androidx.compose.ui:ui-tooling:$composeVersion"
+            const val foundation = "androidx.compose.foundation:foundation:$version"
+            const val material = "androidx.compose.material:material:$version"
+            const val ui = "androidx.compose.ui:ui:$version"
+            const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
+
+            const val materialAdapter = "com.google.android.material:compose-theme-adapter:$version"
+
+            private const val activityComposeVersion = "1.3.0"
+            const val activityCompose = "androidx.activity:activity-compose:$activityComposeVersion"
+
+            private const val constraintLayoutComposeVersion = "1.0.0-beta02"
+            const val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:$constraintLayoutComposeVersion"
         }
 
         object ConstraintLayout
@@ -241,42 +258,6 @@ object TestLibs
     const val androidJunit5GradlePlugin = "de.mannodermaus.android-junit5"
     const val junit5JupiterApi = "org.junit.jupiter:junit-jupiter-api:$junit5Version"
     const val junit5Runtime = "org.junit.jupiter:junit-jupiter-engine:$junit5Version"
-}
-
-object Project
-{
-    const val sdkVersion = 30
-    const val buildToolsVerion = "30.0.0"
-    const val core = ":Core"
-    const val ical = ":ICal"
-    const val fileSelectView = ":FileSelectView"
-    const val generateQrView = ":GenerateQRView"
-    const val qrCameraView = ":QRCameraView"
-    const val qrDialogView = ":QRDialogView"
-    const val evenceDatabase = ":EvenceDb"
-    const val licensesView = ":licensesview"
-}
-
-object Compose
-{
-    const val version = "1.0.1"
-    const val ui = "androidx.compose.ui:ui:$version"
-    const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
-    const val foundation = "androidx.compose.foundation:foundation:$version"
-    const val material = "androidx.compose.material:material:$version"
-    const val rxJavaCompose = "androidx.compose.runtime:runtime-rxjava3:$version"
-    const val materialAdapter = "com.google.android.material:compose-theme-adapter:$version"
-
-    private const val activityComposeVersion = "1.3.0"
-    const val activityCompose = "androidx.activity:activity-compose:$activityComposeVersion"
-
-    private const val constraintLayoutComposeVersion = "1.0.0-alpha08"
-    const val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:$constraintLayoutComposeVersion"
-
-    private const val lifecycleViewModelVersion = "1.0.0-alpha06"
-    const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleViewModelVersion"
-
-
 }
 
 object Coroutines

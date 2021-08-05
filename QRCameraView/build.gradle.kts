@@ -48,8 +48,8 @@ dependencies {
 
     coreLibraryDesugaring( Libs.desugar )
 
-    implementation( project( Project.ical ) )
-    implementation( project( Project.core ) )
+    implementation( project( Evence.ical ) )
+    implementation( project( Evence.core ) )
 
     // Dagger
     implementation( Libs.Google.hiltAndroid )

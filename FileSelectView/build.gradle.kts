@@ -46,7 +46,7 @@ dependencies {
 
     coreLibraryDesugaring( Libs.desugar )
 
-    implementation( project( Project.core ) )
+    implementation( project( Evence.core ) )
 
     implementation( Libs.coil )
     implementation( Libs.AndroidX.appCompat )
