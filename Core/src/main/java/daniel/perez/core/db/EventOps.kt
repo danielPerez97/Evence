@@ -13,7 +13,15 @@ interface EventOps
 
     fun insertEventWithRecurrence(title: String, description: String, location: String, startTime: LocalDateTime, endTime: LocalDateTime, recurrenceRule: String)
 
+    fun updateEvent(id: Long, event: UiNewEvent): Observable<Long>
+
+    fun updateEvent(id: Long, title: String, description: String, location: String, startTime: LocalDateTime, endTime: LocalDateTime): Observable<Long>
+
     fun selectAll(): Observable<List<Event>>
+
+    fun selectAllByDateAscending(): Observable<List<Event>>
+
+    fun selectAllByRecentlyCreated(): Observable<List<Event>>
 
     fun searchByTitle(title: String): Observable<List<Event>>
 

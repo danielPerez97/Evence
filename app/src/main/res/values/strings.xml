@@ -16,4 +16,7 @@
     <string name="saved_setting_shared_pref_name">saved_setting</string>
     <string name="appearance">Appearance</string>
     <string name="scanning">Scanning...</string>
+    <string name="sort_by">Sort by</string>
+    <string name="date">Date</string>
+    <string name="recently_created">Recently created</string>
 </resources>

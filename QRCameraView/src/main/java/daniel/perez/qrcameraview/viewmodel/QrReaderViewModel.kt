@@ -1,8 +1,7 @@
 package daniel.perez.qrcameraview.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.google.mlkit.vision.barcode.Barcode
-import com.google.mlkit.vision.text.Text
+//import com.google.mlkit.vision.text.Text
 import dagger.hilt.android.lifecycle.HiltViewModel
 import daniel.perez.core.db.Event
 import daniel.perez.core.db.EventOps
@@ -12,8 +11,8 @@ import daniel.perez.qrcameraview.Scanner.TextScanner
 import daniel.perez.qrcameraview.data.SCAN_TYPE
 import daniel.perez.qrcameraview.data.ScannedData
 import daniel.perez.qrcameraview.data.ScannedQR
-import daniel.perez.qrcameraview.data.ScannedText
 import io.reactivex.rxjava3.core.Observable
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,18 +23,23 @@ class QrReaderViewModel @Inject constructor(
 
     fun liveQRData(): Observable<List<ScannedData>> {
         return qrScanner.qrScannerResult()
-                .flatMap { barcodes: List<Barcode> ->
-                    Observable.just(barcodes)
-                            .flatMapIterable { barcode: List<Barcode> -> barcodes }
-                            .map { barcode: Barcode ->
-                                ScannedQR(SCAN_TYPE.BARCODE, barcode)
-                            }
-                            .toList()
-                            .toObservable()
-                }
+            .doOnSubscribe { Timber.d("Subscribed to qrScannerResult") }
+//                .flatMap { barcodes: List<Barcode> ->
+//                    Observable.just(barcodes)
+//                            .flatMapIterable { barcode: List<Barcode> -> barcodes }
+//                            .map { barcode: Barcode ->
+//                                ScannedQR(SCAN_TYPE.BARCODE, barcode)
+//                            }
+//                            .toList()
+//                            .toObservable()
+//                }
+            .doOnNext{ Timber.d("Receieved onNext event") }
+            .map {
+                it.map { ScannedQR(SCAN_TYPE.BARCODE, it) }
+            }
 
     }
-
+/* FOR FUTURE UPDATES
     fun liveTextData(): Observable<List<ScannedData>> {
         return textScanner.textBlockResult()
                 .flatMap { texts: List<Text.TextBlock> ->
@@ -47,7 +51,7 @@ class QrReaderViewModel @Inject constructor(
                             .toList()
                             .toObservable()
                 }
-    }
+    }*/
 
     fun saveEvent(event: UiNewEvent): Observable<Event>
     {

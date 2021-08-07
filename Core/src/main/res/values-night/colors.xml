@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#2196F3</color>
     <color name="colorPrimaryDark">#263238</color>
-    <color name="colorAccent">#3F4E80</color>
+    <color name="colorAccent">#263238</color>
     <color name="screenBackground">#37474F</color>
     <color name="cardviewBackground">#263238</color>
     <color name="transparentCardviewBackground">#f5263238</color>

@@ -5,6 +5,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.PopupMenu
+import android.widget.Switch
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,12 +26,13 @@ import projects.csce.evence.R
 import projects.csce.evence.databinding.ActivityMainBinding
 import projects.csce.evence.service.model.SharedPref
 import projects.csce.evence.viewmodel.MainViewModel
+import projects.csce.evence.viewmodel.SortState
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity()
+class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener
 {
     private lateinit var currentEvent: ViewEvent
     private lateinit var viewModel: MainViewModel
@@ -53,7 +58,10 @@ class MainActivity : BaseActivity()
 
     private fun viewSetup()
     {
-        binding.qrBtn.setOnClickListener { activityStarter.startGenerateQr(this) }
+        binding.qrBtn.setOnClickListener {
+//            activityStarter.startNewEventActivity(this)
+            activityStarter.startGenerateQr(this)
+        }
 
         //apply custom toolbar
         setSupportActionBar(binding.toolbarMain)
@@ -136,8 +144,29 @@ class MainActivity : BaseActivity()
     {
         if (item.itemId == R.id.qr_camera_btn) {
             activityStarter.startQrReader(this)
+        } else if (item.itemId == R.id.sort_btn) {
+            handleSort()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun handleSort() {
+        val popupMenu = PopupMenu(this, findViewById(R.id.sort_btn))
+        popupMenu.menuInflater.inflate(R.menu.menu_sort, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.sort_by_creation ->
+                {
+                    viewModel.setSortState(SortState.RECENTLY_CREATED)
+                }
+                R.id.sort_by_date ->
+                {
+                    viewModel.setSortState(SortState.BY_DATE_ASCENDING)
+                }
+            }
+            true
+        }
+        popupMenu.show()
     }
 
     fun startSettingsActivity(view: View?)
@@ -191,5 +220,13 @@ class MainActivity : BaseActivity()
                 Timber.i("Writing file...")
             }
         }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
     }
 }
