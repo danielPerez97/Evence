@@ -9,7 +9,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class TestEventSpec
+class TestICalSpec
 {
     lateinit var christmas1997Event: ZonedDateTime
 
@@ -29,7 +29,7 @@ class TestEventSpec
     }
 
     @Test
-    fun `tests a two hour event on christmas 1997 with a given dtstamp`()
+    fun `tests a two hour event on christmas 1997`()
     {
         val dtstamp = ZonedDateTime.of(
                 1997,
@@ -49,29 +49,11 @@ class TestEventSpec
                 .title("Christmas 1997")
                 .build()
 
-        assertEquals(TestStrings.christmas1997, eventSpec.text())
-    }
-
-    @Test
-    fun `test that a unique dtstamp is generated if not explicitly set`()
-    {
-        val eventone = EventSpec.Builder(2)
-            .start(christmas1997Event)
-            .end(christmas1997Event.plusHours(2))
-            .title("Christmas 1997")
-            .build()
-
-        // Wait 100 milliseconds for system time to change
-        Thread.sleep(100)
-
-        val eventTwo = EventSpec.Builder(2)
-                .start(christmas1997Event)
-                .end(christmas1997Event.plusHours(2))
-                .title("Christmas 1997")
+        val icalSpec = ICalSpec.Builder()
+                .addEvent(eventSpec)
+                .timeZone(TimeZones.AMERICA_CHICAGO)
                 .build()
 
-        assertTrue(
-                eventone.dtstamp.toString() != eventTwo.dtstamp.toString()
-        )
+        assertEquals(TestStrings.christ1997FullICal, icalSpec.text())
     }
 }

@@ -1,33 +1,42 @@
 package daniel.perez.ical
 
 
-data class ICalSpec private constructor(val builder: Builder) {
+data class ICalSpec private constructor(val builder: Builder)
+{
 	val events: List<EventSpec> = builder.events
 	val timeZone: TimeZones = builder.timeZone
+	val prodId: String = builder.prodId
 
-	private val prodId: String = "-//University of Arkansas"
+	fun text(): String
+	{
+		val tzString = getTimeZoneString(timeZone)
 
-	fun text(): String {
-		val sb = StringBuilder()
-		val timeZoneString: String
-		when (timeZone) {
-			TimeZones.AMERICA_CHICAGO -> timeZoneString = TimeZone.americaChicago
+		return buildString {
+			appendLine("BEGIN:VCALENDAR")
+			appendLine("VERSION:2.0")
+			appendLine("PRODID:$prodId")
+			appendLine(tzString)
+			events.forEach { appendLine(it.text()) }
+			appendLine("END:VCALENDAR")
+			appendLine()
 		}
+	}
 
-		sb.appendLine("BEGIN:VCALENDAR")
-		sb.appendLine("VERSION:2.0")
-		sb.appendLine("PRODID:$prodId")
-		sb.appendLine(timeZoneString)
-		events.forEach { sb.appendLine(it.text()) }
-		sb.appendLine("END:VCALENDAR")
-		sb.appendln()
-
-		return sb.toString()
+	fun getTimeZoneString(timeZone: TimeZones): String
+	{
+		return when(timeZone) {
+			TimeZones.AMERICA_CHICAGO -> TimeZone.americaChicago
+			else -> throw Exception("Time zone not compatible")
+		}
 	}
 
 	class Builder constructor() {
+
+		internal var prodId: String = "-//University of Arkansas"
 		internal val events: MutableList<EventSpec> = mutableListOf()
 		internal var timeZone: TimeZones = TimeZones.AMERICA_CHICAGO
+
+		fun productionId(prodId: String) = apply { this.prodId = prodId }
 
 		fun addEvent(vararg event: EventSpec): Builder = apply { events += event }
 
@@ -46,7 +55,8 @@ data class ICalSpec private constructor(val builder: Builder) {
 
 	class IdsNotUniqueException : Throwable()
 
-	private object TimeZone {
+	object TimeZone
+	{
 		val americaChicago: String = """
 			BEGIN:VTIMEZONE
 			TZID:America/Chicago
