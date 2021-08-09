@@ -1,5 +1,6 @@
 package daniel.perez.ical
 
+import daniel.perez.ical.internal.NoTimeZoneException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -12,6 +13,7 @@ import java.time.ZonedDateTime
 class TestICalSpec
 {
     lateinit var christmas1997Event: ZonedDateTime
+    lateinit var christmas1997EventSpec: EventSpec
 
     @BeforeAll
     fun setup()
@@ -26,11 +28,7 @@ class TestICalSpec
                 0,
                 ZoneId.of("America/Chicago")
         )
-    }
 
-    @Test
-    fun `tests a two hour event on christmas 1997`()
-    {
         val dtstamp = ZonedDateTime.of(
                 1997,
                 Month.DECEMBER.value,
@@ -42,18 +40,33 @@ class TestICalSpec
                 ZoneId.of("America/Chicago")
         )
 
-        val eventSpec = EventSpec.Builder(2)
+        christmas1997EventSpec = EventSpec.Builder(2)
                 .start(christmas1997Event)
                 .end(christmas1997Event.plusHours(2))
                 .dtstamp(dtstamp)
                 .title("Christmas 1997")
                 .build()
+    }
+
+    @Test
+    fun `tests a two hour event on christmas 1997`()
+    {
 
         val icalSpec = ICalSpec.Builder()
-                .addEvent(eventSpec)
+                .addEvent(christmas1997EventSpec)
                 .timeZone(TimeZones.AMERICA_CHICAGO)
                 .build()
 
         assertEquals(TestStrings.christ1997FullICal, icalSpec.text())
+    }
+
+    @Test
+    fun `tests for failure if no time zone is given`()
+    {
+        assertThrows(NoTimeZoneException::class.java) {
+            ICalSpec.Builder()
+                    .addEvent(christmas1997EventSpec)
+                    .build()
+        }
     }
 }

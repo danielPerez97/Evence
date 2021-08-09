@@ -1,11 +1,14 @@
 package daniel.perez.ical
 
+import daniel.perez.ical.internal.NoTimeZoneException
+import java.util.*
+
 
 data class ICalSpec private constructor(val builder: Builder)
 {
 	val events: List<EventSpec> = builder.events
-	val timeZone: TimeZones = builder.timeZone
-	val prodId: String = builder.prodId
+	val timeZone: TimeZones = builder.timeZone!!
+	val prodId: String = builder.prodId!!
 
 	fun text(): String
 	{
@@ -22,19 +25,19 @@ data class ICalSpec private constructor(val builder: Builder)
 		}
 	}
 
-	fun getTimeZoneString(timeZone: TimeZones): String
+	private fun getTimeZoneString(timeZone: TimeZones): String
 	{
 		return when(timeZone) {
-			TimeZones.AMERICA_CHICAGO -> TimeZone.americaChicago
+			TimeZones.AMERICA_CHICAGO -> TimeZoneStrings.americaChicago
 			else -> throw Exception("Time zone not compatible")
 		}
 	}
 
 	class Builder constructor() {
 
-		internal var prodId: String = "-//University of Arkansas"
+		internal var prodId: String? = "-//University of Arkansas"
 		internal val events: MutableList<EventSpec> = mutableListOf()
-		internal var timeZone: TimeZones = TimeZones.AMERICA_CHICAGO
+		internal var timeZone: TimeZones? = null
 
 		fun productionId(prodId: String) = apply { this.prodId = prodId }
 
@@ -47,6 +50,12 @@ data class ICalSpec private constructor(val builder: Builder)
 			if (events.map { it.id }.distinct().count() != events.size) {
 				throw IdsNotUniqueException()
 			}
+			Objects.requireNonNull(prodId)
+
+			if(timeZone == null)
+			{
+				throw NoTimeZoneException()
+			}
 
 			// Return the ICalSpec
 			return ICalSpec(this)
@@ -55,7 +64,7 @@ data class ICalSpec private constructor(val builder: Builder)
 
 	class IdsNotUniqueException : Throwable()
 
-	object TimeZone
+	object TimeZoneStrings
 	{
 		val americaChicago: String = """
 			BEGIN:VTIMEZONE
