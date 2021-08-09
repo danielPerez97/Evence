@@ -1,7 +1,5 @@
 package daniel.perez.ical
 
-import android.net.Uri
-import androidx.core.net.toFile
 import okio.buffer
 import okio.source
 import java.io.File
@@ -13,11 +11,6 @@ object Parser
     private var builder = ICalSpec.Builder()
     private var state: State? = null
     private var eventBuilder: EventSpec.Builder? = null
-
-    fun parse(uri: Uri): ICalSpec
-    {
-        return parse( uri.toFile() )
-    }
 
     fun parse(file: File): ICalSpec
     {

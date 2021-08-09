@@ -1,35 +1,31 @@
 package daniel.perez.ical
 
 
-data class ICalSpec private constructor(val builder: Builder)
-{
+data class ICalSpec private constructor(val builder: Builder) {
 	val events: List<EventSpec> = builder.events
 	val timeZone: TimeZones = builder.timeZone
 
 	private val prodId: String = "-//University of Arkansas"
 
-	fun text(): String
-	{
+	fun text(): String {
 		val sb = StringBuilder()
 		val timeZoneString: String
-		when(timeZone)
-		{
+		when (timeZone) {
 			TimeZones.AMERICA_CHICAGO -> timeZoneString = TimeZone.americaChicago
 		}
 
-		sb.appendln("BEGIN:VCALENDAR")
-		sb.appendln("VERSION:2.0")
-		sb.appendln("PRODID:$prodId")
-		sb.appendln(timeZoneString)
-		events.forEach { sb.appendln(it.text()) }
-		sb.appendln("END:VCALENDAR")
+		sb.appendLine("BEGIN:VCALENDAR")
+		sb.appendLine("VERSION:2.0")
+		sb.appendLine("PRODID:$prodId")
+		sb.appendLine(timeZoneString)
+		events.forEach { sb.appendLine(it.text()) }
+		sb.appendLine("END:VCALENDAR")
 		sb.appendln()
 
 		return sb.toString()
 	}
 
-	class Builder constructor()
-	{
+	class Builder constructor() {
 		internal val events: MutableList<EventSpec> = mutableListOf()
 		internal var timeZone: TimeZones = TimeZones.AMERICA_CHICAGO
 
@@ -37,11 +33,9 @@ data class ICalSpec private constructor(val builder: Builder)
 
 		fun timeZone(timeZone: TimeZones): Builder = apply { this.timeZone = timeZone }
 
-		fun build(): ICalSpec
-		{
+		fun build(): ICalSpec {
 			// Check if the EventSpec ID's are unique
-			if(events.map { it.id }.distinct().count() != events.size)
-			{
+			if (events.map { it.id }.distinct().count() != events.size) {
 				throw IdsNotUniqueException()
 			}
 
@@ -50,10 +44,9 @@ data class ICalSpec private constructor(val builder: Builder)
 		}
 	}
 
-	class IdsNotUniqueException: Throwable()
+	class IdsNotUniqueException : Throwable()
 
-	private object TimeZone
-	{
+	private object TimeZone {
 		val americaChicago: String = """
 			BEGIN:VTIMEZONE
 			TZID:America/Chicago

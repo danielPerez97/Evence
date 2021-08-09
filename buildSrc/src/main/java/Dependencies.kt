@@ -251,6 +251,7 @@ object TestLibs
     private const val junit5Version = "5.7.1"
     const val androidJunit5GradlePluginVersion = "1.7.1.1"
     const val androidJunit5GradlePlugin = "de.mannodermaus.android-junit5"
+    const val junitBom = "org.junit:junit-bom:$junit5Version"
     const val junit5JupiterApi = "org.junit.jupiter:junit-jupiter-api:$junit5Version"
     const val junit5Runtime = "org.junit.jupiter:junit-jupiter-engine:$junit5Version"
 }
