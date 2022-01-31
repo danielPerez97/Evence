@@ -4,6 +4,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
         maven( url = "https://www.jetbrains.com/intellij-repository/releases" )
         maven( url = "https://jetbrains.bintray.com/intellij-third-party-dependencies" )
         maven( url =  "https://plugins.gradle.org/m2/")
@@ -14,7 +15,7 @@ buildscript {
         classpath("com.squareup.sqldelight:gradle-plugin:${Libs.SquareUp.sqlDelightVersion}")
         classpath("com.google.dagger:hilt-android-gradle-plugin:${Libs.Google.daggerHiltVersion}")
         classpath( "app.cash.licensee:licensee-gradle-plugin:1.2.0" )
-        classpath("com.github.ben-manes:gradle-versions-plugin:0.39.0")
+        classpath("com.github.ben-manes:gradle-versions-plugin:0.41.0")
         classpath("de.mannodermaus.gradle.plugins:android-junit5:${TestLibs.androidJunit5GradlePluginVersion}")
     }
 }
@@ -27,5 +28,6 @@ allprojects {
     repositories {
         mavenCentral()
         google()
+        gradlePluginPortal()
     }
 }
