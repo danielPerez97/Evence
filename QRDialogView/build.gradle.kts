@@ -47,7 +47,7 @@ dependencies {
 
     implementation( Libs.AndroidX.appCompat )
 
-    implementation( project( Project.core ) )
+    implementation( project( Evence.core ) )
 
     implementation( Libs.AndroidX.cardView )
     implementation( Libs.coil )

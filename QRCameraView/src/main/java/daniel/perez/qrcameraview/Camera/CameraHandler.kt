@@ -104,9 +104,10 @@ class CameraHandler constructor(private val context: Context,
         openCamera(lifecycleOwner,previewView, slider)
     }
 
+    //FOR FUTURE UPDATES
     private fun setTextAnalyzer(){
         currentAnalyzer.close()
-        currentAnalyzer = textScanner
+        //currentAnalyzer = textScanner
         openCamera(lifecycleOwner,previewView, slider)
     }
 

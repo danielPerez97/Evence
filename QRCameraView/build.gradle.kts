@@ -48,8 +48,8 @@ dependencies {
 
     coreLibraryDesugaring( Libs.desugar )
 
-    implementation( project( Project.ical ) )
-    implementation( project( Project.core ) )
+    implementation( project( Evence.ical ) )
+    implementation( project( Evence.core ) )
 
     // Dagger
     implementation( Libs.Google.hiltAndroid )
@@ -91,7 +91,7 @@ dependencies {
     implementation( Libs.Google.mlkitBarcode )
 
     //ml kit text
-    implementation( Libs.Google.mlkitTextRecognition )
+    //implementation( Libs.Google.mlkitTextRecognition )
 
     // Timber
     implementation ( Libs.JakeWharton.timber )

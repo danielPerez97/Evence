@@ -42,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Compose.version
+        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
     }
 
 }
@@ -51,16 +51,16 @@ dependencies {
     implementation( fileTree( mapOf( "dir" to "libs", "include" to "*.jar"  ) ) )
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
 
-    implementation( project( Project.core ) )
-    implementation( project( Project.ical ) )
+    implementation( project( Evence.core ) )
+    implementation( project( Evence.ical ) )
 
     // Compose
-    implementation( Compose.foundation )
-    implementation( Compose.ui )
-    implementation( Compose.uiTooling )
-    implementation( Compose.material )
-    implementation( Compose.activityCompose )
-    implementation( Compose.constraintLayoutCompose )
+    implementation( Libs.AndroidX.Compose.foundation )
+    implementation( Libs.AndroidX.Compose.ui )
+    implementation( Libs.AndroidX.Compose.uiTooling )
+    implementation( Libs.AndroidX.Compose.material )
+    implementation( Libs.AndroidX.Compose.activityCompose )
+    implementation( Libs.AndroidX.Compose.constraintLayoutCompose )
 
     // Dagger
     implementation( Libs.Google.hiltAndroid )
