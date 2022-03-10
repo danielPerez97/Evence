@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Evence</string>
     <string name="app_version">Version 1.0</string>
+    <string name="evence_email">evence.team@gmail.com</string>
     <string name="server_client_id">AIzaSyDpo6RqH8T91Ez5ZttAyGGXS1jBUz1eVII</string>
     <string name="scan_qr">Scan QR</string>
     <string name="search">Search</string>
@@ -47,4 +48,6 @@
 
         ]]>
     </string>
+    <string name="licenses">Licenses</string>
+    <string name="evence_feedback">Evence Feedback</string>
 </resources>

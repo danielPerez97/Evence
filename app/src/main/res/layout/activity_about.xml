@@ -19,7 +19,6 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_view"
                 style="@style/AboutPageCardview">
-
                 <LinearLayout style="@style/CardviewLayout">
 
                     <ImageView
@@ -58,6 +57,19 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_view4"
+                style="@style/AboutPageCardview"
+                android:onClick="licenses">
+                <LinearLayout style="@style/CardviewLayout">
+
+                    <TextView
+                        android:id="@+id/licenses_text"
+                        style="@style/AboutPageText"
+                        android:text="@string/licenses" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
                 android:id="@+id/card_view3"
                 style="@style/AboutPageCardview"
                 android:onClick="privacyPolicy">
@@ -77,6 +89,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+
         </LinearLayout>
     </ScrollView>
         <com.google.android.material.bottomappbar.BottomAppBar
@@ -95,17 +108,11 @@
                     android:text="@string/about"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:textColor="@color/white" />
-
-
             </LinearLayout>
         </com.google.android.material.bottomappbar.BottomAppBar>
 
-
-        </LinearLayout>
-    </com.google.android.material.bottomappbar.BottomAppBar>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/back_btn"
+        android:id="@+id/email_button"
         style="@style/FAB"
         android:layout_gravity="bottom|center"
         android:src="@drawable/ic_email_white_24dp"
