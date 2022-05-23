@@ -1,5 +1,5 @@
 # Evence
-Android app that lets you generate and scan event qr codes. 
+Android app that lets you generate and scan event qr codes. Written by Daniel Perez and Gabriel Del Carmen
 
 ### Preview 
 
