@@ -179,10 +179,10 @@ class GenerateQR : BaseActivity(), DialogClosable, AdapterView.OnItemSelectedLis
                 disposables += activityResultActions.actionCreateDocumentEvent(this, currentEvent, data)
                         .subscribe {
                             when (it) {
-                                ActionResult.Success -> toastShort("Wrote File Successfully")
+                                ActionResult.Success -> toastShort(this,"Wrote File Successfully")
                                 is ActionResult.Failure -> {
                                     Timber.e(it.t)
-                                    toastShort("Error writing file")
+                                    toastShort(this, "Error writing file")
                                 }
                                 ActionResult.InTransit -> {
                                     Timber.i("Writing file...")

@@ -119,9 +119,9 @@ fun Array<String>.toInts(): IntArray
     return this.map { it.toInt() }.toIntArray()
 }
 
-fun Context.toastShort(message: String)
+fun Context.toastShort(context: Context, message: String)
 {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
 fun Context.snackbarShort(view: View, message: String) {
@@ -138,7 +138,7 @@ fun copyToClipboard(context: Context, label: String, copiedString: String) {
     val clipboard = context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
     val clip = ClipData.newPlainText(label, copiedString)
     clipboard.setPrimaryClip(clip)
-    context.toastShort("Text copied")
+    context.toastShort(context, "Text copied")
 }
 
 fun getScreenWidthPx(context : Context ) : Int{

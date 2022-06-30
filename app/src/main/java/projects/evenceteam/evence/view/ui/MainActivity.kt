@@ -205,17 +205,16 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener
     }
 
     private val resultHandler = Consumer<ActionResult> {
-        when(it)
-        {
-            ActionResult.Success -> toastShort("Wrote File Successfully")
-            is ActionResult.Failure ->
-            {
-                Timber.e(it.t)
-                toastShort("Error writing file")
-            }
-            ActionResult.InTransit ->
-            {
-                Timber.i("Writing file...")
+        runOnUiThread {
+            when (it) {
+                is ActionResult.Success -> toastShort(this, "Wrote File Successfully")
+                is ActionResult.Failure -> {
+                    Timber.e(it.t)
+                    toastShort(this, "Error writing file")
+                }
+                is ActionResult.InTransit -> {
+                    Timber.i("Writing file...")
+                }
             }
         }
     }

@@ -144,7 +144,7 @@ class QrReaderActivity : BaseActivity(), DialogClosable
         val uiNewEvent: UiNewEvent
         with (barcode.calendarEvent) {
             uiNewEvent = UiNewEvent(
-                    summary,
+                    summary.ifEmpty { "Untitled" },
                     description,
                     location,
                     toLocalDateTime(start.day, start.month, start.year, start.hours, start.minutes),
@@ -169,7 +169,7 @@ class QrReaderActivity : BaseActivity(), DialogClosable
                 binding.flashButton.setImageDrawable(getDrawable(R.drawable.ic_flash_on_white_24dp))
             //todo use callback to see if successful or not
         } else {
-            toastShort("Device torch not found")
+            toastShort(this, "Device torch not found")
         }
     }
 
@@ -197,7 +197,7 @@ class QrReaderActivity : BaseActivity(), DialogClosable
             if (allPermissionsGranted()) {
                 cameraHandler.openCamera(this, binding.previewView, binding.zoomSlider)
             } else {
-                toastShort("Permissions not granted by the user.")
+                toastShort(this, "Permissions not granted by the user.")
                 finish()
             }
         }

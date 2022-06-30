@@ -56,7 +56,7 @@ class ScannedQrAdapter(private val context: Context) : RecyclerView.Adapter<Scan
         }
 
         private fun bind(barcode: Barcode) {
-            binding.qrValueTextview.text = barcode.displayValue
+            binding.qrValueTextview.text = barcode.displayValue.ifBlank { "Untitled" }
             binding.qrTypeTextview.text = barcodeTypes.getBarcodeTypeString(barcode)
             binding.qrIconImageView.setImageDrawable(barcodeTypes.getBarcodeTypeIcon(barcode))
             val isDark = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
