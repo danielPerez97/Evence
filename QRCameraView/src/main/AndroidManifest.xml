@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="daniel.perez.qrcameraview">
+    package="teamevence.evenceapp.qrcameraview">
     <uses-feature android:name="android.hardware.camera.any" />
     <uses-permission android:name="android.permission.CAMERA" />
     <application>
-        <activity android:name="daniel.perez.qrcameraview.ui.QrReaderActivity" />
+        <activity android:name="teamevence.evenceapp.qrcameraview.ui.QrReaderActivity" />
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"

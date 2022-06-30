@@ -43,6 +43,7 @@ android {
 dependencies {
     implementation( fileTree( mapOf( "dir" to "libs", "include" to "*.jar"  ) ) )
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
+    implementation("androidx.test.ext:junit-ktx:1.1.3")
 
     coreLibraryDesugaring( Libs.desugar )
 

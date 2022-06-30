@@ -59,6 +59,8 @@ dependencies {
     implementation( Coroutines.coroutinesCore )
     implementation( Coroutines.coroutinesAndroid )
     implementation( Libs.Google.hiltAndroid )
+    implementation("androidx.test:monitor:1.4.0")
+    implementation("androidx.test.ext:junit-ktx:1.1.3")
     kapt( Libs.Google.hiltCompiler )
 
     implementation( Libs.SquareUp.okio )

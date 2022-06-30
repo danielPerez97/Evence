@@ -53,6 +53,7 @@ dependencies {
     implementation( Libs.coil )
     implementation( Libs.AndroidX.coordinatorLayout )
     implementation( Libs.Google.hiltAndroid )
+    implementation("androidx.test.ext:junit-ktx:1.1.3")
     kapt( Libs.Google.hiltCompiler )
     coreLibraryDesugaring( Libs.desugar )
     implementation( Libs.ReactiveX.rxAndroid )

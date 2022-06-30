@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="projects.csce.evence">
+    package="projects.evenceteam.evence">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
 
     <application
-        android:name=".BaseApplication"
+        android:name="projects.evenceteam.evence.BaseApplication"
         android:allowBackup="true"
         android:icon="@drawable/evence_icon"
         android:label="@string/app_name"
         android:roundIcon="@drawable/evence_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.ui.ShareAppActivity"/>
-        <activity android:name="daniel.perez.generateqrview.GenerateQR" />
-        <activity android:name="daniel.perez.generateqrview.compose.NewEventActivity" />
+        <activity android:name="projects.evenceteam.evence.view.ui.ShareAppActivity"/>
+        <activity android:name="teamevence.evenceapp.generateqrview.GenerateQR" />
+        <activity android:name="teamevence.evenceapp.generateqrview.compose.NewEventActivity" />
         <activity
-            android:name=".view.ui.SplashscreenActivity"
+            android:name="projects.evenceteam.evence.view.ui.SplashscreenActivity"
             android:theme="@style/splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,17 +27,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.ui.MainActivity"
+            android:name="projects.evenceteam.evence.view.ui.MainActivity"
             android:theme="@style/AppTheme"/>
         <activity
-            android:name=".view.ui.SettingsActivity"
-            android:parentActivityName=".view.ui.MainActivity" />
+            android:name="projects.evenceteam.evence.view.ui.SettingsActivity"
+            android:parentActivityName="projects.evenceteam.evence.view.ui.MainActivity" />
         <activity
-            android:name=".view.ui.AboutActivity"
-            android:parentActivityName=".view.ui.MainActivity" />
-        <activity android:name=".view.ui.SecondActivity" />
+            android:name="projects.evenceteam.evence.view.ui.AboutActivity"
+            android:parentActivityName="projects.evenceteam.evence.view.ui.MainActivity" />
+        <activity android:name="projects.evenceteam.evence.view.ui.SecondActivity" />
         <activity
-            android:name="daniel.perez.fileselectview.FileSelectActivity"
+            android:name="teamevence.evenceapp.fileselectview.FileSelectActivity"
             android:label="File Selector">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
@@ -51,7 +51,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="projects.csce.evence.fileprovider"
+            android:authorities="projects.evenceteam.evence.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

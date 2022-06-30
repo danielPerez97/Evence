@@ -52,6 +52,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
 
     implementation( project(Evence.ical) )
+    implementation("androidx.test.ext:junit-ktx:1.1.3")
 
     coreLibraryDesugaring( Libs.desugar )
 

@@ -45,6 +45,8 @@ dependencies {
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
 
     implementation( Libs.AndroidX.appCompat )
+    implementation("com.google.firebase:firebase-firestore-ktx:23.0.2")
+    implementation("androidx.test.ext:junit-ktx:1.1.3")
 
     coreLibraryDesugaring( Libs.desugar )
 

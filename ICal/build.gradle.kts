@@ -39,6 +39,8 @@ dependencies {
 
     implementation( Libs.AndroidX.appCompat )
     implementation( Libs.AndroidX.coreKtx )
+    implementation("androidx.test.ext:junit-ktx:1.1.3")
+    testImplementation("org.junit.jupiter:junit-jupiter")
     coreLibraryDesugaring( Libs.desugar )
     implementation( Libs.SquareUp.okio )
     implementation( Libs.JakeWharton.timber )

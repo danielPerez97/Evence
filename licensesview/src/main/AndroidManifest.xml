@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="daniel.perez.licensesview">
+    package="teamevence.evenceapp.licensesview">
 
     <application>
-        <activity android:name=".LicensesActivity" />
+        <activity android:name="teamevence.evenceapp.licensesview.LicensesActivity" />
     </application>
 
 </manifest>

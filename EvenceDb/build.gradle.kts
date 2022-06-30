@@ -7,7 +7,7 @@ plugins {
 
 sqldelight {
     database("EvenceDatabase") {
-        packageName = "daniel.perez.evencedb"
+        packageName = "teamevence.evenceapp.evencedb"
     }
 }
 

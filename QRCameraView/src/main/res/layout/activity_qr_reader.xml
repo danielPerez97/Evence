@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/black"
-    tools:context="daniel.perez.qrcameraview.ui.QrReaderActivity">
+    tools:context="teamevence.evenceapp.qrcameraview.ui.QrReaderActivity">
 
     <androidx.camera.view.PreviewView
         android:id="@+id/previewView"

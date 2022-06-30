@@ -12,7 +12,7 @@ android {
     compileSdk = Evence.compileSdkVersion
     buildToolsVersion = Evence.buildToolsVersion
     defaultConfig {
-        applicationId = "projects.csce.evence"
+        applicationId = "projects.evenceteam.evence"
         minSdk = Evence.minSdkVersion
         targetSdk = Evence.targetSdkVersion
         versionCode = 1
@@ -89,6 +89,7 @@ dependencies {
 
     // Dagger 2
     implementation( Libs.Google.hiltAndroid )
+    implementation("androidx.test.ext:junit:1.1.3")
     kapt( Libs.Google.hiltCompiler )
 
     // Desugar

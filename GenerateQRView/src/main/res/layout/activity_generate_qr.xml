@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:orientation="vertical"
-                tools:context="daniel.perez.generateqrview.GenerateQR">
+                tools:context="teamevence.evenceapp.generateqrview.GenerateQR">
 
                 <TextView
                     style="@style/FormTitleTextView"
