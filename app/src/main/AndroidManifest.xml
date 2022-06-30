@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
-
     <application
         android:name="projects.evenceteam.evence.BaseApplication"
         android:allowBackup="true"
@@ -19,7 +18,8 @@
         <activity android:name="teamevence.evenceapp.generateqrview.compose.NewEventActivity" />
         <activity
             android:name="projects.evenceteam.evence.view.ui.SplashscreenActivity"
-            android:theme="@style/splashscreen">
+            android:theme="@style/splashscreen"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,7 +38,8 @@
         <activity android:name="projects.evenceteam.evence.view.ui.SecondActivity" />
         <activity
             android:name="teamevence.evenceapp.fileselectview.FileSelectActivity"
-            android:label="File Selector">
+            android:label="File Selector"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
 
@@ -62,6 +63,22 @@
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="barcode, ocr"/>
+
+
     </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="*" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.INSERT" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+        </intent>
+    </queries>
 
 </manifest>

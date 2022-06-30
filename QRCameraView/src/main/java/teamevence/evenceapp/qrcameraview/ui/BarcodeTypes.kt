@@ -2,6 +2,7 @@ package teamevence.evenceapp.qrcameraview.ui
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.Log
 import com.google.mlkit.vision.barcode.Barcode
 import teamevence.evenceapp.core.copyToClipboard
 import teamevence.evenceapp.qrcameraview.IntentActions
@@ -69,7 +70,9 @@ class BarcodeTypes(val context: Context) {
     }
 
     fun performAction(barcode: Barcode){
+        Log.d("BarcodeTypes", "----------------- ${barcode.valueType}")
         when (barcode.valueType) {
+
                 Barcode.TYPE_URL -> intentActions.openWebpage(barcode.url)
                 Barcode.TYPE_CONTACT_INFO -> intentActions.saveContact(barcode.contactInfo)
                 Barcode.TYPE_EMAIL -> intentActions.sendEmail(barcode.email)

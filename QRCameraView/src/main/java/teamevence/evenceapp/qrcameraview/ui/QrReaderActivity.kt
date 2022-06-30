@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -223,6 +224,7 @@ class QrReaderActivity : BaseActivity(), DialogClosable
                             handleQrEvent(barcode)
                         else
                             barcodeTypes.performAction(barcode)
+                        Log.d("QrReaderActivity--------------", "clicked")
                     }
                 })
     }

@@ -5,12 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.ContactsContract
+import android.util.Log
 import com.google.mlkit.vision.barcode.Barcode
 
 class IntentActions(private val context: Context) {
 
     fun performIntent(intent: Intent) {
+        Log.d("IntentActions-------","performintent1")
         if (intent.resolveActivity(context.packageManager) != null) {
+            Log.d("IntentActions-------","performintent2")
             context.startActivity(intent)
         }
     }
