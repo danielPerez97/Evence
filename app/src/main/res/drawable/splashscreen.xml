@@ -4,7 +4,7 @@
     <item android:drawable="@color/splashBg"/>
     <item android:gravity="center">
         <bitmap
-            android:src="@drawable/evence_icon"
+            android:src="@drawable/evence_splash22"
             android:gravity="center"/>
     </item>
 </layer-list>

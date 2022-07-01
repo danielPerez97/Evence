@@ -26,7 +26,7 @@
                         android:layout_height="150dp"
                         android:layout_gravity="center"
                         android:layout_marginHorizontal="32dp"
-                        android:src="@drawable/evence_icon" />
+                        android:src="@drawable/evence_splash22" />
 
                     <TextView
                         style="@style/AboutPageText"
