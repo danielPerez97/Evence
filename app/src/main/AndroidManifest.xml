@@ -3,7 +3,6 @@
     package="projects.evenceteam.evence">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
     <application
         android:name="projects.evenceteam.evence.BaseApplication"

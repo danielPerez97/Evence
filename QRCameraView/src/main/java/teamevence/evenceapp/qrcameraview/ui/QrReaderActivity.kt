@@ -141,16 +141,7 @@ class QrReaderActivity : BaseActivity(), DialogClosable
     }
 
     private fun handleQrEvent(barcode: Barcode) {
-        val uiNewEvent: UiNewEvent
-        with (barcode.calendarEvent) {
-            uiNewEvent = UiNewEvent(
-                    summary.ifEmpty { "Untitled" },
-                    description,
-                    location,
-                    toLocalDateTime(start.day, start.month, start.year, start.hours, start.minutes),
-                    toLocalDateTime(end.day, end.month, end.year, end.hours, end.minutes)
-            )
-        }
+        val uiNewEvent = viewModel.toUINewEvent(barcode.calendarEvent)
 
         disposables.add(viewModel.saveEvent(uiNewEvent)
                 .observeOn( AndroidSchedulers.mainThread() )
