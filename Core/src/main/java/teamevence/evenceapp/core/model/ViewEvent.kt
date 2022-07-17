@@ -2,8 +2,10 @@ package teamevence.evenceapp.core.model
 
 import android.net.Uri
 import teamevence.evenceapp.core.db.timeString
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.util.*
 
 data class ViewEvent(
@@ -41,12 +43,12 @@ data class ViewEvent(
 
     fun startEpochMilli(): Long
     {
-        return startDateTime.toEpochSecond( OffsetDateTime.now().offset )
+        return startDateTime.atZone( ZoneId.systemDefault() ).toInstant().toEpochMilli()
     }
 
     fun endEpochMilli(): Long
     {
-        return endDateTime.toEpochSecond( OffsetDateTime.now().offset )
+        return endDateTime.atZone( ZoneId.systemDefault() ).toInstant().toEpochMilli()
     }
 
     private fun LocalDateTime.pretty(): String
