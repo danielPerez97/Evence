@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
+import java.util.Properties
+import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
@@ -8,7 +10,27 @@ plugins {
     id("app.cash.licensee")
 }
 
+// Create a variable called keystorePropertiesFile, and initialize it to your
+// keystore.properties file, in the rootProject folder.
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+
+// Initialize a new Properties() object called keystoreProperties.
+val keystoreProperties = Properties()
+
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+
 android {
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
+        }
+    }
+
     compileSdk = Evence.compileSdkVersion
     buildToolsVersion = Evence.buildToolsVersion
     defaultConfig {
@@ -19,7 +41,9 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        signingConfig = signingConfigs.getByName("release")
     }
+
     buildTypes {
 //        release {
 //            isMinifyEnabled = false
@@ -56,91 +80,91 @@ licensee {
 }
 
 dependencies {
-    implementation( fileTree( mapOf( "dir" to "libs", "include" to "*.jar" ) ) )
+    implementation(fileTree(mapOf("dir" to "libs", "include" to "*.jar")))
     implementation(kotlin("stdlib-jdk8", KotlinCompilerVersion.VERSION))
 
-    implementation( project( Evence.core ) )
-    implementation( project( Evence.evenceDatabase ) )
-    implementation( project( Evence.fileSelectView ) )
-    implementation( project( Evence.generateQrView ) )
-    implementation( project( Evence.ical ) )
-    implementation( project( Evence.qrCameraView ) )
-    implementation( project( Evence.qrDialogView ) )
-    implementation( project( Evence.licensesView ) )
+    implementation(project(Evence.core))
+    implementation(project(Evence.evenceDatabase))
+    implementation(project(Evence.fileSelectView))
+    implementation(project(Evence.generateQrView))
+    implementation(project(Evence.ical))
+    implementation(project(Evence.qrCameraView))
+    implementation(project(Evence.qrDialogView))
+    implementation(project(Evence.licensesView))
 
     // AppCompat
-    implementation( Libs.AndroidX.appCompat )
+    implementation(Libs.AndroidX.appCompat)
 
     // Camerax core
-    implementation( Libs.AndroidX.Camera.cameraXCore )
+    implementation(Libs.AndroidX.Camera.cameraXCore)
 
     // CardView
-    implementation( Libs.AndroidX.cardView )
-    implementation( Libs.AndroidX.recyclerView )
+    implementation(Libs.AndroidX.cardView)
+    implementation(Libs.AndroidX.recyclerView)
 
     // ConstraintLayout
-    implementation( Libs.AndroidX.constraintLayout )
+    implementation(Libs.AndroidX.constraintLayout)
 
     // Coil
-    implementation( Libs.coil )
+    implementation(Libs.coil)
 
     // CoordinatorLayout
-    implementation( Libs.AndroidX.coordinatorLayout )
+    implementation(Libs.AndroidX.coordinatorLayout)
 
     // Dagger 2
-    implementation( Libs.Google.hiltAndroid )
+    implementation(Libs.Google.hiltAndroid)
     implementation("androidx.test.ext:junit:1.1.3")
-    kapt( Libs.Google.hiltCompiler )
+    kapt(Libs.Google.hiltCompiler)
 
     // Desugar
-    coreLibraryDesugaring( Libs.desugar )
+    coreLibraryDesugaring(Libs.desugar)
 
     // Guava Conflict
-    implementation( Libs.guavaConflict )
+    implementation(Libs.guavaConflict)
 
     // Kotlin Date-Time
-    api( Libs.Kotlin.kotlinxDateTime )
+    api(Libs.Kotlin.kotlinxDateTime)
 
     // Material widgets
-    implementation( Libs.AndroidX.material )
+    implementation(Libs.AndroidX.material)
 
     // Moshi
-    implementation( Libs.SquareUp.moshi )
+    implementation(Libs.SquareUp.moshi)
 
     // OkHttp
-    implementation( Libs.SquareUp.okhttp )
+    implementation(Libs.SquareUp.okhttp)
 
     // Retrofit
-    implementation( Libs.SquareUp.retrofit )
-    implementation( Libs.SquareUp.retrofitMoshi )
-    implementation( Libs.SquareUp.retrofitScalars )
-    implementation( Libs.SquareUp.retrofitRxJava )
+    implementation(Libs.SquareUp.retrofit)
+    implementation(Libs.SquareUp.retrofitMoshi)
+    implementation(Libs.SquareUp.retrofitScalars)
+    implementation(Libs.SquareUp.retrofitRxJava)
 
     // RxJava
-    implementation( Libs.ReactiveX.rxJava )
-    implementation( Libs.AndroidX.reactiveStreams )
-    implementation( Libs.JakeWharton.rxBinding )
-    implementation( Libs.JakeWharton.rxReplayingShare )
+    implementation(Libs.ReactiveX.rxJava)
+    implementation(Libs.AndroidX.reactiveStreams)
+    implementation(Libs.JakeWharton.rxBinding)
+    implementation(Libs.JakeWharton.rxReplayingShare)
 
     // SQLDelight
-    implementation( Libs.SquareUp.sqlDelightAndroidDriver )
+    implementation(Libs.SquareUp.sqlDelightAndroidDriver)
 
     // Timber
-    implementation( Libs.JakeWharton.timber )
+    implementation(Libs.JakeWharton.timber)
 
     // ViewModel
-    implementation( Libs.AndroidX.Lifecycle.viewModel )
-    implementation( Libs.AndroidX.Lifecycle.viewModelKtx )
+    implementation(Libs.AndroidX.Lifecycle.viewModel)
+    implementation(Libs.AndroidX.Lifecycle.viewModelKtx)
 
     // ZXING
-    implementation( Libs.Google.zxing )
-    implementation( Libs.Google.zxingAndroid )
+    implementation(Libs.Google.zxing)
+    implementation(Libs.Google.zxingAndroid)
 
     // Testing
-    testImplementation( TestLibs.junit4 )
-    androidTestImplementation( TestLibs.runner )
-    androidTestImplementation( TestLibs.espresso )
-    debugImplementation( TestLibs.leakCanary )
+    testImplementation(TestLibs.junit4)
+    androidTestImplementation(TestLibs.runner)
+    androidTestImplementation(TestLibs.espresso)
+    debugImplementation(TestLibs.leakCanary)
 }
 
 repositories {

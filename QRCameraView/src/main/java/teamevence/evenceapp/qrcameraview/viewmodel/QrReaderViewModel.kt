@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class QrReaderViewModel @Inject constructor(
     private val qrScanner: QRScanner,
-    private val textScanner: TextScanner,
+    //private val textScanner: TextScanner,
     private val eventOps: EventOps
 ) : ViewModel() {
 
@@ -69,7 +69,7 @@ class QrReaderViewModel @Inject constructor(
     }
 
 
-/* FOR FUTURE UPDATES
+    /* FOR FUTURE UPDATES
     fun liveTextData(): Observable<List<ScannedData>> {
         return textScanner.textBlockResult()
                 .flatMap { texts: List<Text.TextBlock> ->
