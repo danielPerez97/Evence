@@ -8,9 +8,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import dagger.hilt.android.AndroidEntryPoint
-import teamevence.evenceapp.core.ActivityStarter
 import projects.evenceteam.evence.R
 import projects.evenceteam.evence.databinding.ActivityAboutBinding
+import teamevence.evenceapp.core.ActivityStarter
 import javax.inject.Inject
 
 
@@ -30,6 +30,7 @@ class AboutActivity : AppCompatActivity() {
             getString(R.string.privacy_policy_content),
             HtmlCompat.FROM_HTML_MODE_LEGACY
         )
+        binding.versionTextview.text = "Version " + getString(R.string.app_version)
     }
 
     fun sendFeedback() {
@@ -49,8 +50,22 @@ class AboutActivity : AppCompatActivity() {
         }
     }
 
-    fun leaveRating() {
-        //todo: open link to playstore page here
+    fun leaveRating(view: View) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(
+                    getString(R.string.evence_playstore_url)
+                )
+                setPackage("com.android.vending")
+            }
+            startActivity(intent)
+        } catch (e: android.content.ActivityNotFoundException ){
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.evence_playstore_url)))
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent)
+            }
+        }
+
     }
 
     fun privacyPolicy(view: View) {
